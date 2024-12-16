@@ -51,6 +51,15 @@ A resource must have both `OPTIONS` and its handled methods, for instance all in
 
 Deploy API Gateway: if it is the first time follow the prompt to create a new stage and name it as the API deploy stage. So `ggbot-api-gateway-main` will have a `main` stage. Then click again on _Deploy API_ and choose the corresponding stage.
 
-After first deploy, go to _API Gateway > Custom domain names_ and add a domain name: notice that the domain name depends on the `DNS_DOMAIN` and `DEPLOY_STAGE` environment variables, check [locators FQDN](../../locators/src/FQDNs.ts) for the actual implementation. Select and _ACM Certificate_ (an ACM certificate should be available in the dropdown). _Domain name_ is _public_ and _API endpoint type_ is _regional_.
+After first deploy, go to _API Gateway > Custom domain names_ and add a domain name: notice that the domain name depends on the `DNS_DOMAIN` and `DEPLOY_STAGE` environment variables, check [locators FQDN](../../locators/src/FQDNs.ts) for the actual implementation. Select and _ACM Certificate_ (an ACM certificate should be available in the dropdown). _Domain name_ is _public_ and _API endpoint type_ is _regional_. For instance on `main` stage it will be `api.ggbot.org`.
 
 Then click on _Configure API mappings_ and add a new mapping and associate the API with its stage to the domain. Leave the _Path_ blank.
+
+Finally go to _AWS Console > Route 53_ and configure the new domain in the project hosted zone, click on _Create record_ and add the domain configured above
+
+1. _Record name_: the one created above, for instance `api`.
+2. _Record type_: `A`.
+3. _Alias_: flag it
+4. _Route traffic to_: API Gateway API
+5. _Region_: Choose same region as API Gateway created above
+6. _Choose endpoint_: it should pop up the one just created; same as _API Gateway domain name_ field in _API Gateway > Custom domain names_ for the domain created.
