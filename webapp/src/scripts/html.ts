@@ -9,21 +9,20 @@ type BodyTagArgs = {
 	/** Add a `<div id="root"></div>`. */
 	hasRootDiv?: boolean
 	scripts: ScriptTag[]
+	/** Object for importmap script. */
+	imports: Record<string, string>
 }
 
 type HeadTagArgs = {
 	/** HTML meta tags. */
 	meta: {
+		description: string
 		title: string
-		// TODO add optional description
-		// on landing page is "crypto flow"
 	}
 	stylesheets: LinkTag[]
 }
 
-type HtmlTagArgs = HeadTagArgs & BodyTagArgs
-
-const title = ENV.PROJECT_SHORT_NAME()
+export type HtmlTagArgs = HeadTagArgs & BodyTagArgs
 
 // Use default path for favicon.ico, i.e. put in the root public folder,
 // in case some browser does not read the `link rel="icon"` tag.
@@ -55,11 +54,12 @@ const logoTags = [
 	`<link rel="icon" href="${faviconSvgUrl}" type="image/svg+xml">`
 ]
 
-function metaTags({ title }: HeadTagArgs['meta']) {
+function metaTags({ title, description }: HeadTagArgs['meta']) {
 	return [
 		'<meta charset="UTF-8" />',
-		'<meta name="viewport" content="width=device-width" />',
 		`<title>${title}</title>`,
+		`<meta name="description" content="${description}">`,
+		'<meta name="viewport" content="width=device-width" />',
 		...logoTags
 	]
 }
@@ -74,31 +74,45 @@ function headTag({ meta, stylesheets }: HeadTagArgs) {
 	]
 }
 
-function bodyTag({ hasRootDiv, scripts }: BodyTagArgs) {
+function importmap(imports: BodyTagArgs['imports']) {
+	return [
+		'<script type="importmap">',
+		JSON.stringify({ imports }),
+		'</script>'
+	]
+}
+
+function bodyTag({ hasRootDiv, imports, scripts }: BodyTagArgs) {
 	return [
 		'<body>',
+		...importmap(imports),
 		hasRootDiv ? `<div id="${reactRootId}"></div>` : '',
 		...scripts.map(scriptTag),
 		'</body>'
 	]
 }
 
-function htmlTag({ hasRootDiv, meta, stylesheets, scripts }: HtmlTagArgs) {
+function htmlTag({ hasRootDiv, imports, meta, stylesheets, scripts }: HtmlTagArgs) {
 	return [
 		'<html lang="en">',
 		...headTag({ meta, stylesheets }),
-		...bodyTag({ hasRootDiv, scripts }),
+		...bodyTag({ hasRootDiv, imports, scripts }),
 		'</html>'
 	]
 }
 
-export function html(scriptJs: string) {
+export function html({ imports, scripts }: Pick<BodyTagArgs, 'imports' | 'scripts'>) {
 	return [
 		'<!DOCTYPE html>',
 		...htmlTag({
 			hasRootDiv: true,
-			meta: { title },
-			scripts: [{ src: scriptJs }],
+			meta: {
+				description: ENV.PROJECT_TAG_LINE(),
+				// TODO should be PROJECT_BRAND_NAME instead
+				title: ENV.PROJECT_SHORT_NAME(),
+			},
+			imports,
+			scripts,
 			stylesheets: [{ href: '/main.css' }]
 		})
 	]

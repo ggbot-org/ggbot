@@ -33,11 +33,8 @@ Install [direnv](../repository/docs/tech-stack.md#direnv): it reads a _.envrc_ f
 A complete _.envrc_ file looks like the following
 
 ```sh
+export DEPLOY_STAGE=main
 export DNS_DOMAIN=example.com
-
-# Notice that DEPLOY_STAGE is commented here.
-# It defaults to "local" and should be set explicitly to "next" or "main" only when needed.
-# export DEPLOY_STAGE=main
 
 export PROJECT_SHORT_NAME=myproject
 export PROJECT_TAG_LINE="lorem ipsum"

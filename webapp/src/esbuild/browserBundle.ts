@@ -1,6 +1,7 @@
 import { ENV } from '@workspace/env'
 import { build, BuildOptions } from 'esbuild'
 
+import { importmapConfig } from '../package.js'
 import { esbuildDefinitions } from './definitions.js'
 
 const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
@@ -34,6 +35,8 @@ export function browserBundle({
 		bundle: true,
 		define: esbuildDefinitions,
 		entryPoints,
+		external: Object.keys(importmapConfig),
+		format: 'esm',
 		legalComments: 'none',
 		minify: DEPLOY_STAGE !== 'local',
 		outfile,

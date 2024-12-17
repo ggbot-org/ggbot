@@ -5,6 +5,7 @@ public/*.js
 public/*.html
 public/admin/
 public/design/
+public/modules/
 public/user/
 public/translations/*.json
 public/workers/

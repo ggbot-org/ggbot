@@ -3,21 +3,25 @@ import { join } from 'node:path'
 import { webappPagePathname, WebappURLs } from '@workspace/locators'
 import writeFile from 'write-file-utf8'
 
-import { publicDir, webappEcmaScriptsConfig } from '../package.js'
-import { html } from './html.js'
+import { importmapConfig, publicDir, webappEcmaScriptsConfig } from '../package.js'
+import { html, HtmlTagArgs } from './html.js'
 
 // Here webapp is used only for pathnames. Any URL is fine as baseURL.
 const webapp = new WebappURLs(new URL('http://i.com'))
 
-function jsPath(path: string[]) {
+function webPath(path: string[]) {
 	return `/${path.join('/')}`
 }
 
-const adminJs = jsPath(webappEcmaScriptsConfig.admin.jsPath)
-const designJs = jsPath(webappEcmaScriptsConfig.design.jsPath)
-const landingJs = jsPath(webappEcmaScriptsConfig.landing.jsPath)
-const strategyJs = jsPath(webappEcmaScriptsConfig.strategy.jsPath)
-const userJs = jsPath(webappEcmaScriptsConfig.user.jsPath)
+const adminJs = webPath(webappEcmaScriptsConfig.admin.jsPath)
+const designJs = webPath(webappEcmaScriptsConfig.design.jsPath)
+const landingJs = webPath(webappEcmaScriptsConfig.landing.jsPath)
+const strategyJs = webPath(webappEcmaScriptsConfig.strategy.jsPath)
+const userJs = webPath(webappEcmaScriptsConfig.user.jsPath)
+
+const imports = Object.fromEntries(Object.entries(importmapConfig).map(
+	([importName, { publicModulePath }]) => ([importName, webPath(publicModulePath)])
+))
 
 // Landing pages.
 
@@ -25,20 +29,31 @@ for (const pathname of [
 	webapp.homepage.pathname,
 	webapp.privacy.pathname,
 	webapp.terms.pathname,
-]) await writeFile(join(publicDir, pathname), html(landingJs))
+]) await writeFile(
+	join(publicDir, pathname),
+	html({ imports, scripts: [{ src: landingJs }] })
+)
 
 // Shared strategy.
 
-await writeFile(join(publicDir, webappPagePathname.strategy), html(strategyJs))
+await writeFile(
+	join(publicDir, webappPagePathname.strategy),
+	html({ imports, scripts: [{ src: strategyJs }] })
+)
 
 // Admin app.
 
 for (const pathname of [
 	webappPagePathname.admin.dashboard,
 	webappPagePathname.admin.accountDetails,
-]) await writeFile(join(publicDir, pathname), html(adminJs))
+]) await writeFile(
+	join(publicDir, pathname),
+	html({ imports, scripts: [{ src: adminJs }] })
+)
 
 // User app.
+
+const userAppScripts = [{ src: userJs }] satisfies HtmlTagArgs['scripts']
 
 for (const pathname of [
 	webappPagePathname.user.dashboard,
@@ -46,20 +61,27 @@ for (const pathname of [
 	webappPagePathname.user.editStrategy,
 	webappPagePathname.user.settings,
 	webappPagePathname.user.strategy,
-]) await writeFile(join(publicDir, pathname), html(userJs))
+]) await writeFile(
+	join(
+		publicDir, pathname),
+	html({ imports, scripts: userAppScripts })
+)
 
 // Subscription pages.
 
 await writeFile(
 	join(publicDir, webappPagePathname.purchaseCanceled),
-	html(userJs)
+	html({ imports, scripts: userAppScripts })
 )
 
 await writeFile(
 	join(publicDir, webappPagePathname.subscriptionPurchased),
-	html(userJs)
+	html({ imports, scripts: userAppScripts })
 )
 
 // Design.
 
-await writeFile(join(publicDir, webappPagePathname.design.showcase), html(designJs))
+await writeFile(
+	join(publicDir, webappPagePathname.design.showcase),
+	html({ imports, scripts: [{ src: designJs }] })
+)
