@@ -16,5 +16,5 @@ input[type="checkbox"][color="warning"] {
 }
 
 input[type="checkbox"]:focus-visible {
-	outline-color: var(--focus-outline);
+	outline-color: hsl(var(--focus-h) var(--focus-s) var(--focus-l));
 }

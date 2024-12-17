@@ -43,11 +43,23 @@ Another parameter to set is the logs retention: go to _AWS Console > CloudWatch 
 
 Once an API Lambda is created you need to attach it to an API Gateway endpoint.
 
-First of all, create an API Gateway (one for every deploy stage): go to _AWS Console > API Gateway_ on the `AWS_DATA_REGION` region, create a Gateway of type _REST API_ and name it like `${PROJECT_SHORT_NAME}-api-gateway-${DEPLOY_STAGE}`, for instance `ggbot-api-gateway-main`. Choose _API endpoint type_ **regional**.
+First of all, create an API Gateway (one for every deploy stage): go to _AWS Console > API Gateway_ on the `AWS_DATA_REGION` region, create a Gateway of type _REST API_ and name it like `${PROJECT_SHORT_NAME}-api-gateway-${DEPLOY_STAGE}`, for instance `ggbot-api-gateway-local`. Choose _API endpoint type_ **regional**.
 
 Add resources, see [locators api](../../locators/src/api.ts) for implemented endpoints.
 
 A resource must have both `OPTIONS` and its handled methods, for instance all internal APIs are implemented with a `POST`. Choose the corresponding Lambda and flag _Lambda proxy integration_.
+
+These are the current API endpoints and their corresponding methods:
+
+ - POST,OPTIONS /auth
+ - POST,OPTIONS /admin
+ - POST,OPTIONS /public
+ - POST,OPTIONS /stripe/action
+ - POST /stripe/webhook
+
+The `/stripe/webhook` does not have an `OPTIONS` method since it is called server to server.
+
+Notice that to create an API for another deploy stage, you can just go to _API Gateway > APIs > Create API > Create REST API_ and select _Clone existing API_; then go on every single resource method on _Integration request_ tab, click _Edit_ and choose the corresponding lambda function with the one on the wanted deploy stage.
 
 Deploy API Gateway: if it is the first time follow the prompt to create a new stage and name it as the API deploy stage. So `ggbot-api-gateway-main` will have a `main` stage. Then click again on _Deploy API_ and choose the corresponding stage.
 

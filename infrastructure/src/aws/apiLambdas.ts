@@ -26,6 +26,8 @@ class ApiAuthLambda extends ApiLambda {
 			AUTHENTICATION_SECRET: ENV.AUTHENTICATION_SECRET(),
 			AWS_DATA_REGION: ENV.AWS_DATA_REGION(),
 			AWS_SES_REGION: ENV.AWS_SES_REGION(),
+			PROJECT_SHORT_NAME: ENV.PROJECT_SHORT_NAME(),
+			PROJECT_TAG_LINE: ENV.PROJECT_TAG_LINE(),
 			...ApiLambda.commonEnvironmentVariables()
 		})
 	}
@@ -63,7 +65,7 @@ class ApiStripeActionLambda extends ApiLambda {
 class ApiStripeWebhookLambda extends ApiLambda {
 	static workspacePathname = 'api-stripe-webhook'
 	constructor() {
-		super(ENV.AWS_DATA_REGION(), ApiStripeActionLambda.workspacePathname)
+		super(ENV.AWS_DATA_REGION(), ApiStripeWebhookLambda.workspacePathname)
 	}
 	async setEnvironment() {
 		await super.setEnvironment({

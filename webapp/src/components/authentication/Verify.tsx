@@ -99,7 +99,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 						dispatch({ type: 'VERIFY_REQUEST' })
 
 						const response = await fetch(api.auth.href, {
-							body: JSON.stringify({ type: 'Verify', ...requestData }),
+							body: JSON.stringify({ type: 'Verify', data: requestData }),
 							headers: new Headers({ 'Content-Type': 'application/json' }),
 							method: 'POST',
 							signal: controller.signal

@@ -76,17 +76,16 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 					}
 
 					const controller = new AbortController()
-					const timeout = 10_000
 
 					const timeoutId = setTimeout(() => {
 						controller.abort()
 						dispatch({ type: 'ENTER_TIMEOUT' })
-					}, timeout)
+					}, 10_000)
 
 					dispatch({ type: 'ENTER_REQUEST' })
 
 					const response = await fetch(api.auth.href, {
-						body: JSON.stringify({ type: 'Enter', ...requestData }),
+						body: JSON.stringify({ type: 'Enter', data: requestData }),
 						headers: new Headers({ 'Content-Type': 'application/json' }),
 						method: 'POST',
 						signal: controller.signal
