@@ -1,16 +1,17 @@
 import { ENV } from '@workspace/env'
 
-const PROJECT_SHORT_NAME = ENV.PROJECT_SHORT_NAME()
-
-const emailFooter = () => `
+function emailFooter(){
+	return `
 <tr>
   <td>
-    ${PROJECT_SHORT_NAME} <em>crypto flow</em>
+    ${ENV.PROJECT_SHORT_NAME()} <em>${ENV.PROJECT_TAG_LINE()}</em>
   </td>
 </tr>
 `
+}
 
-export const emailBody = (body: string) => `
+export function emailBody(body: string) {
+	return `
 <table>
   <tbody>
     ${body}
@@ -18,3 +19,4 @@ export const emailBody = (body: string) => `
   </tbody>
 </table>
 `
+}

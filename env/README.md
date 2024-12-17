@@ -11,7 +11,8 @@ The following environment variables are used:
 - `BINANCE_PROXY_IP`: for example `1.2.3.4`.
 - `DEPLOY_STAGE`: can be `main`, `next` or `local`.
 - `DNS_DOMAIN`: _example.com_.
-- `PROJECT_SHORT_NAME`: string used for example as a prefix for resource names.
+- `PROJECT_SHORT_NAME`: string used for example as a prefix for resource names; no spaces, no punctuation nor special character, lowercase is better.
+- `PROJECT_TAG_LINE`: a brief phrase used to relay project brand's value.
 - Used by Stripe APIs for payments:
   - `STRIPE_SECRET_KEY`
   - `STRIPE_PLAN_BASIC_MONTHLY_PRICE`
@@ -34,7 +35,12 @@ A complete _.envrc_ file looks like the following
 ```sh
 export DNS_DOMAIN=example.com
 
-export PROJECT_SHORT_NAME=brand
+# Notice that DEPLOY_STAGE is commented here.
+# It defaults to "local" and should be set explicitly to "next" or "main" only when needed.
+# export DEPLOY_STAGE=main
+
+export PROJECT_SHORT_NAME=myproject
+export PROJECT_TAG_LINE="lorem ipsum"
 
 export AWS_ACCOUNT_ID=12345678
 export AWS_ACCESS_KEY_ID=AKIA123ABCDEFGHIKLMN
@@ -43,8 +49,6 @@ export AWS_SECRET_ACCESS_KEY=O1234567890aBcDeFgHiJkLmNoPqRsTuVwXyZ
 export AWS_BINANCE_PROXY_REGION=eu-central-1
 export AWS_DATA_REGION=eu-central-1
 export AWS_SES_REGION=us-east-1
-
-export DEPLOY_STAGE=main
 
 export AUTHENTICATION_SECRET=s3cret
 

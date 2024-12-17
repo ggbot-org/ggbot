@@ -62,6 +62,10 @@ class EnvironmentVariables {
 		return getVariable(process.env.PROJECT_SHORT_NAME, 'PROJECT_SHORT_NAME', 'project')
 	}
 
+	PROJECT_TAG_LINE() {
+		return getVariable(process.env.PROJECT_TAG_LINE, 'PROJECT_TAG_LINE', 'tag line')
+	}
+
 	STRIPE_PLAN_BASIC_MONTHLY_PRICE(defaultValue?: string) {
 		return getVariable(process.env.STRIPE_PLAN_BASIC_MONTHLY_PRICE, 'STRIPE_PLAN_BASIC_MONTHLY_PRICE', defaultValue)
 	}
