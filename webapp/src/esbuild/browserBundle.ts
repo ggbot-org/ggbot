@@ -41,6 +41,7 @@ export function browserBundle({
 		minify: DEPLOY_STAGE !== 'local',
 		outfile,
 		platform: 'browser',
-		sourcemap: false
+		sourcemap: true,
+		sourcesContent: false,
 	})
 }

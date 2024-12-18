@@ -20,7 +20,7 @@ const strategyJs = webPath(webappEcmaScriptsConfig.strategy.jsPath)
 const userJs = webPath(webappEcmaScriptsConfig.user.jsPath)
 
 const imports = Object.fromEntries(Object.entries(importmapConfig).map(
-	([importName, { publicModulePath }]) => ([importName, webPath(publicModulePath)])
+	([importName, { targetDir, targetFile }]) => ([importName, webPath([...targetDir, targetFile])])
 ))
 
 // Landing pages.

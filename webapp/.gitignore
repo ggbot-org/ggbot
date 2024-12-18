@@ -2,6 +2,7 @@ temp/
 public/*.css
 public/*.css.map
 public/*.js
+public/*.js.map
 public/*.html
 public/admin/
 public/design/

@@ -13,22 +13,7 @@ export const nodeModulesDir = join(monorepoDir, 'node_modules')
 
 export const publicDir = join(workspaceDir, 'public')
 
-export const publicModulesDirname = 'modules'
-
-/**
- *
- * @remarks
- *
- * Public modules are in a folder like
- *
- * ```
- * /modules/mylib-v1.2.3.js
- * /modules/another-lib-v4.5.6.js
- * ```
- */
-function publicModule(moduleName: string, version: string) {
-	return [publicModulesDirname, `${moduleName}-v${version}.js`]
-}
+const publicModuleDirname = 'modules'
 
 const srcDir = join(workspaceDir, 'src')
 
@@ -37,6 +22,7 @@ export const typesDir = join(srcDir, 'types')
 const pkg = await readFile<{ dependencies: Record<string, string> }>(join(workspaceDir, 'package.json'))
 
 const preactVersion = pkg.dependencies.preact
+const preactPublicDir = [publicModuleDirname, `preact-${preactVersion}`]
 
 function routingFile(filename: string) {
 	return join(srcDir, 'routing', filename)
@@ -60,28 +46,50 @@ const ecmaScriptPath: Record<EcmaScriptName, string[]> = {
  * The key is the import name, will be marked as "external" in esbuild config to be excluded from the JS bundles.
 */
 export const importmapConfig: Record<string, {
-	nodeModulePath: string[]
-	publicModulePath: string[]
+	/** Path to source module directory, relative to node_modules folder. */
+	sourceDir: string[]
+	/** Original filename as found in source directory. */
+	sourceFile: string
+	/** Path to public module directory, relative to webapp public folder. */
+	targetDir: string[]
+	/** The `sourceFile` name may differ from original `targetFile` name to have better DX, for example when looking at Network tab in browser dev tools. */
+	targetFile: string
+	/** Optional source map filename, must be same as linked in module file last line comment. */
+	sourceMap?: string
 }> = {
 	preact: {
-		nodeModulePath: ['preact', 'dist', 'preact.module.js'],
-		publicModulePath: publicModule('preact', preactVersion)
+		sourceDir: ['preact', 'dist'],
+		sourceFile: 'preact.module.js',
+		sourceMap: 'preact.module.js.map',
+		targetDir: preactPublicDir,
+		targetFile: 'preact.js',
 	},
 	'preact/compat': {
-		nodeModulePath:	['preact', 'compat', 'dist', 'compat.module.js'],
-		publicModulePath: publicModule('preact-compat', preactVersion)
+		sourceDir:	['preact', 'compat', 'dist'],
+		sourceFile:	'compat.module.js',
+		sourceMap:	'compat.module.js.map',
+		targetDir: preactPublicDir,
+		targetFile:	'preact-compat.js',
 	},
 	'preact/compat/client': {
-		nodeModulePath:	['preact', 'compat', 'client.mjs'],
-		publicModulePath: publicModule('preact-compat-client', preactVersion)
+		sourceDir:	['preact', 'compat'],
+		sourceFile:	'client.mjs',
+		targetDir: preactPublicDir,
+		targetFile:	'preact-compat-client.js',
 	},
 	'preact/hooks': {
-		nodeModulePath:	['preact', 'hooks', 'dist', 'hooks.mjs'],
-		publicModulePath: publicModule('preact-hooks', preactVersion)
+		sourceDir:	['preact', 'hooks', 'dist'],
+		sourceFile:	'hooks.module.js',
+		sourceMap:	'hooks.module.js.map',
+		targetDir: preactPublicDir,
+		targetFile:	'preat-hooks.js',
 	},
 	'preact/jsx-runtime': {
-		nodeModulePath:	['preact', 'jsx-runtime', 'dist', 'jsxRuntime.module.js'],
-		publicModulePath: publicModule('preact-jsx-runtime', preactVersion)
+		sourceDir:	['preact', 'jsx-runtime', 'dist'],
+		sourceFile:	'jsxRuntime.module.js',
+		sourceMap:	'jsxRuntime.module.js.map',
+		targetDir: preactPublicDir,
+		targetFile:	'preact-jsx-runtime.js',
 	}
 }
 
