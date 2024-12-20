@@ -1,9 +1,10 @@
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { WorkerName, workerScriptPath } from '_/workers'
 import { webappDirname } from '@workspace/locators'
 import readFile from 'read-file-utf8'
+
+import { WorkerName, workerScriptPath } from './workers.js'
 
 export const workspaceDir = resolve(dirname(dirname(fileURLToPath(import.meta.url))))
 

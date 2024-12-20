@@ -1,5 +1,6 @@
-import { reactRootId } from '_/react/root'
 import { ENV } from '@workspace/env'
+
+import { reactRootId } from '../react/root.js'
 
 type LinkTag = { href: string }
 

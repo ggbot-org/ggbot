@@ -7,7 +7,7 @@ import { FormattedMessage } from '_/i18n/components'
 import { api } from '_/routing/api'
 import { isApiAuthVerifyRequestData, isApiAuthVerifyResponseData } from '@workspace/api'
 import { EmailAddress } from '@workspace/models'
-import { Reducer, useReducer } from 'react'
+import { useReducer } from 'react'
 
 type FormField = {
 	code: { value: string }
@@ -57,7 +57,7 @@ function RegenerateOneTimePassword({ onClick }: Pick<ButtonProps, 'onClick'>) {
 }
 
 export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
-	const [{ gotTimeout, hasGenericError, hasInvalidInput, isPending, needToGenerateOneTimePasswordAgain, verificationFailed }, dispatch] = useReducer<Reducer<State, Action>>((state, action) => {
+	const [{ gotTimeout, hasGenericError, hasInvalidInput, isPending, needToGenerateOneTimePasswordAgain, verificationFailed }, dispatch] = useReducer<State, [any]>((state, action: Action) => {
 		if (action.type === 'SET_HAS_INVALID_INPUT') return { hasInvalidInput: true }
 		if (action.type === 'VERIFY_REQUEST') return { isPending: true }
 		if (action.type === 'VERIFY_RESPONSE') return { hasGenericError: true, ...action.data }

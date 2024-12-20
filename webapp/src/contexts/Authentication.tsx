@@ -10,7 +10,7 @@ import { sessionWebStorage } from '_/storages/session'
 import { BadGatewayError, UnauthorizedError } from '@workspace/api'
 import { AccountInfo, EmailAddress, Subscription } from '@workspace/models'
 import { Time } from 'minimal-time-helpers'
-import { createContext, PropsWithChildren, Reducer, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+import { createContext, PropsWithChildren, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 
 type State = {
 	email: EmailAddress | undefined
@@ -55,7 +55,7 @@ export const AuthenticationContext = createContext<ContextValue>({
 AuthenticationContext.displayName = 'AuthenticationContext'
 
 export function AuthenticationProvider({ children }: PropsWithChildren) {
-	const [{ email, exitConfirmationIsActive, token }, dispatch] = useReducer<Reducer<State, Action>>((state, action) => {
+	const [{ email, exitConfirmationIsActive, token }, dispatch] = useReducer<State, [any]>((state, action: Action) => {
 		if (action.type === 'EXIT') return {
 			email: undefined,
 			exitConfirmationIsActive: false,

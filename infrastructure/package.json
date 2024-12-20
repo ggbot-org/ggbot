@@ -11,6 +11,7 @@
     "set_api_environment": "node --env-file ../.typescript.env ./src/scripts/set_api_environment.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "3.712.0",
     "@aws-sdk/client-lambda": "3.645.0",
     "@workspace/api": "0.0.0",
     "@workspace/env": "0.0.0",

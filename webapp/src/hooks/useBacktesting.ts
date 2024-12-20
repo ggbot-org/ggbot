@@ -2,7 +2,7 @@ import { workerScriptPath } from '_/workers'
 import { BacktestingMessageInData, BacktestingMessageOutData, BacktestingSession } from '@workspace/backtesting'
 import { everyOneHour, Frequency } from '@workspace/models'
 import { Day, DayInterval, getDay, yesterday } from 'minimal-time-helpers'
-import { Dispatch, Reducer, useEffect, useReducer } from 'react'
+import { Dispatch, useEffect, useReducer } from 'react'
 
 type Action =
 	| BacktestingMessageInData
@@ -63,7 +63,7 @@ export function useBacktesting(): {
 	state: State
 	dispatch: Dispatch<Action>
 } {
-	const [state, dispatch] = useReducer<Reducer<State, Action>>(
+	const [state, dispatch] = useReducer(
 		(state, action) => {
 			if (['STOP', 'START'].includes(action.type)) {
 				backtesting.postMessage(action)

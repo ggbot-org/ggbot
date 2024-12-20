@@ -1,6 +1,5 @@
 import { Toast, ToastContainer, ToastProps } from '_/components/library'
-import { createContext, PropsWithChildren, ReactNode, Reducer, useCallback, useMemo, useReducer } from 'react'
-import { Notification } from 'trunx'
+import { createContext, PropsWithChildren, ReactNode, useCallback, useMemo, useReducer } from 'react'
 
 type ContextValue = {
 	toast: Record<ToastProps['color'], (message: ToastProps['message']) => void>
@@ -21,22 +20,21 @@ type Notification = {
 	toast: Omit<ToastProps, 'close'>
 }
 
+type Action =
+	| { type: 'ADD_NOTIFICATION'; notification: Notification }
+	| ({ type: 'REMOVE_NOTIFICATION' } & Pick<Notification, 'id'>)
+
 export function ToastProvider({ children }: PropsWithChildren) {
-	const [notifications, dispatch] = useReducer<
-		Reducer<
-			Notification[],
-			| { type: 'ADD_NOTIFICATION'; notification: Notification }
-			| ({ type: 'REMOVE_NOTIFICATION' } & Pick<Notification, 'id'>)
-		>
-	>((notifications, action) => {
-					// Add new notification at the beginning of the stack.
-					// They are displayed on bottom, so new notifications will be on top.
-					if (action.type === 'ADD_NOTIFICATION') return [action.notification, ...notifications]
+	const [notifications, dispatch] = useReducer<Notification[], [any]>(
+		(notifications, action: Action) => {
+			// Add new notification at the beginning of the stack.
+			// They are displayed on bottom, so new notifications will be on top.
+			if (action.type === 'ADD_NOTIFICATION') return [action.notification, ...notifications]
 
-					if (action.type === 'REMOVE_NOTIFICATION') return notifications.filter(({ id }) => id !== action.id)
+			if (action.type === 'REMOVE_NOTIFICATION') return notifications.filter(({ id }) => id !== action.id)
 
-					return notifications
-				}, [])
+			return notifications
+		}, [])
 
 	const close = useCallback<(id: Notification['id']) => () => void>(
 		(id) => () => {

@@ -26,7 +26,7 @@
     "sass": "sass --style=compressed --load-path=../node_modules/ --no-source-map src/styles/main.scss public/main.css",
     "server": "npm run build && esbuild --servedir=public",
     "start": "onchange --initial --kill 'translations/*.json' 'src/components/' 'src/contexts/' 'src/flow/' 'src/hooks/' 'src/i18n/' 'src/pages/' 'src/routing/' 'src/storages/' 'src/styles/' -- npm run server",
-    "tsc:scripts": "tsc --build tsconfig.scripts.json && tsc-alias -p tsconfig.scripts.json"
+    "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
   "dependencies": {
     "@workspace/api": "0.0.0",
@@ -54,7 +54,6 @@
     "onchange": "7.1.0",
     "sass": "1.78.0",
     "stylelint": "16.9.0",
-    "stylelint-config-standard-scss": "13.1.0",
-    "tsc-alias": "1.8.10"
+    "stylelint-config-standard-scss": "13.1.0"
   }
 }

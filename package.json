@@ -66,7 +66,6 @@
     "test_repository": "npm run test -w repository"
   },
   "devDependencies": {
-    "@aws-sdk/client-cloudwatch-logs": "3.712.0",
     "@eslint/json": "0.5.0",
     "@stylistic/eslint-plugin": "2.10.1",
     "esbuild": "0.24.0",
@@ -75,7 +74,6 @@
     "eslint-plugin-simple-import-sort": "12.1.1",
     "eslint-plugin-tsdoc": "0.4.0",
     "eslint-plugin-workspaces": "0.10.1",
-    "infrastructure": "1.4.4",
     "lint-staged": "15.2.9",
     "markdownlint-cli2": "0.14.0",
     "markdownlint-rule-github-internal-links": "0.1.0",

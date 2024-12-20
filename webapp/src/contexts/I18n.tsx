@@ -2,7 +2,7 @@ import { Navbar } from '_/components/library'
 import { detectLanguage, translationPathname } from '_/i18n/languages'
 import { I18nMessagesRecord } from '_/i18n/messages'
 import { defaultLanguage, Language } from '@workspace/models'
-import { createContext, PropsWithChildren, Reducer, useEffect, useMemo, useReducer } from 'react'
+import { createContext, PropsWithChildren, useEffect, useMemo, useReducer } from 'react'
 
 type ContextValue = {
 	language: Language
@@ -13,21 +13,24 @@ export const I18nContext = createContext<ContextValue>({
 	language: defaultLanguage,
 })
 
+type State = {
+	messages?: I18nMessagesRecord
+	readIsPending: boolean
+	readHasError: boolean
+}
+
+type Action =
+	| { type: 'READ_INTL_MESSAGES_REQUEST' }
+	| { type: 'READ_INTL_MESSAGES_FAILURE' }
+	| {
+		type: 'READ_INTL_MESSAGES_SUCCESS'
+		messages: I18nMessagesRecord
+	}
+
 export function I18nProvider({ children }: PropsWithChildren) {
 	const [{ messages, readHasError, readIsPending }, dispatch] = useReducer<
-		Reducer<{
-			messages?: I18nMessagesRecord
-			readIsPending: boolean
-			readHasError: boolean
-		},
-			| { type: 'READ_INTL_MESSAGES_REQUEST' }
-			| { type: 'READ_INTL_MESSAGES_FAILURE' }
-			| {
-				type: 'READ_INTL_MESSAGES_SUCCESS'
-				messages: I18nMessagesRecord
-			}
-		>
-	>((state, action) => {
+		State, [any]
+	>((state, action: Action) => {
 		if (action.type == 'READ_INTL_MESSAGES_REQUEST') return {
 			readHasError: false,
 			readIsPending: true,

@@ -9,7 +9,7 @@ import { api } from '_/routing/api'
 import { isApiAuthEnterRequestData, isApiAuthEnterResponseData } from '@workspace/api'
 import { EmailAddress, isEmailAddress } from '@workspace/models'
 import { isMaybeObject } from 'minimal-type-guard-helpers'
-import { ChangeEventHandler, InputHTMLAttributes, Reducer, useCallback, useReducer, useState } from 'react'
+import { ChangeEventHandler, InputHTMLAttributes, useCallback, useReducer, useState } from 'react'
 
 type FormField = {
 	email: { value: string }
@@ -20,25 +20,25 @@ export type AuthEnterProps = {
 	setEmail: (email: EmailAddress) => void
 }
 
-type ApiState = {
+type State = {
 	gotTimeout: boolean
 	hasGenericError: boolean
 	hasInvalidInput: boolean
 	isPending: boolean
 }
 
+type Action =
+	| { type: 'ENTER_REQUEST' }
+	| { type: 'ENTER_FAILURE' }
+	| { type: 'ENTER_TIMEOUT' }
+	| { type: 'SET_HAS_INVALID_INPUT' }
+
 export function AuthEnter({ setEmail }: AuthEnterProps) {
 	const { formatMessage } = useIntl()
 
 	const [{ gotTimeout, hasGenericError, hasInvalidInput, isPending }, dispatch] = useReducer<
-		Reducer<
-			Partial<ApiState>,
-			| { type: 'ENTER_REQUEST' }
-			| { type: 'ENTER_FAILURE' }
-			| { type: 'ENTER_TIMEOUT' }
-			| { type: 'SET_HAS_INVALID_INPUT' }
-		>
-	>((state, action) => {
+		Partial<State>, [any]
+	>((state, action: Action) => {
 		if (action.type === 'ENTER_REQUEST') return { isPending: true }
 		if (action.type === 'ENTER_FAILURE') return { hasGenericError: true }
 		if (action.type === 'ENTER_TIMEOUT') return { gotTimeout: true }

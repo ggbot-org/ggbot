@@ -2,12 +2,6 @@
 	"compilerOptions": {
 		"noEmit": false,
 		"outDir": "./temp",
-		"paths": {
-			"_/*": ["./src/*"],
-			"_/esbuild/browserBundle": ["./src/esbuild/browserBundle.ts"],
-			"_/react/root": ["./src/react/root.ts"],
-			"_/workers": ["./src/workers.ts"]
-		},
 		"rootDir": "./src",
 		"tsBuildInfoFile": "temp/tsconfig.scripts.tsbuildinfo"
 	},
