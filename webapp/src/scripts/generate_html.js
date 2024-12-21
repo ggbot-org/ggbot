@@ -4,12 +4,13 @@ import { webappPagePathname, WebappURLs } from '@workspace/locators'
 import writeFile from 'write-file-utf8'
 
 import { importmapConfig, publicDir, webappEcmaScriptsConfig } from '../package.js'
-import { html, HtmlTagArgs } from './html.js'
+import { html } from './html.js'
 
 // Here webapp is used only for pathnames. Any URL is fine as baseURL.
 const webapp = new WebappURLs(new URL('http://i.com'))
 
-function webPath(path: string[]) {
+/** @param {string[]} path */
+function webPath(path) {
 	return `/${path.join('/')}`
 }
 
@@ -53,7 +54,8 @@ for (const pathname of [
 
 // User app.
 
-const userAppScripts = [{ src: userJs }] satisfies HtmlTagArgs['scripts']
+/** @type {import('./html').BodyScripts} */
+const userAppScripts = [{ src: userJs }]
 
 for (const pathname of [
 	webappPagePathname.user.dashboard,
@@ -62,8 +64,7 @@ for (const pathname of [
 	webappPagePathname.user.settings,
 	webappPagePathname.user.strategy,
 ]) await writeFile(
-	join(
-		publicDir, pathname),
+	join(publicDir, pathname),
 	html({ imports, scripts: userAppScripts })
 )
 

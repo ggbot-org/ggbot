@@ -28,7 +28,6 @@
 			"_/components/*": ["./webapp/src/components/*"],
 			"_/components/library": ["./webapp/src/components/library/index.ts"],
 			"_/contexts/*": ["./webapp/src/contexts/*"],
-			"_/esbuild/browserBundle": ["./webapp/src/esbuild/browserBundle.ts"],
 			"_/flow/*": ["./webapp/src/flow/*"],
 			"_/hooks/*": ["./webapp/src/hooks/*"],
 			"_/i18n/*": ["./webapp/src/i18n/*"],

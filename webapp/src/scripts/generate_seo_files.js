@@ -20,20 +20,25 @@ const sitemapUrls = [
 	webapp.terms
 ]
 
-// All webapp directories content should not be exposed.
-function robotsDisallow(dirnames: string[]) {
+/**
+ * None of webapp directories content should be exposed.
+ * @param {string[]} dirnames
+ */
+function robotsDisallow(dirnames) {
 	return dirnames.map((dirname) => `Disallow: /${dirname}/`).join('\n')
 }
 
-function sitemapUrlset(
-	urls: Array<{
-		loc: string
-		lastmod: string
-	}>
-) {
+/**
+ * @typedef {object} UrlSet
+ * @prop {string} loc
+ * @prop {string} lastmod
+ *
+ * @param {UrlSet[]} urlsets
+ */
+function sitemapUrlset(urlsets) {
 	return [
 		'<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-		...urls.map(({ loc, lastmod }) => [
+		...urlsets.map(({ loc, lastmod }) => [
 			'  <url>',
 			`    <loc>${loc}</loc>`,
 			`    <lastmod>${lastmod}</lastmod>`,

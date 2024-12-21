@@ -30,8 +30,5 @@ declare global {
 	}
 }
 `
-// TODO write article about this namespace FormatjsIntl trick
-// then remove it, rename it properly like I18nMessageId, etc
-// and write the file in i18n folder
 
 await writeFile(pathname, content)

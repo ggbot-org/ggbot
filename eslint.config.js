@@ -11,7 +11,6 @@ import workspaces from 'eslint-plugin-workspaces'
 const globalIgnores = {
 	ignores: [
 		'*/dist/',
-		'*/temp/',
 		'webapp/public/**/*.js',
 	]
 }

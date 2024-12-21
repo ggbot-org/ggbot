@@ -2,29 +2,6 @@ import { ENV } from '@workspace/env'
 
 import { reactRootId } from '../react/root.js'
 
-type LinkTag = { href: string }
-
-type ScriptTag = { src: string }
-
-type BodyTagArgs = {
-	/** Add a `<div id="root"></div>`. */
-	hasRootDiv?: boolean
-	scripts: ScriptTag[]
-	/** Object for importmap script. */
-	imports: Record<string, string>
-}
-
-type HeadTagArgs = {
-	/** HTML meta tags. */
-	meta: {
-		description: string
-		title: string
-	}
-	stylesheets: LinkTag[]
-}
-
-export type HtmlTagArgs = HeadTagArgs & BodyTagArgs
-
 // Use default path for favicon.ico, i.e. put in the root public folder,
 // in case some browser does not read the `link rel="icon"` tag.
 const faviconIcoUrl = '/favicon.ico'
@@ -33,15 +10,18 @@ const logoBaseUrl = '/logo'
 const faviconSvgUrl = `${logoBaseUrl}/favicon.svg`
 const appleTouchIconUrl = `${logoBaseUrl}/logo-180.png`
 
-function linkTag({ href }: LinkTag) {
+/** @param {import('./html').LinkTag} arg */
+function linkTag({ href }) {
 	return `<link rel="stylesheet" href="${href}">`
 }
 
-function scriptTag({ src }: ScriptTag) {
+/** @param {import('./html').ScriptTag} arg */
+function scriptTag({ src }) {
 	return `<script type="module" src="${src}"></script>`
 }
 
-function styleTag(content: string) {
+/** @param {string} content */
+function styleTag(content) {
 	return `<style>${content}</style>`
 }
 
@@ -55,7 +35,8 @@ const logoTags = [
 	`<link rel="icon" href="${faviconSvgUrl}" type="image/svg+xml">`
 ]
 
-function metaTags({ title, description }: HeadTagArgs['meta']) {
+/** @param {import('./html').MetaTags} arg */
+function metaTags({ title, description }) {
 	return [
 		'<meta charset="UTF-8" />',
 		`<title>${title}</title>`,
@@ -65,7 +46,8 @@ function metaTags({ title, description }: HeadTagArgs['meta']) {
 	]
 }
 
-function headTag({ meta, stylesheets }: HeadTagArgs) {
+/** @param {import('./html').HeadTagArg} arg */
+function headTag({ meta, stylesheets }) {
 	return [
 		'<head>',
 		...metaTags(meta),
@@ -75,7 +57,8 @@ function headTag({ meta, stylesheets }: HeadTagArgs) {
 	]
 }
 
-function importmap(imports: BodyTagArgs['imports']) {
+/** @param {import('./html').Importmap} imports */
+function importmap(imports) {
 	return [
 		'<script type="importmap">',
 		JSON.stringify({ imports }),
@@ -83,7 +66,8 @@ function importmap(imports: BodyTagArgs['imports']) {
 	]
 }
 
-function bodyTag({ hasRootDiv, imports, scripts }: BodyTagArgs) {
+/** @param {import('./html').BodyTagArg} arg */
+function bodyTag({ hasRootDiv, imports, scripts }) {
 	return [
 		'<body>',
 		...importmap(imports),
@@ -93,7 +77,8 @@ function bodyTag({ hasRootDiv, imports, scripts }: BodyTagArgs) {
 	]
 }
 
-function htmlTag({ hasRootDiv, imports, meta, stylesheets, scripts }: HtmlTagArgs) {
+/** @param {import('./html').HtmlTagArg} arg */
+function htmlTag({ hasRootDiv, imports, meta, stylesheets, scripts }) {
 	return [
 		'<html lang="en">',
 		...headTag({ meta, stylesheets }),
@@ -102,11 +87,12 @@ function htmlTag({ hasRootDiv, imports, meta, stylesheets, scripts }: HtmlTagArg
 	]
 }
 
-export function html({ imports, scripts }: Pick<BodyTagArgs, 'imports' | 'scripts'>) {
+/** @type {import('./html').html} */
+export function html({ imports, scripts, hasRootDiv = true }) {
 	return [
 		'<!DOCTYPE html>',
 		...htmlTag({
-			hasRootDiv: true,
+			hasRootDiv,
 			meta: {
 				description: ENV.PROJECT_TAG_LINE(),
 				// TODO should be PROJECT_BRAND_NAME instead

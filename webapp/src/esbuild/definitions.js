@@ -1,11 +1,10 @@
 import { ENV } from '@workspace/env'
-import { DeployStage } from '@workspace/models'
 
 export const esbuildDefinitions = {
 	BUILD_DATE: `"${new Date().toJSON().substring(0, 10)}"`,
 
-	DEPLOY_STAGE: `"${ENV.DEPLOY_STAGE()}"` as DeployStage,
-	'process.env.DEPLOY_STAGE': `"${ENV.DEPLOY_STAGE()}"` as DeployStage,
+	DEPLOY_STAGE: `"${ENV.DEPLOY_STAGE()}"`,
+	'process.env.DEPLOY_STAGE': `"${ENV.DEPLOY_STAGE()}"`,
 
 	DNS_DOMAIN: `"${ENV.DNS_DOMAIN()}"`,
 	'process.env.DNS_DOMAIN': `"${ENV.DNS_DOMAIN()}"`,

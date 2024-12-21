@@ -1,5 +1,5 @@
 import { ENV } from '@workspace/env'
-import { build, BuildOptions } from 'esbuild'
+import { build } from 'esbuild'
 
 import { importmapConfig } from '../package.js'
 import { esbuildDefinitions } from './definitions.js'
@@ -8,6 +8,8 @@ const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
 
 /**
  * Generate JS bundle for a web app.
+ *
+ * @param {import('./browserBundle').BrowserBundleArg} arg
  *
  * @example
  *
@@ -20,11 +22,7 @@ const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
  * })
  * ```
  */
-
-export function browserBundle({
-	entryPoints,
-	outfile
-}: Pick<BuildOptions, 'entryPoints' | 'outfile'>) {
+export function browserBundle({ entryPoints, outfile }) {
 	return build({
 		alias: {
 			'react': 'preact/compat',
