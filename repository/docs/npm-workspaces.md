@@ -25,6 +25,8 @@ The root package.json can expose scripts for the workspace, for example
 
 ## Folder structure
 
+<!-- TODO update this doc once TS files are removed, no build -->
+
 A basic workspace package is a folder with the following files:
 
 -   .gitignore

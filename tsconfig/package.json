@@ -4,6 +4,7 @@
   "private": true,
   "exports": {
     "./default": "./default.json",
+    "./esmodule": "./esmodule.json",
     "./lambda": "./lambda.json"
   },
   "dependencies": {

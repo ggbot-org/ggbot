@@ -1,20 +1,20 @@
-import { DeployStage, isDeployStage } from '@workspace/models'
+import { isDeployStage } from '@workspace/models'
 
-import { EnvironmentVariableName } from './environmentVariableNames.js'
-
-function getVariable(
-	VARIABLE_VALUE: unknown,
-	VARIABLE_NAME: EnvironmentVariableName,
-	DEFAULT_VALUE?: string
-) {
-	if (typeof VARIABLE_VALUE === 'string') return VARIABLE_VALUE
-	if (DEFAULT_VALUE) {
-		console.error(`Missing environment variable ${VARIABLE_NAME}, using default value ${DEFAULT_VALUE}`)
-		return DEFAULT_VALUE
+/**
+ * @param {unknown} value
+ * @param {string} name of variable
+ * @param {string=} defaultValue
+ */
+function getVariable(value, name, defaultValue) {
+	if (typeof value === 'string') return value
+	if (defaultValue) {
+		console.error(`Missing environment variable ${name}, using default value ${defaultValue}`)
+		return defaultValue
 	}
-	throw new Error(`Missing environment variable ${VARIABLE_NAME}`)
+	throw new Error(`Missing environment variable ${name}`)
 }
 
+/** @type {import('./EnvironmentVariables').EnvironmentVariables} */
 class EnvironmentVariables {
 	get isDev() {
 		return this.DEPLOY_STAGE() !== 'main'
@@ -44,7 +44,7 @@ class EnvironmentVariables {
 		return getVariable(process.env.BINANCE_PROXY_IP, 'BINANCE_PROXY_IP')
 	}
 
-	DEPLOY_STAGE(): DeployStage {
+	DEPLOY_STAGE() {
 		const deployStage = getVariable(process.env.DEPLOY_STAGE, 'DEPLOY_STAGE', 'local')
 		if (isDeployStage(deployStage)) return deployStage
 		throw new Error(`Invalid DeployStage ${deployStage}`)
@@ -54,7 +54,7 @@ class EnvironmentVariables {
 		return getVariable(process.env.DNS_DOMAIN, 'DNS_DOMAIN')
 	}
 
-	GITHUB_ORG_URL(defaultValue?: string) {
+	GITHUB_ORG_URL(defaultValue) {
 		return getVariable(process.env.GITHUB_ORG_URL, 'GITHUB_ORG_URL', defaultValue)
 	}
 
@@ -66,7 +66,7 @@ class EnvironmentVariables {
 		return getVariable(process.env.PROJECT_TAG_LINE, 'PROJECT_TAG_LINE', 'tag line')
 	}
 
-	STRIPE_PLAN_BASIC_MONTHLY_PRICE(defaultValue?: string) {
+	STRIPE_PLAN_BASIC_MONTHLY_PRICE(defaultValue) {
 		return getVariable(process.env.STRIPE_PLAN_BASIC_MONTHLY_PRICE, 'STRIPE_PLAN_BASIC_MONTHLY_PRICE', defaultValue)
 	}
 
@@ -78,20 +78,9 @@ class EnvironmentVariables {
 		return getVariable(process.env.STRIPE_SECRET_KEY, 'STRIPE_SECRET_KEY')
 	}
 
-	TELEGRAM_SUPPORT_URL(defaultValue?: string) {
+	TELEGRAM_SUPPORT_URL(defaultValue) {
 		return getVariable(process.env.TELEGRAM_SUPPORT_URL, 'TELEGRAM_SUPPORT_URL', defaultValue)
 	}
 }
 
-/**
- * Environment variables.
- *
- * @example
- *
- * ```ts
- * import { ENV } from "@workspace/env"
- *
- * console.info("DeployStage", ENV.DEPLOY_STAGE())
- * ```
- */
 export const ENV = new EnvironmentVariables()

@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		// This option is replaced by enabling no-unreachable in ESLint config
+		// "allowUnreachableCode": false,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"noErrorTruncation": false,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitThis": true,
+		"rootDir": "${configDir}/src",
+		"skipLibCheck": true,
+		"strict": true,
+		"target": "es2022",
+		"useDefineForClassFields": true
+		// These options are replaced by enabling @typescript-eslint/no-unused-vars in ESLint config.
+		// "noUnusedLocals": true,
+		// "noUnusedParameters": true,
+	},
+	"include": ["${configDir}/src"]
+}
