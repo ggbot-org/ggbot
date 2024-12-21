@@ -1,11 +1,7 @@
-import { DeployStage } from '@workspace/models'
-
 import { FQDN } from './FQDNs.js'
 
 export class ApiURLs {
-	baseURL: URL
-
-	constructor(deployStage: DeployStage, dnsDomain: string) {
+	constructor(deployStage, dnsDomain) {
 		this.baseURL = new URL(`https://${new FQDN(deployStage, dnsDomain).apiDomain}`)
 	}
 

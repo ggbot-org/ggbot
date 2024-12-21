@@ -1,29 +1,8 @@
-import { DeployStage } from '@workspace/models'
-
 /**
  * Fully qualified domain names.
- *
- * @example
- *
- * ```ts
- * import { DeployStage } from "@workspace/models"
- * import { ENV } from "@workspace/env"
- *
- * const dnsDomain = ENV.DNS_DOMAIN()
- *
- * // Could be provided also by `ENV.DEPLOY_STAGE()`
- * const deployStage: DeployStage = "main"
- *
- * const fqdn = new FQDN(deployStage, dnsDomain)
- * ```
- *
- * @see {@link https://en.wikipedia.org/wiki/Fully_qualified_domain_name}
  */
 export class FQDN {
-	readonly deployStage: DeployStage
-	readonly dnsDomain: string
-
-	constructor(deployStage: DeployStage, dnsDomain: string) {
+	constructor(deployStage, dnsDomain) {
 		this.deployStage = deployStage
 		this.dnsDomain = dnsDomain
 	}

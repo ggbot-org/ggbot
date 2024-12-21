@@ -3,22 +3,20 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.d.ts",
   "exports": {
-    "import": "./dist/index.js"
+    "import": "./src/index.js"
   },
   "scripts": {
-    "build": "tsc --build",
-    "cleanup": "tsc --build --clean",
     "check_types": "tsc --noEmit",
-    "test": "node --test --env-file ../.typescript.env ./src/*_test.ts"
+    "test": "node --test"
   },
   "dependencies": {
     "@workspace/env": "0.0.0",
-    "@workspace/models": "0.0.0",
     "minimal-type-guard-helpers": "0.2.0"
   },
   "devDependencies": {
+    "@workspace/models": "0.0.0",
     "@workspace/tsconfig": "0.0.0"
   }
 }
