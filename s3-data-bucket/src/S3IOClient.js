@@ -1,29 +1,34 @@
 import * as stream from 'node:stream'
 
 import { S3Client } from '@aws-sdk/client-s3'
-import { DeleteObjectCommand, GetObjectCommand, ListObjectsV2Command, ListObjectsV2CommandInput, ListObjectsV2CommandOutput, PutObjectCommand, S3ServiceException } from '@aws-sdk/client-s3'
+import { DeleteObjectCommand, GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3ServiceException } from '@aws-sdk/client-s3'
 
-function streamToString(stream: NodeJS.ReadableStream): Promise<string> {
+/**
+ * @param {NodeJS.ReadableStream} stream
+ * @returns {Promise<string>}
+ */
+function streamToString(stream) {
 	return new Promise((resolve, reject) => {
-		const chunks: Uint8Array[] = []
-		stream.on('data', (chunk) => chunks.push(chunk as Uint8Array))
+		/** @type Uint8Array[] */
+		const chunks = []
+		stream.on('data', (chunk) => chunks.push(chunk))
 		stream.on('error', reject)
 		stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')))
 	})
 }
 
 export class S3IOClient {
-	client: S3Client
-	Bucket: string
-	region: string
-
-	constructor(region: string, Bucket: string) {
+	/**
+	 * @param {string} region
+	 * @param {string} Bucket
+	 */
+	constructor(region, Bucket) {
 		this.client = new S3Client({ apiVersion: '2006-03-01', region })
 		this.Bucket = Bucket
-		this.region = region
 	}
 
-	async getObject(Key: string) {
+	/** @type {import('./S3IOClient').S3IOClient['getObject']} */
+	async getObject(Key) {
 		try {
 			const command = new GetObjectCommand({ Bucket: this.Bucket, Key })
 			const output = await this.client.send(command)
@@ -38,17 +43,8 @@ export class S3IOClient {
 		}
 	}
 
-	async listObjects(params: Pick<ListObjectsV2CommandInput,
-		| 'ContinuationToken'
-		| 'Delimiter'
-		| 'MaxKeys'
-		| 'Prefix'
-	>): Promise<Pick<ListObjectsV2CommandOutput,
-		| 'Contents'
-		| 'ContinuationToken'
-		| 'NextContinuationToken'
-		| 'IsTruncated'>
-		> {
+	/** @type {import('./S3IOClient').S3IOClient['listObjects']} */
+	async listObjects(params) {
 		const command = new ListObjectsV2Command({ Bucket: this.Bucket, ...params })
 		const {
 			Contents,
@@ -65,13 +61,15 @@ export class S3IOClient {
 		}
 	}
 
-	async putObject(Key: string, data: string) {
+	/** @type {import('./S3IOClient').S3IOClient['putObject']} */
+	async putObject(Key, data) {
 		const Body = Buffer.from(data)
 		const command = new PutObjectCommand({ Body, Bucket: this.Bucket, Key })
 		return await this.client.send(command)
 	}
 
-	async deleteObject(Key: string) {
+	/** @type {import('./S3IOClient').S3IOClient['deleteObject']} */
+	async deleteObject(Key) {
 		const command = new DeleteObjectCommand({ Bucket: this.Bucket, Key })
 		return await this.client.send(command)
 	}
