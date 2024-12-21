@@ -25,10 +25,8 @@ const srcDir = join(workspaceDir, 'src')
 export const typesDir = join(srcDir, 'types')
 
 /**
- * @typedef {object} PackageJson
- * @prop {Record<string, string>} dependencies
+ * @typedef {{ dependencies: Record<string, string> }} PackageJson
  */
-
 /** @type {PackageJson} */
 const pkg = await readFile(join(workspaceDir, 'package.json'))
 

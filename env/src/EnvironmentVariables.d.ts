@@ -1,4 +1,4 @@
-import { DeployStage } from '@workspace/models'
+import { DeployStage } from './DeployStage'
 
 declare class EnvironmentVariables {
 	get isDev(): boolean

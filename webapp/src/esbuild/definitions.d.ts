@@ -1,4 +1,4 @@
-import { DeployStage } from '@workspace/models'
+import { DeployStage } from '@workspace/env'
 
 export declare const esbuildDefinitions: {
 	BUILD_DATE: string;

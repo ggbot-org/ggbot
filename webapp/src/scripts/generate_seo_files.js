@@ -29,9 +29,10 @@ function robotsDisallow(dirnames) {
 }
 
 /**
- * @typedef {object} UrlSet
- * @prop {string} loc
- * @prop {string} lastmod
+ * @typedef {{
+ *   loc: string
+ *   lastmod: string
+ * }} UrlSet
  *
  * @param {UrlSet[]} urlsets
  */

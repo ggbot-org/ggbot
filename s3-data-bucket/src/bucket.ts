@@ -1,5 +1,6 @@
 import { DocumentProviderLevel3, DocumentProviderListItemsInput } from '@workspace/api'
-import { deletedNow, DeployStage, SerializableData, updatedNow } from '@workspace/models'
+import { DeployStage } from '@workspace/env'
+import { deletedNow, SerializableData, updatedNow } from '@workspace/models'
 
 import { S3IOClient } from './S3IOClient.js'
 

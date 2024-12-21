@@ -7,6 +7,7 @@ This is the internal dependencies graph: it shows how workspaces depend on each 
 graph LR
     api --- binance
     api --- locators
+    api --- models
     api-admin --- authentication
     api-admin --- database
     api-admin --- s3-data-bucket
@@ -27,6 +28,7 @@ graph LR
     api-user --- database
     api-user --- s3-data-bucket
     authentication --- env
+    authentication --- models
     backtesting --- dflow
     backtesting-webworker --- backtesting
     backtesting-webworker --- indexeddb-binance
@@ -39,7 +41,6 @@ graph LR
     dflow --- binance
     dflow --- models
     email-messages --- api
-    env --- models
     executor --- authentication
     executor --- database
     executor --- dflow

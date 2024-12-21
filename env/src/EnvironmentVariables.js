@@ -1,5 +1,3 @@
-import { isDeployStage } from '@workspace/models'
-
 /**
  * @param {unknown} value
  * @param {string} name of variable
@@ -46,7 +44,7 @@ class EnvironmentVariables {
 
 	DEPLOY_STAGE() {
 		const deployStage = getVariable(process.env.DEPLOY_STAGE, 'DEPLOY_STAGE', 'local')
-		if (isDeployStage(deployStage)) return deployStage
+		if (['local', 'next', 'main'].includes(deployStage)) return deployStage
 		throw new Error(`Invalid DeployStage ${deployStage}`)
 	}
 
