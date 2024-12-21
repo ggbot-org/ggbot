@@ -1,19 +1,27 @@
 import { ENV } from '@workspace/env'
-import { Language, StrategyKey } from '@workspace/models'
 
 import { emailBody } from './emailFragments.js'
-import { EmailMessageContent } from './types.js'
 import { webapp } from './webapp.js'
+
+/**
+ * @typedef {import('@workspace/models').Language} Language
+ */
 
 const PROJECT_SHORT_NAME = ENV.PROJECT_SHORT_NAME()
 
+/**
+ * @param {Language} language
+ * @param {import('@workspace/models').StrategyKey} params
+ * @returns {import('./types').EmailMessageContent}
+ */
 export function suspendedStrategyEmailMessage(
-	language: Language,
-	{ strategyId, strategyKind }: StrategyKey
-): EmailMessageContent {
+	language,
+	{ strategyId, strategyKind }
+) {
 	const linkToStrategyHref = webapp.user.strategy({ strategyId, strategyKind }).href
 
-	const html: Record<Language, string> = {
+	/** @type {Record<Language, string>} */
+	const html = {
 		en: emailBody(`
           <tr>
             <td>
@@ -49,7 +57,8 @@ export function suspendedStrategyEmailMessage(
         `)
 	}
 
-	const text: Record<Language, string> = {
+	/** @type {Record<Language, string>} */
+	const text = {
 		en: `
 Your ${PROJECT_SHORT_NAME} strategy has been suspended.
 
@@ -62,7 +71,8 @@ This is the link to your strategy: ${linkToStrategyHref}
 `
 	}
 
-	const subject: Record<Language, string> = {
+	/** @type {Record<Language, string>} */
+	const subject = {
 		en: `${PROJECT_SHORT_NAME} · suspended strategy · ${strategyId}`
 	}
 

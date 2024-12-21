@@ -3,14 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.d.ts",
   "exports": {
-    "import": "./dist/index.js"
+    "import": "./src/index.js"
   },
   "scripts": {
-    "build": "tsc --build",
     "check_types": "tsc --noEmit",
-    "cleanup": "tsc --build --clean"
+    "sendEmail": "node ./src/end-to-end-tests/sendEmail.js"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "3.668.0",

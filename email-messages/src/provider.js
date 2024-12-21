@@ -1,31 +1,40 @@
 import { SendEmailCommand, SESClient } from '@aws-sdk/client-ses'
-import { SendEmailAction, SendEmailActionInput as Input } from '@workspace/api'
 import { ENV } from '@workspace/env'
 import { noReplyEmailAddress } from '@workspace/locators'
-import { EmailAddress } from '@workspace/models'
 
 import { oneTimePasswordEmailMessage } from './messageOneTimePassword.js'
 import { suspendedStrategyEmailMessage } from './messageSuspendedStrategy.js'
-import { EmailMessageContent } from './types.js'
 
-export class SendEmailProvider implements SendEmailAction {
+/**
+ * @typedef {import('@workspace/api').SendEmailAction} SendEmailAction
+ * @typedef {import('@workspace/api').SendEmailActionInput} Input
+ */
+
+/** @implements {SendEmailAction} */
+export class SendEmailProvider {
 	sesClient = new SESClient({ apiVersion: '2010-12-01', region: ENV.AWS_SES_REGION() })
 
-	async SendOneTimePassword({ email, oneTimePassword, language }: Input['SendOneTimePassword']) {
+	/** @param {Input['SendOneTimePassword']} arg */
+	async SendOneTimePassword({ email, oneTimePassword, language }) {
 		await this.sendEmail(
 			email,
 			oneTimePasswordEmailMessage(language, { oneTimePassword })
 		)
 	}
 
-	async SuspendedStrategy({ email, language, ...strategyKey }: Input['SuspendedStrategy']) {
+	/** @param {Input['SuspendedStrategy']} arg */
+	async SuspendedStrategy({ email, language, ...strategyKey }) {
 		await this.sendEmail(
 			email,
 			suspendedStrategyEmailMessage(language, strategyKey)
 		)
 	}
 
-	async sendEmail(email: EmailAddress, emailMessage: EmailMessageContent) {
+	/**
+	 * @param {import('@workspace/models').EmailAddress} email
+	 * @param {import ('./types').EmailMessageContent} emailMessage
+	 */
+	async sendEmail(email, emailMessage) {
 		await this.sesClient.send(
 			new SendEmailCommand({
 				Destination: { ToAddresses: [email] },

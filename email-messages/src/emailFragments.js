@@ -10,7 +10,8 @@ function emailFooter(){
 `
 }
 
-export function emailBody(body: string) {
+/** @param {string} body */
+export function emailBody(body) {
 	return `
 <table>
   <tbody>
