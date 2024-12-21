@@ -1,10 +1,10 @@
 import { ActionInput, BadGatewayError, BinanceClientActionType, clientAction, ClientActionHeaders, isApiActionOutputData, isApiActionOutputError } from '@workspace/api'
-import { signSession } from '@workspace/authentication'
+import { Session, signSession } from '@workspace/authentication'
 import { BinanceConnector, BinanceExchange, BinanceKlineInterval, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType, ErrorBinanceHTTP, isErrorBinanceHTTPInfo } from '@workspace/binance'
 import { DflowBinanceClient } from '@workspace/dflow'
 import { ENV } from '@workspace/env'
 import { BinanceProxyURLs } from '@workspace/locators'
-import { Account, ClientSession, SerializableData } from '@workspace/models'
+import { Account, SerializableData } from '@workspace/models'
 import { today } from 'minimal-time-helpers'
 
 /**
@@ -30,7 +30,7 @@ export class Binance implements DflowBinanceClient {
 	async getBinanceClientActionHeaders() {
 		const { accountId, binanceProxyApiActionHeaders } = this
 		if (binanceProxyApiActionHeaders) return binanceProxyApiActionHeaders
-		const session: ClientSession = { creationDay: today(), accountId }
+		const session: Session = { creationDay: today(), accountId }
 		const token = await signSession(session)
 		const headers = new ClientActionHeaders()
 		headers.appendAuthorization(token)

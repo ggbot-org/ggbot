@@ -1,8 +1,7 @@
 import { ApiService, AuthClientActionOutput as Output, AuthClientActionType, BadRequestError, DocumentProviderLevel2, isAuthClientActionInput as isInput } from '@workspace/api'
-import { signSession } from '@workspace/authentication'
+import { Session, signSession } from '@workspace/authentication'
 import { AuthDatabase } from '@workspace/database'
 import { SendEmailProvider } from '@workspace/email-messages'
-import { ClientSession } from '@workspace/models'
 import { today } from 'minimal-time-helpers'
 
 export class Service implements ApiService<AuthClientActionType> {
@@ -39,13 +38,13 @@ export class Service implements ApiService<AuthClientActionType> {
 
 		if (emailAccount) {
 			// Given email is associated with an account: create a session.
-			const session: ClientSession = { creationDay, accountId: emailAccount.accountId }
+			const session: Session = { creationDay, accountId: emailAccount.accountId }
 			const token = await signSession(session)
 			output.token = token
 		} else {
 			// Given email is new: create account first, then create a session.
 			const account = await this.dataProvider.CreateAccount(email)
-			const session: ClientSession = { creationDay, accountId: account.id }
+			const session: Session = { creationDay, accountId: account.id }
 			const token = await signSession(session)
 			output.token = token
 		}
