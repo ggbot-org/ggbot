@@ -10,7 +10,7 @@ import { DeployStage } from '@workspace/env'
  *
  * const dnsDomain = ENV.DNS_DOMAIN()
  *
- * // Could be provided also by `ENV.DEPLOY_STAGE()`
+ * // Could also be provided by `ENV.DEPLOY_STAGE()`
  * const deployStage = 'main'
  *
  * const fqdn = new FQDN(deployStage, dnsDomain)
@@ -20,9 +20,8 @@ import { DeployStage } from '@workspace/env'
  */
 export declare class FQDN {
 	readonly deployStage: DeployStage
-	readonly dnsDomain: string
 	constructor(deployStage: DeployStage, dnsDomain: string)
-	get apiDomain(): string
-	get authDomain(): string
-	get webappDomain(): string
+	readonly apiDomain: string
+	readonly authDomain: string
+	readonly webappDomain: string
 }

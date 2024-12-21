@@ -1,7 +1,8 @@
-/**
- * Fully qualified domain names.
- */
 export class FQDN {
+	/**
+	 * @param {import("@workspace/env").DeployStage} deployStage
+	 * @param {string} dnsDomain
+	 */
 	constructor(deployStage, dnsDomain) {
 		this.deployStage = deployStage
 		this.dnsDomain = dnsDomain

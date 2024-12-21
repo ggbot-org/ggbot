@@ -7,7 +7,7 @@ import { BinanceDatabase } from './binance.js'
 import { pathname } from './locators.js'
 import { PublicDatabase } from './public.js'
 
-const strategyAccountIdCache = new CacheMap<Account['id']>()
+const strategyAccountIdCache = new CacheMap<Account['id']>(86_400_000) // 1 day
 
 export class UserDatabase implements UserDatabaseAction {
 	accountKey: AccountKey

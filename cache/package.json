@@ -3,13 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.d.ts",
   "exports": {
-    "import": "./dist/index.js"
+    "import": "./src/index.js"
   },
   "scripts": {
-    "build": "tsc --build",
-    "cleanup": "tsc --build --clean",
     "check_types": "tsc --noEmit"
   },
   "devDependencies": {

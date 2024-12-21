@@ -6,6 +6,11 @@ const initializationVectorLength = 12;
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
+/**
+ * @param {CryptoKey} passwordBasedKey
+ * @param {BufferSource} salt
+ * @param {Extract<KeyUsage, 'encrypt' | 'decrypt'>} keyUsage
+ */
 async function deriveKey(passwordBasedKey, salt, keyUsage) {
     return webcrypto.subtle.deriveKey({
         name: 'PBKDF2',
@@ -15,6 +20,7 @@ async function deriveKey(passwordBasedKey, salt, keyUsage) {
     }, passwordBasedKey, { name: 'AES-GCM', length: 256 }, false, [keyUsage]);
 }
 
+/** @param {string} password */
 async function getPasswordBasedKey(password) {
     return webcrypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveKey']);
 }

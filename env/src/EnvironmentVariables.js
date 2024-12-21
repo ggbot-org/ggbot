@@ -6,7 +6,7 @@
 function getVariable(value, name, defaultValue) {
 	if (typeof value === 'string') return value
 	if (defaultValue) {
-		console.error(`Missing environment variable ${name}, using default value ${defaultValue}`)
+		console.warn(`Missing environment variable ${name}, using default value ${defaultValue}`)
 		return defaultValue
 	}
 	throw new Error(`Missing environment variable ${name}`)
@@ -52,7 +52,7 @@ class EnvironmentVariables {
 		return getVariable(process.env.DNS_DOMAIN, 'DNS_DOMAIN')
 	}
 
-	GITHUB_ORG_URL(defaultValue) {
+	GITHUB_ORG_URL(defaultValue = '') {
 		return getVariable(process.env.GITHUB_ORG_URL, 'GITHUB_ORG_URL', defaultValue)
 	}
 
@@ -64,7 +64,7 @@ class EnvironmentVariables {
 		return getVariable(process.env.PROJECT_TAG_LINE, 'PROJECT_TAG_LINE', 'tag line')
 	}
 
-	STRIPE_PLAN_BASIC_MONTHLY_PRICE(defaultValue) {
+	STRIPE_PLAN_BASIC_MONTHLY_PRICE(defaultValue = '') {
 		return getVariable(process.env.STRIPE_PLAN_BASIC_MONTHLY_PRICE, 'STRIPE_PLAN_BASIC_MONTHLY_PRICE', defaultValue)
 	}
 
@@ -76,7 +76,7 @@ class EnvironmentVariables {
 		return getVariable(process.env.STRIPE_SECRET_KEY, 'STRIPE_SECRET_KEY')
 	}
 
-	TELEGRAM_SUPPORT_URL(defaultValue) {
+	TELEGRAM_SUPPORT_URL(defaultValue = '') {
 		return getVariable(process.env.TELEGRAM_SUPPORT_URL, 'TELEGRAM_SUPPORT_URL', defaultValue)
 	}
 }

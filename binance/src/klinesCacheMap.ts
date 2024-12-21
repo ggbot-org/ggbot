@@ -7,7 +7,7 @@ import { binanceKlineKey } from './utils.js'
 export class BinanceKlinesCacheMap implements BinanceKlinesCacheProvider {
 	readonly klinesMap: CacheMap<BinanceKline>
 
-	constructor(timeToLive?: CacheMap<BinanceKline>['timeToLive']) {
+	constructor(timeToLive: number) {
 		this.klinesMap = new CacheMap<BinanceKline>(timeToLive)
 	}
 

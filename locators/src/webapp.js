@@ -1,4 +1,10 @@
+/**
+ * @typedef {import('@workspace/models').AccountKey} AccountKey
+ * @typedef {import('@workspace/models').StrategyKey} StrategyKey
+ */
+
 export class WebappBaseURL extends URL {
+	/** @param {import('./FQDNs').FQDN} fqdn */
 	constructor(fqdn) {
 		super(
 			fqdn.deployStage === 'local'
@@ -35,11 +41,19 @@ export const webappPagePathname = {
 	design: { showcase: `${webappDirname.design}/showcase.html` }
 }
 
+/**
+ * @param {AccountKey} accountKey
+ * @param {URL} url
+ */
 function appendAccountKeyToURLSearchParams({ accountId }, url) {
 	url.searchParams.append('accountId', accountId)
 	return url
 }
 
+/**
+ * @param {StrategyKey} strategyKey
+ * @param {URL} url
+ */
 function appendStrategyKeyToURLSearchParams({ strategyId, strategyKind }, url) {
 	url.searchParams.append('strategyId', strategyId)
 	url.searchParams.append('strategyKind', strategyKind)
@@ -61,6 +75,7 @@ function appendStrategyKeyToURLSearchParams({ strategyId, strategyKind }, url) {
  * ```
  */
 export class WebappURLs {
+	/** @param {URL | string} baseURL */
 	constructor(baseURL) {
 		this.baseURL = baseURL
 	}
@@ -88,6 +103,7 @@ export class WebappURLs {
 	get admin() {
 		const { baseURL } = this
 		return {
+			/** @param {AccountKey} accountKey */
 			accountDetails(accountKey) {
 				return appendAccountKeyToURLSearchParams(
 					accountKey, new URL(webappPagePathname.admin.accountDetails, baseURL)
@@ -114,11 +130,13 @@ export class WebappURLs {
 			get dashboard() {
 				return new URL(webappPagePathname.user.dashboard, baseURL)
 			},
+			/** @param {StrategyKey} strategyKey */
 			copyStrategy(strategyKey) {
 				return appendStrategyKeyToURLSearchParams(
 					strategyKey, new URL(webappPagePathname.user.copyStrategy, baseURL)
 				)
 			},
+			/** @param {StrategyKey} strategyKey */
 			editStrategy(strategyKey) {
 				return appendStrategyKeyToURLSearchParams(
 					strategyKey, new URL(webappPagePathname.user.editStrategy, baseURL)
@@ -127,6 +145,7 @@ export class WebappURLs {
 			get settings() {
 				return new URL(webappPagePathname.user.settings, baseURL)
 			},
+			/** @param {StrategyKey} strategyKey */
 			strategy(strategyKey) {
 				return appendStrategyKeyToURLSearchParams(
 					strategyKey, new URL(webappPagePathname.user.strategy, baseURL)
@@ -135,6 +154,7 @@ export class WebappURLs {
 		}
 	}
 
+	/** @param {StrategyKey} strategyKey */
 	strategy(strategyKey) {
 		const url = new URL(webappPagePathname.strategy, this.baseURL)
 
