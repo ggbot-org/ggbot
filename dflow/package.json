@@ -8,8 +8,6 @@
     "import": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc --build",
-    "cleanup": "tsc --build --clean",
     "check_types": "tsc --noEmit",
     "test": "node --test"
   },
