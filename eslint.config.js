@@ -91,7 +91,12 @@ const stylisticJsxRules = {
 		}],
 }
 
-const tsconfigFiles = ['**/tsconfig*.json', 'tsconfig/default.json', 'tsconfig/lambda.json']
+const tsconfigFiles = [
+	'**/tsconfig*.json',
+	'tsconfig/base.json',
+	'tsconfig/default.json',
+	'tsconfig/lambda.json',
+]
 
 export default [
 	globalIgnores,

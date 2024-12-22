@@ -1,6 +1,6 @@
-import { Dflow, DflowNode } from 'dflow'
+import {Dflow, DflowNode} from 'dflow'
 
-const { input, output } = Dflow
+const {input, output} = Dflow
 
 export class And extends DflowNode {
 	static kind = 'and'
@@ -32,13 +32,13 @@ export class Not extends DflowNode {
 export class NotEqual extends DflowNode {
 	static kind = '!='
 	static inputs = [
-		input([], { optional: true }),
-		input([], { optional: true })
+		input([], {optional: true}),
+		input([], {optional: true})
 	]
 	static outputs = [output('boolean')]
 	run() {
-		const a = this.input(0).data as unknown
-		const b = this.input(1).data as unknown
+		const a = this.input(0).data
+		const b = this.input(1).data
 		if (a === undefined && b === undefined) return this.clearOutputs()
 		this.output(0).data = a !== b
 	}
@@ -47,13 +47,13 @@ export class NotEqual extends DflowNode {
 export class NullishCoaleshing extends DflowNode {
 	static kind = '??'
 	static inputs = [
-		input([], { optional: true }),
-		input([], { optional: true })
+		input([], {optional: true}),
+		input([], {optional: true})
 	]
 	static outputs = [output()]
 	run() {
-		const a = this.input(0).data as unknown
-		const b = this.input(1).data as unknown
+		const a = this.input(0).data
+		const b = this.input(1).data
 		if (a === undefined && b === undefined) return this.clearOutputs()
 		this.output(0).data = a ?? b
 	}
