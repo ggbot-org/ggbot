@@ -28,7 +28,7 @@ export { getSchedulingSummary, schedulingsAreInactive, schedulingStatuses } from
 export type { SerializableData, SerializableObject, SerializablePrimitive } from './serializable.js'
 export { isSerializableObject, isSerializablePrimitive } from './serializable.js'
 export type { Strategy, StrategyKey, StrategyKind } from './strategy.js'
-export { isStrategy, isStrategyKey, newStrategy, nullStrategyKey } from './strategy.js'
+export { isStrategy, isStrategyKey, newStrategy } from './strategy.js'
 export type { StrategyError } from './strategyError.js'
 export type { StrategyFlow, StrategyFlowGraph, StrategyFlowGraphEdge, StrategyFlowGraphNode } from './strategyFlow.js'
 export { isStrategyFlowGraph, isStrategyFlowView, newStrategyFlow, welcomeFlow } from './strategyFlow.js'

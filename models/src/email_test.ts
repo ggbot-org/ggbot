@@ -4,7 +4,6 @@ import { describe, test } from 'node:test'
 import { assertEqual } from 'minimal-assertion-helpers'
 
 import { EmailAddress, isEmailAddress, normalizeEmailAddress } from './email.js'
-import { ErrorInvalidArg } from './errors.js'
 
 describe('normalizeEmailAddress', () => {
 	test('returns email in lowercase', () => {
@@ -32,7 +31,7 @@ describe('normalizeEmailAddress', () => {
 		])
 	})
 
-	test('throws ErrorInvalidArg', () => {
+	test('throws Invalid Email', () => {
 		const invalidEmails = [
 			'',
 			'@@',
@@ -44,10 +43,7 @@ describe('normalizeEmailAddress', () => {
 				() => {
 					normalizeEmailAddress(value)
 				},
-				{
-					name: 'Error',
-					message: ErrorInvalidArg.message('EmailAddress')
-				}
+				{ name: 'Error' }
 			)
 		})
 	})

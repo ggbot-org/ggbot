@@ -1,5 +1,4 @@
-import { Day, isDay, isTime, now, Time } from 'minimal-time-helpers'
-import { objectTypeGuard } from 'minimal-type-guard-helpers'
+import { Day, now, Time } from 'minimal-time-helpers'
 
 export type DayKey = { day: Day }
 
@@ -8,17 +7,11 @@ export type DayKey = { day: Day }
 
 export type CreationTime = { readonly whenCreated: Time }
 
-export const isCreationTime = objectTypeGuard<CreationTime>(({ whenCreated }) => isTime(whenCreated)
-)
-
 export function createdNow(): CreationTime {
 	return { whenCreated: now() }
 }
 
 export type CreationDay = { creationDay: Day }
-
-export const isCreationDay = objectTypeGuard<CreationDay>(({ creationDay }) => isDay(creationDay)
-)
 
 // Delete.
 // //////

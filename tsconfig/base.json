@@ -2,6 +2,8 @@
 	"compilerOptions": {
 		// This option is replaced by enabling no-unreachable in ESLint config
 		// "allowUnreachableCode": false,
+		"allowJs": true,
+		"checkJs": true,
 		"forceConsistentCasingInFileNames": true,
 		"isolatedModules": true,
 		"module": "esnext",

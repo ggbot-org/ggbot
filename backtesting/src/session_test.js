@@ -1,23 +1,39 @@
 import { strict as assert } from 'node:assert'
 import { describe, test } from 'node:test'
 
-import { Frequency } from '@workspace/models'
-import { DayInterval, isTime, Time } from 'minimal-time-helpers'
+import { isTime } from 'minimal-time-helpers'
 
 import { BacktestingSession } from './session.js'
 import { BacktestingStrategy } from './strategy.js'
-import { emptyStrategy } from './strategy_test.js'
+
+/**
+ * @typedef {import('minimal-time-helpers').DayInterval} DayInterval
+ * @typedef {import('minimal-time-helpers').Time} Time
+ */
+
+/**
+ * @typedef {import('@workspace/models').Frequency} Frequency
+ * @typedef {import('@workspace/models').StrategyMemory} StrategyMemory
+ */
+
+function emptyStrategy() {
+	return new BacktestingStrategy({
+	flow: { nodes: [], edges: [] },
+	strategyKey: { strategyId: '12345678', strategyKind: 'none' },
+	strategyName: 'empty strategy'
+})
+}
 
 const strategyName = 'my strategy'
-const newSession = ({
-	dayInterval,
-	frequency,
-	strategy
-}: {
-	dayInterval: NonNullable<BacktestingSession['dayInterval']>
-	frequency: NonNullable<BacktestingSession['frequency']>
-	strategy: NonNullable<BacktestingSession['strategy']>
-}) => {
+
+/**
+ * @param {{
+ *   dayInterval: DayInterval
+ *   frequency: Frequency
+ *   strategy: BacktestingStrategy
+ * }} arg
+ */
+function newSession({ dayInterval, frequency, strategy }) {
 	const session = new BacktestingSession()
 	session.strategy = strategy
 	session.dayInterval = dayInterval
@@ -43,11 +59,13 @@ describe('BacktestingSession', () => {
 	})
 
 	test('cannot set `dayInterval` while `status` is "running"', () => {
-		const dayInterval1: DayInterval = {
+		/** @type {DayInterval} */
+		const dayInterval1 = {
 			start: '2000-01-01',
 			end: '2001-01-01'
 		}
-		const dayInterval2: DayInterval = {
+		/** @type {DayInterval} */
+		const dayInterval2 = {
 			start: '2021-01-01',
 			end: '2022-01-01'
 		}
@@ -76,11 +94,13 @@ describe('BacktestingSession', () => {
 	})
 
 	test('cannot set `frequency` while `status` is "running"', () => {
-		const frequency1: Frequency = {
+		/** @type {Frequency} */
+		const frequency1 = {
 			every: 1,
 			interval: '1h'
 		}
-		const frequency2: Frequency = {
+		/** @type {Frequency} */
+		const frequency2 = {
 			every: 20,
 			interval: '1m'
 		}
@@ -150,7 +170,8 @@ describe('BacktestingSession', () => {
 	test('cannot set `strategyFlow` while `status` is "running"', () => {
 		const strategy = emptyStrategy()
 		const strategyFlow1 = strategy.flow
-		const strategyFlow2: BacktestingStrategy['flow'] = {
+		/** @type {BacktestingStrategy['flow']} */
+		const strategyFlow2 = {
 			nodes: [{ id: 'a', text: 'true' }],
 			edges: []
 		}
@@ -192,8 +213,10 @@ describe('BacktestingSession', () => {
 		})
 		assert.equal(session.nextTime, undefined)
 		session.start()
-		let time: Time | undefined
-		const dateIsoStrings: string[] = []
+		/** @type {Time | undefined} */
+		let time
+		/** @type {string[]} */
+		const dateIsoStrings = []
 		while ((time = session.nextTime)) {
 			assert.ok(isTime(time))
 			if (!time) continue

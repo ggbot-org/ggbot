@@ -1,4 +1,4 @@
-export type { ActionInput, ActionIO, ApiActionError, ApiActionOutputData, ApiActionOutputError } from './action.js'
+export type { ActionInput, ActionIO, ApiActionError, ApiActionOutputData, ApiActionOutputError, ApiActionServerSideError } from './action.js'
 export { isActionInput, isApiActionOutputData, isApiActionOutputError, isApiActionServerSideError } from './action.js'
 export * from './api.js'
 export * from './client.js'

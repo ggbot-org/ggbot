@@ -45,7 +45,7 @@ const apiActionServerSideErrorNames = [
 type ApiActionServerSideErrorName = (typeof apiActionServerSideErrorNames)[number]
 const isApiActionServerSideErrorName = isLiteralType<ApiActionServerSideErrorName>(apiActionServerSideErrorNames)
 
-type ApiActionServerSideError = {
+export type ApiActionServerSideError = {
 	name: ApiActionServerSideErrorName
 	info?: SerializableObject
 }

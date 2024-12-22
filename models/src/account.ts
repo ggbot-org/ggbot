@@ -1,13 +1,11 @@
-import { isLiteralType, objectTypeGuard } from 'minimal-type-guard-helpers'
+import { objectTypeGuard } from 'minimal-type-guard-helpers'
 
-import { EmailAddress, isEmailAddress } from './email.js'
-import { isItemId, Item, ItemKey, newId, NewItem, nullId } from './item.js'
+import { EmailAddress } from './email.js'
+import { isItemId, Item, ItemKey, newId, NewItem } from './item.js'
 import { Subscription } from './subscription.js'
-import { createdNow, CreationTime, isCreationTime } from './time.js'
+import { createdNow, CreationTime } from './time.js'
 
-const accountRoles = ['admin', 'user'] as const
-type AccountRole = (typeof accountRoles)[number]
-const isAccountRole = isLiteralType<AccountRole>(accountRoles)
+type AccountRole = 'admin' | 'user'
 
 export type Account = Item &
 	CreationTime & {
@@ -17,13 +15,6 @@ export type Account = Item &
 		role: AccountRole
 	}>
 
-export const isAccount = objectTypeGuard<Account>(
-	({ id, email, role, ...creationTime }) => isItemId(id) &&
-		isEmailAddress(email) &&
-		isCreationTime(creationTime) &&
-		(role === undefined ? true : isAccountRole(role))
-)
-
 export type AccountInfo = Account & { subscription: Subscription | null }
 
 export function newAccount({ email }: NewItem<Account>): Account {
@@ -32,7 +23,4 @@ export function newAccount({ email }: NewItem<Account>): Account {
 
 export type AccountKey = ItemKey<'accountId', { accountId: Account['id'] }>
 
-export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) => isItemId(accountId)
-)
-
-export const nullAccountKey: AccountKey = { accountId: nullId }
+export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) => isItemId(accountId))

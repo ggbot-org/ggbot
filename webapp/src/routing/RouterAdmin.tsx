@@ -3,15 +3,14 @@ import { ToastProvider } from '_/contexts/Toast'
 import { AccountDetailsPage } from '_/pages/admin/AccountDetails'
 import { DashboardPage } from '_/pages/admin/Dashboard'
 import { mount } from '_/react/mount'
-import { webapp } from '_/routing/webapp'
-import { nullAccountKey } from '@workspace/models'
+import { webappPagePathname } from '@workspace/locators'
 
 function Router() {
 	const pathname = location.pathname
 
-	if (pathname === webapp.admin.dashboard.pathname) return <DashboardPage />
+	if (pathname === webappPagePathname.admin.dashboard) return <DashboardPage />
 
-	if (pathname === webapp.admin.accountDetails(nullAccountKey).pathname) return <AccountDetailsPage />
+	if (pathname === webappPagePathname.admin.accountDetails) return <AccountDetailsPage />
 
 	return null
 }

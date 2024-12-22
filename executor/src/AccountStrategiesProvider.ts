@@ -1,6 +1,6 @@
 import { CacheMap } from '@workspace/cache'
 import { ExecutorDatabase } from '@workspace/database'
-import { AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategyKey, AccountStrategySchedulingKey, isAccount, isAccountStrategy, StrategyMemory } from '@workspace/models'
+import { AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategyKey, AccountStrategySchedulingKey, isAccountStrategy, StrategyMemory } from '@workspace/models'
 
 import { ONE_HOUR } from './durations.js'
 
@@ -44,7 +44,7 @@ export class AccountStrategiesProvider {
 		// Send email notification.
 		const account = await this.database.ReadAccount({ accountId })
 		// Account may be null in case user deleted the account.
-		if (!isAccount(account)) return
+		if (!account) return
 		// If there is an account, notify the user via email.
 		// TODO enable emails
 		// await this.sendEmailProvider.SuspendedStrategy({

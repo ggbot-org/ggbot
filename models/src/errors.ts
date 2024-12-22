@@ -51,20 +51,6 @@ export class ErrorExceededQuota extends Error {
 	}
 }
 
-export class ErrorInvalidArg extends Error {
-	static errorName = 'ErrorInvalidArg'
-	readonly arg: unknown
-	readonly type: 'EmailAddress' | 'Name'
-	constructor({ arg, type }: Pick<ErrorInvalidArg, 'arg' | 'type'>) {
-		super(ErrorInvalidArg.message(type))
-		this.arg = arg
-		this.type = type
-	}
-	static message(type: ErrorInvalidArg['type']) {
-		return `Invalid ${type}`
-	}
-}
-
 export class ErrorStrategyItemNotFound extends Error {
 	static errorName = 'ErrorStrategyItemNotFound'
 	readonly type: 'Strategy' | 'StrategyFlow'

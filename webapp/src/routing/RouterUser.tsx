@@ -8,25 +8,24 @@ import { SettingsPage } from '_/pages/user/Settings'
 import { StrategyPage } from '_/pages/user/Strategy'
 import { SubscriptionPurchasedPage } from '_/pages/user/SubscriptionPurchased'
 import { mount } from '_/react/mount'
-import { webapp } from '_/routing/webapp'
-import { nullStrategyKey } from '@workspace/models'
+import { webappPagePathname } from '@workspace/locators'
 
 function Router() {
 	const pathname = location.pathname
 
-	if (pathname === webapp.user.dashboard.pathname) return <DashboardPage />
+	if (pathname === webappPagePathname.user.dashboard) return <DashboardPage />
 
-	if (pathname === webapp.user.copyStrategy(nullStrategyKey).pathname) return <CopyStrategyPage />
+	if (pathname === webappPagePathname.user.copyStrategy) return <CopyStrategyPage />
 
-	if (pathname === webapp.user.editStrategy(nullStrategyKey).pathname) return <EditStrategyPage />
+	if (pathname === webappPagePathname.user.editStrategy) return <EditStrategyPage />
 
-	if (pathname === webapp.user.settings.pathname) return <SettingsPage />
+	if (pathname === webappPagePathname.user.settings) return <SettingsPage />
 
-	if (pathname === webapp.user.strategy(nullStrategyKey).pathname) return <StrategyPage />
+	if (pathname === webappPagePathname.user.strategy) return <StrategyPage />
 
-	if (pathname === webapp.purchaseCanceled.pathname) return <PurchaseCanceledPage />
+	if (pathname === webappPagePathname.purchaseCanceled) return <PurchaseCanceledPage />
 
-	if (pathname === webapp.subscriptionPurchased.pathname) return <SubscriptionPurchasedPage />
+	if (pathname === webappPagePathname.subscriptionPurchased) return <SubscriptionPurchasedPage />
 
 	return null
 }

@@ -1,39 +1,34 @@
-import { BinanceConnector, BinanceExchange, BinanceExchangeInfo, BinanceKline, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType, BinanceSymbolInfo, BinanceTickerPrice, div, mul } from '@workspace/binance'
-import { DflowBinanceClient, DflowBinanceKlineInterval, dflowBinanceZero } from '@workspace/dflow'
-import { now, Time } from 'minimal-time-helpers'
+import { BinanceConnector, BinanceExchange, div, mul } from '@workspace/binance'
+import { dflowBinanceZero } from '@workspace/dflow'
+import { now } from 'minimal-time-helpers'
+
+/** @typedef {import('@workspace/dflow').DflowBinanceClient} DflowBinanceClient */
 
 let orderId = 0
 
-export class BacktestingBinanceClient implements DflowBinanceClient {
+/** @implements {DflowBinanceClient} */
+export class BacktestingBinanceClient {
 	publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
-	/** The `schedulingInterval` is needed to manage cache. */
-	schedulingInterval: DflowBinanceKlineInterval
 
-	/** The `time` used by simulated run. It is needed to manage cache. */
-	time: Time = now()
+	time = now()
 
-	constructor(schedulingInterval: DflowBinanceKlineInterval) {
+	/** @param {import('@workspace/dflow').DflowBinanceKlineInterval} schedulingInterval */
+	constructor(schedulingInterval) {
 		this.schedulingInterval = schedulingInterval
 	}
 
-	exchangeInfo(): Promise<BinanceExchangeInfo> {
+	/** @type {import('./binance').BacktestingBinanceClient['exchangeInfo']} */
+	exchangeInfo() {
 		return this.publicClient.exchangeInfo()
 	}
 
-	klines(
-		symbol: string,
-		interval: DflowBinanceKlineInterval,
-		optionalParameters: BinanceKlineOptionalParameters
-	): Promise<BinanceKline[]> {
+	/** @type {import('./binance').BacktestingBinanceClient['klines']} */
+	klines(symbol, interval, optionalParameters) {
 		return this.publicClient.klines(symbol, interval, optionalParameters)
 	}
 
-	async newOrder(
-		symbol: string,
-		side: BinanceOrderSide,
-		type: Extract<BinanceOrderType, 'MARKET'>,
-		orderOptions: BinanceNewOrderOptions
-	) {
+	/** @type {import('./binance').BacktestingBinanceClient['newOrder']} */
+	async newOrder(symbol, side, type, orderOptions) {
 		const symbolInfo = await this.publicClient.symbolInfo(symbol)
 		const options = await this.publicClient.prepareOrder(symbol, type, orderOptions)
 		if (!options || !symbolInfo) {
@@ -51,6 +46,7 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 		if (!baseQuantity) baseQuantity = dflowBinanceZero(baseAssetPrecision)
 		if (!quoteQuantity) quoteQuantity = dflowBinanceZero(quoteAssetPrecision)
 
+		/** @type {import('@workspace/binance').BinanceOrder} */
 		return {
 			executedQty: baseQuantity,
 			orderId,
@@ -68,14 +64,16 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 					qty: baseQuantity,
 				}
 			]
-		} satisfies BinanceOrder
+		}
 	}
 
-	symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined> {
-		return this.publicClient.symbolInfo(symbol)
+	/** @type {import('./binance').BacktestingBinanceClient['symbolInfo']} */
+	symbolInfo(symbol) {
+ 		return this.publicClient.symbolInfo(symbol)
 	}
 
-	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
+	/** @type {import('./binance').BacktestingBinanceClient['tickerPrice']} */
+	async tickerPrice(symbol) {
 		const klines = await this.publicClient.klines(symbol, this.schedulingInterval, { limit: 1, endTime: this.time })
 		return {
 			symbol,

@@ -88,9 +88,6 @@
     "**/*.json": [
       "prettier --write"
     ],
-    "**/*.d.ts": [
-      "prettier --write"
-    ],
     "**/*.{ts,tsx}": [
       "eslint --fix"
     ],
