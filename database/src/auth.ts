@@ -1,7 +1,9 @@
 import { AuthDatabaseAction, AuthDatabaseActionInput as Input, AuthDatabaseActionOutput as Output, DocumentProviderLevel2 } from '@workspace/api'
-import { createdNow, EmailAccount, generateOneTimePassword, newAccount } from '@workspace/models'
+import { Account, EmailAccount, generateOneTimePassword } from '@workspace/models'
 
+import { newId } from './item.js'
 import { pathname } from './locators.js'
+import { createdNow } from './time.js'
 
 export class AuthDatabase implements AuthDatabaseAction {
 	documentProvider: DocumentProviderLevel2
@@ -11,7 +13,11 @@ export class AuthDatabase implements AuthDatabaseAction {
 	}
 
 	async CreateAccount(email: Input['CreateAccount']) {
-		const account = newAccount({ email })
+		const account: Account = {
+			email,
+			id: newId(),
+			...createdNow()
+		}
 		const accountId = account.id
 		await this.documentProvider.setItem(pathname.account({ accountId }), account)
 		const data: EmailAccount = { accountId, email, ...createdNow() }

@@ -6,7 +6,6 @@ import { assertDeepEqual } from 'minimal-assertion-helpers'
 import { accountStrategiesModifier } from './accountStrategies.js'
 import { AccountStrategy } from './accountStrategy.js'
 import { ErrorExceededQuota } from './errors.js'
-import { newId } from './item.js'
 import { StrategyScheduling } from './strategyScheduling.js'
 
 const accountStrategy1: AccountStrategy = {
@@ -31,7 +30,7 @@ const accountStrategy3: AccountStrategy = {
 }
 
 const accountStrategy4Scheduling1: StrategyScheduling = {
-	id: newId(),
+	id: '44444444',
 	frequency: { every: 2, interval: '1h' },
 	status: 'active'
 }

@@ -2,6 +2,9 @@ import { Day, now, Time } from 'minimal-time-helpers'
 
 export type DayKey = { day: Day }
 
+// TODO remove all function implementations from models
+// models should have only types
+
 // Create.
 // //////
 
