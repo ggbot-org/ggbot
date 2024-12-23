@@ -13,7 +13,7 @@ export class Shift extends DflowNode {
 	static inputs = [inputArray]
 	static outputs = [outputElement, outputRest]
 	run() {
-		const array = (this.input(0).data as unknown[]).slice(0)
+		const array = /** @type {unknown[]} */ (this.input(0).data).slice(0)
 		this.output(0).data = array.shift()
 		this.output(1).data = array
 	}
@@ -24,7 +24,7 @@ export class Pop extends DflowNode {
 	static inputs = [inputArray]
 	static outputs = [outputElement, outputRest]
 	run() {
-		const array = (this.input(0).data as unknown[]).slice(0)
+		const array = /** @type {unknown[]} */ (this.input(0).data).slice(0)
 		this.output(0).data = array.pop()
 		this.output(1).data = array
 	}
@@ -38,8 +38,8 @@ export class Push extends DflowNode {
 	]
 	static outputs = [outputElement, outputRest]
 	run() {
-		const maybeArray = this.input(0).data as unknown
-		const element = this.input(1).data as unknown
+		const maybeArray = /** @type {unknown} */ (this.input(0).data)
+		const element = /** @type {unknown} */ (this.input(1).data)
 		// Input array is optional and defaults to an empty array.
 		if (maybeArray === undefined) {
 			this.output(0).data = [element]

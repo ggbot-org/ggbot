@@ -13,9 +13,9 @@ export class DeltaPercentage extends DflowNode {
 	]
 	static outputs = [outputValues, outputLastValue]
 	run() {
-		const arrayA = (this.input(0).data as unknown[]).slice(0)
-		const arrayB = (this.input(1).data as unknown[]).slice(0)
-		const values: number[] = []
+		const arrayA = /** @type {unknown[]} */ (this.input(0).data).slice(0)
+		const arrayB = /** @type {unknown[]} */ (this.input(1).data).slice(0)
+		const values = []
 		for (let i = 0; i < arrayA.length; i++) {
 			const valueA = arrayA[i]
 			if (!Dflow.isNumber(valueA)) continue

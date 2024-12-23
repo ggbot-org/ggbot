@@ -1,6 +1,6 @@
 import { Dflow, DflowNode } from 'dflow'
 
-import { add, defaultPrecision, div, MaybeNumber, mul, sub } from '../arithmetic.js'
+import { add, defaultPrecision, div, mul, sub } from '../arithmetic.js'
 import { inputPeriod, inputValues } from '../commonIO.js'
 import { exponentialMovingAverage, simpleMovingAverage } from './movingAverages.js'
 
@@ -21,26 +21,21 @@ const bollingerOutputs = [
 // Compute the variance with double precision.
 const precision = defaultPrecision * 2
 
-/**
- * Compute classic bollinger bands.
- * @see {@link https://en.wikipedia.org/wiki/Bollinger_Bands}
- */
-export function bollinger(
-	values: number[], period: number, amplitude = 2
-): [lower: MaybeNumber[], middle: MaybeNumber[], upper: MaybeNumber[]] {
+/** @type {import('./bollingerBands').bollinger} */
+export function bollinger(values, period, amplitude = 2) {
 	const size = values.length
 	if (size < period) return [[], [], []]
 	const middle = simpleMovingAverage(values, period)
-	const lower: MaybeNumber[] = []
-	const upper: MaybeNumber[] = []
+	const lower /** @type {MaybeNumber[]} */ = ([])
+	const upper /** @type {MaybeNumber[]} */ = ([])
 	for (let index = period; index <= size; index++) {
 		const average = middle[index - period]
 		const variance = values
 			.slice(index - period, index)
-			.reduce<number>((sum, decimal, index, array) => {
+			.reduce((sum, decimal, index, array) => {
 				const distance = sub(decimal, average)
-				const result = add(sum, mul(distance, distance, precision), precision) as number
-				return index === array.length - 1 ? (div(result, period, precision) as number) : result
+				const result = /** @type {number} */ (add(sum, mul(distance, distance, precision), precision))
+				return index === array.length - 1 ? /** @type {number} */ (div(result, period, precision)) : result
 			}, 0)
 		if (variance === undefined) {
 			lower.push(undefined)
@@ -59,9 +54,9 @@ export class Bollinger extends DflowNode {
 	static inputs = bollingerInputs
 	static outputs = bollingerOutputs
 	run() {
-		const values = this.input(0).data as number[]
-		const period = this.input(1).data as number
-		const amplitude = this.input(2).data as number | undefined
+		const values = /** @type {number[]} */ (this.input(0).data)
+		const period = /** @type {number} */ (this.input(1).data)
+		const amplitude = /** @type {number | undefined} */ (this.input(2).data)
 		const [lower, middle, upper] = bollinger(values, period, amplitude)
 		this.output(0).data = lower
 		this.output(1).data = middle
@@ -69,25 +64,21 @@ export class Bollinger extends DflowNode {
 	}
 }
 
-/**
- * Compute a variant of bollinger bands using Exponential Moving Average.
- */
-function bollingerEMA(
-	values: number[], period: number, amplitude = 2
-): [lower: MaybeNumber[], middle: MaybeNumber[], upper: MaybeNumber[]] {
+/** @type {import('./bollingerBands').bollinger} */
+function bollingerEMA(values, period, amplitude = 2) {
 	const size = values.length
 	if (size < period) return [[], [], []]
 	const middle = exponentialMovingAverage(values, period)
-	const lower: MaybeNumber[] = []
-	const upper: MaybeNumber[] = []
+	const lower /** @type {MaybeNumber[]} */ = ([])
+	const upper /** @type {MaybeNumber[]} */ = ([])
 	for (let index = period; index <= size; index++) {
 		const average = middle[index - period]
 		const variance = values
 			.slice(index - period, index)
-			.reduce<number>((sum, decimal, index, array) => {
+			.reduce((sum, decimal, index, array) => {
 				const distance = sub(decimal, average)
-				const result = add(sum, mul(distance, distance, precision), precision) as number
-				return index === array.length - 1 ? (div(result, period, precision) as number) : result
+				const result = /** @type {number} */ (add(sum, mul(distance, distance, precision), precision))
+				return index === array.length - 1 ? /** @type {number} */ (div(result, period, precision)) : result
 			}, 0)
 		if (variance === undefined) {
 			lower.push(undefined)
@@ -106,9 +97,9 @@ export class BollingerEMA extends DflowNode {
 	static inputs = bollingerInputs
 	static outputs = bollingerOutputs
 	run() {
-		const values = this.input(0).data as number[]
-		const period = this.input(1).data as number
-		const amplitude = this.input(2).data as number | undefined
+		const values = /** @type {number[]} */ (this.input(0).data)
+		const period = /** @type {number} */ (this.input(1).data)
+		const amplitude = /** @type {number | undefined} */ (this.input(2).data)
 		const [lower, middle, upper] = bollingerEMA(values, period, amplitude)
 		this.output(0).data = lower
 		this.output(1).data = middle

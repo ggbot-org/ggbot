@@ -1,6 +1,5 @@
-import { BinanceKline } from '@workspace/binance'
-
-export const kline: BinanceKline = [
+/** @type {import('@workspace/binance').BinanceKline} */
+export const kline = [
 	1499040000000, // Kline open time
 	'0.01634790', // Open price
 	'0.80000000', // High price

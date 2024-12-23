@@ -1,8 +1,7 @@
-import { DflowExecutionReport } from 'dflow'
-
 import { orderBuyBTCBUSD1 } from './orders.js'
 
-export const executionStepsBuyBTCUSD: DflowExecutionReport['steps'] = [
+/** @type {import('dflow').DflowExecutionReport['steps']} */
+export const executionStepsBuyBTCUSD = [
 	{
 		id: 'jxhrh',
 		k: 'data',

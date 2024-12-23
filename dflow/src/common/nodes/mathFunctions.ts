@@ -4,8 +4,12 @@ import { inputArray } from './commonIO.js'
 
 const { output } = Dflow
 
-const arrayIsEmptyOrNoElementIsNumber = (array: unknown[]) => array.length === 0 ||
-	array.every((element) => typeof element !== 'number' || isNaN(element))
+function arrayIsEmptyOrNoElementIsNumber(array: unknown[]) {
+	return (
+		array.length === 0 ||
+		array.every((element) => typeof element !== 'number' || isNaN(element))
+	)
+}
 
 export class Max extends DflowNode {
 	static kind = 'max'

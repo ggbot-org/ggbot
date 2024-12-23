@@ -1,8 +1,9 @@
-import { Dflow, DflowDataType } from 'dflow'
+import { Dflow } from 'dflow'
 
 const { input, output } = Dflow
 
-export function inputDefaultParameter (dataType: DflowDataType) {
+/** @type {import('./commonIO').inputDefaultParameter} */
+export function inputDefaultParameter (dataType ) {
 	return input(dataType, { name: 'default' })
 }
 

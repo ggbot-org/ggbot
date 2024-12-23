@@ -5,9 +5,9 @@ import { inputSymbol } from './commonIO.js'
 export class DefaultSymbol extends DflowNode {
 	static kind = 'defaultSymbol'
 	static inputs = [inputSymbol]
-	static outputs = []
+	static outputs = /** @type {never[]} */ ([])
 	run () {
-		// This not does not run any logic.
+		// This node does not run any code.
 		// It is used by `extractsBinanceDefaultsFromFlow`.
 	}
 }

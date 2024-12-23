@@ -2,11 +2,11 @@ import { BinanceExchangeInfo, BinanceKline, BinanceKlineOptionalParameters, Bina
 
 import { DflowBinanceKlineInterval } from './klineIntervals'
 
-/** Binance API used by dflow binance nodes. */
+/** Interface for Binance API, used by dflow binance nodes. */
 export type DflowBinanceClient = DflowBinanceClientPublic & DflowBinanceClientPrivate
 
-/** Binance Public API used by dflow binance nodes. */
-type DflowBinanceClientPublic = {
+/** Interface for Binance Public API, used by dflow binance nodes. */
+export type DflowBinanceClientPublic = {
 	exchangeInfo(): Promise<BinanceExchangeInfo>;
 	klines(symbol: string, interval: DflowBinanceKlineInterval, optionalParameters: BinanceKlineOptionalParameters): Promise<BinanceKline[]>;
 	symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined>;
@@ -14,7 +14,7 @@ type DflowBinanceClientPublic = {
 }
 
 /** Binance Private API used by dflow binance nodes. */
-type DflowBinanceClientPrivate = {
+export type DflowBinanceClientPrivate = {
 	newOrder(symbol: string, side: BinanceOrderSide, type: Extract<BinanceOrderType, 'MARKET'>, orderOptions: BinanceNewOrderOptions): Promise<BinanceOrder | undefined>;
 }
 

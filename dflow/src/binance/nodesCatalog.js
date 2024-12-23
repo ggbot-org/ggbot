@@ -1,4 +1,4 @@
-import { Dflow, DflowNode, DflowNodesCatalog } from 'dflow'
+import { Dflow, DflowNode } from 'dflow'
 
 import { pinIntervalName, pinSymbolName } from '../common/nodes/commonIO.js'
 import { nodesCatalog as commonNodesCatalog } from '../common/nodesCatalog.js'
@@ -6,14 +6,12 @@ import { dflowBinanceKlineIntervals } from './klineIntervals.js'
 import { Candles, TickerPrice } from './nodes/market.js'
 import { IntervalParameter, SymbolParameter } from './nodes/parameters.js'
 import { BuyMarket, OrderInfo, SellMarket } from './nodes/trade.js'
-import { DflowBinanceSymbolInfo, getDflowBinanceNodeSymbolKind } from './symbols.js'
+import { getDflowBinanceNodeSymbolKind } from './symbols.js'
 
 const { output } = Dflow
 
-/**
- * Creates a dynamic set of dflow nodes generated according to Binance definitions.
- */
-export function getDflowBinanceDynamicNodesCatalog(symbols: DflowBinanceSymbolInfo[]): DflowNodesCatalog {
+/** @type {import('./nodesCatalog').getDflowBinanceDynamicNodesCatalog} */
+export function getDflowBinanceDynamicNodesCatalog(symbols) {
 	return {
 		// klineIntervalNodes
 		...dflowBinanceKlineIntervals.reduce(
@@ -42,7 +40,8 @@ export function getDflowBinanceDynamicNodesCatalog(symbols: DflowBinanceSymbolIn
 	}
 }
 
-export function getDflowBinanceNodesCatalog(symbols: DflowBinanceSymbolInfo[]): DflowNodesCatalog {
+/** @type {import('./nodesCatalog').getDflowBinanceNodesCatalog} */
+export function getDflowBinanceNodesCatalog(symbols) {
 	return {
 		// market
 		[Candles.kind]: Candles,

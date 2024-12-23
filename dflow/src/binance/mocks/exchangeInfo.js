@@ -1,6 +1,5 @@
-import { BinanceExchangeInfo } from '@workspace/binance'
-
-export const exchangeInfo: BinanceExchangeInfo = {
+/** @type {import('@workspace/binance').BinanceExchangeInfo} */
+export const exchangeInfo = {
 	serverTime: 1661290003214,
 	symbols: [
 		{

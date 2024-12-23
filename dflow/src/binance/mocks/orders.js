@@ -1,6 +1,5 @@
-import { BinanceOrder } from '@workspace/binance'
-
-export const orderBuyBTCBUSD1: BinanceOrder = {
+/** @type {import('@workspace/binance').BinanceOrder} */
+export const orderBuyBTCBUSD1 = {
 	symbol: 'BTCBUSD',
 	orderId: 6906110758,
 	transactTime: 1667846175202,
