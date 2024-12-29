@@ -34,12 +34,12 @@
     "@workspace/locators": "0.0.0",
     "@workspace/models": "0.0.0",
     "@workspace/webstorage": "0.0.0",
-    "bulma": "1.0.2",
+    "bulma": "1.0.3",
     "flow-view": "6.0.1",
     "minimal-time-helpers": "0.1.0",
     "minimal-type-guard-helpers": "0.2.0",
-    "preact": "10.25.0",
-    "trunx": "1.1.0"
+    "preact": "10.25.4",
+    "trunx": "1.1.1"
   },
   "devDependencies": {
     "@formatjs/cli": "6.2.12",
@@ -47,7 +47,7 @@
     "@workspace/env": "0.0.0",
     "@workspace/tsconfig": "0.0.0",
     "onchange": "7.1.0",
-    "sass": "1.78.0",
+    "sass": "1.83.0",
     "stylelint": "16.9.0",
     "stylelint-config-standard-scss": "13.1.0"
   }
