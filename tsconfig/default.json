@@ -13,6 +13,7 @@
 		"noErrorTruncation": false,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitThis": true,
+		"noUncheckedSideEffectImports": true,
 		"outDir": "${configDir}/dist",
 		"rootDir": "${configDir}/src",
 		"skipLibCheck": true,
