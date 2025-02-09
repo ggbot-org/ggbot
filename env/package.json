@@ -12,10 +12,8 @@
     "check_types": "tsc --noEmit",
     "cleanup": "tsc --build --clean"
   },
-  "dependencies": {
-    "@workspace/models": "0.0.0"
-  },
   "devDependencies": {
+    "@workspace/models": "0.0.0",
     "@workspace/tsconfig": "0.0.0"
   }
 }

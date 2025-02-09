@@ -1,4 +1,4 @@
-import { DeployStage } from '@workspace/models'
+import { DeployStage } from '@workspace/env'
 
 import { inferStripeModeFromSecretKey } from './stripeMode.js'
 

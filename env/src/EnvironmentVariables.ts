@@ -1,5 +1,4 @@
-import { DeployStage, isDeployStage } from '@workspace/models'
-
+import { DeployStage } from './DeployStage.js'
 import { EnvironmentVariableName } from './environmentVariableNames.js'
 
 function getVariable(
@@ -46,7 +45,7 @@ class EnvironmentVariables {
 
 	DEPLOY_STAGE(): DeployStage {
 		const deployStage = getVariable(process.env.DEPLOY_STAGE, 'DEPLOY_STAGE', 'local')
-		if (isDeployStage(deployStage)) return deployStage
+		if (['local', 'next', 'main'].includes(deployStage)) return deployStage as DeployStage
 		throw new Error(`Invalid DeployStage ${deployStage}`)
 	}
 
