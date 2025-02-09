@@ -52,8 +52,6 @@
     "@workspace/env": "0.0.0",
     "@workspace/tsconfig": "0.0.0",
     "onchange": "7.1.0",
-    "sass": "1.78.0",
-    "stylelint": "16.9.0",
-    "stylelint-config-standard-scss": "13.1.0"
+    "sass": "1.78.0"
   }
 }

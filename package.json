@@ -67,10 +67,10 @@
   },
   "devDependencies": {
     "@eslint/json": "0.5.0",
-    "@stylistic/eslint-plugin": "2.10.1",
+    "@stylistic/eslint-plugin": "3.1.0",
     "esbuild": "0.24.0",
-    "eslint": "9.12.0",
-    "eslint-plugin-react": "7.37.2",
+    "eslint": "9.20.0",
+    "eslint-plugin-react": "7.37.4",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "eslint-plugin-tsdoc": "0.4.0",
     "eslint-plugin-workspaces": "0.10.1",
@@ -79,9 +79,11 @@
     "markdownlint-rule-github-internal-links": "0.1.0",
     "markdownlint-rule-relative-links": "3.0.0",
     "pre-commit": "1.2.2",
-    "prettier": "3.3.3",
+    "prettier": "3.4.2",
     "read-file-utf8": "3.0.0",
-    "typescript-eslint": "8.14.0",
+    "stylelint": "16.14.1",
+    "stylelint-config-standard-scss": "14.0.0",
+    "typescript-eslint": "8.23.0",
     "write-file-utf8": "3.0.2"
   },
   "lint-staged": {
