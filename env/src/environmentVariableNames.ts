@@ -7,7 +7,6 @@ export type EnvironmentVariableName =
 	| 'BINANCE_PROXY_IP'
 	| 'DEPLOY_STAGE'
 	| 'DNS_DOMAIN'
-	| 'GITHUB_ORG_URL'
 	| 'NODE_ENV'
 	| 'PROJECT_SHORT_NAME'
 	| 'PROJECT_TAG_LINE'

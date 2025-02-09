@@ -53,10 +53,6 @@ class EnvironmentVariables {
 		return getVariable(process.env.DNS_DOMAIN, 'DNS_DOMAIN')
 	}
 
-	GITHUB_ORG_URL(defaultValue?: string) {
-		return getVariable(process.env.GITHUB_ORG_URL, 'GITHUB_ORG_URL', defaultValue)
-	}
-
 	PROJECT_SHORT_NAME() {
 		return getVariable(process.env.PROJECT_SHORT_NAME, 'PROJECT_SHORT_NAME', 'project')
 	}

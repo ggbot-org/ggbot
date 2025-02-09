@@ -136,7 +136,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 						<span>
 							<FormattedMessage id="AuthVerify.resetEmail" />
 						</span>
-						<Icon name="x" size="1em" />
+						<Icon name="cross" size="1em" />
 					</Button>
 				</Column>
 			</Columns>

@@ -19,7 +19,6 @@ The following environment variables are used:
   - `STRIPE_PLAN_BASIC_PRICE_ID`
 - Social links, used by [locators workspace](../locators/):
   - `TELEGRAM_SUPPORT_URL`
-  - `GITHUB_ORG_URL`
 
 Optional environment variables needed to launch [binance-proxy end to end tests](../binance-proxy/docs/end-to-end-tests.md).
 
@@ -55,10 +54,10 @@ export STRIPE_SECRET_KEY=xxx
 export STRIPE_PLAN_BASIC_PRICE_ID=xxx
 export STRIPE_PLAN_BASIC_MONTHLY_PRICE=2
 
-# Social links
+# Social links.
 export TELEGRAM_SUPPORT_URL=https://t.me/ggbot_support
-export GITHUB_ORG_URL=https://github.com/ggbot-org
 
+# Optional variables.
 export BINANCE_API_KEY=xxx
 export BINANCE_API_SECRET=xxx
 ```

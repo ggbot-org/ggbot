@@ -24,7 +24,6 @@ Notice that to deploy webapp you need to set the following environment variables
 - `DEPLOY_STAGE`
 - `PROJECT_SHORT_NAME`
 - `STRIPE_PLAN_BASIC_MONTHLY_PRICE`
-- `GITHUB_ORG_URL`
 - `TELEGRAM_SUPPORT_URL`
 
 See [env/README.md](./env/README.md#envrc-file) for the complete list of environment variables used and how to set them.

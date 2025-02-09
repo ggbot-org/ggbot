@@ -4,7 +4,7 @@ import { TermsAndPolicyLinks } from '_/components/TermsAndPolicyLinks'
 import { FormattedMessage } from '_/i18n/components'
 import { dayFormat } from '_/i18n/formats'
 import { useIntl } from '_/i18n/hooks'
-import { github, telegram } from '@workspace/locators'
+import { telegram } from '@workspace/locators'
 
 function SocialLinks() {
 	return (
@@ -15,16 +15,6 @@ function SocialLinks() {
 						<Icon name="telegram" />
 						<span>
 							<FormattedMessage id="SocialLinks.telegramSupport" />
-						</span>
-					</IconText>
-				</a>
-			</li>
-			<li>
-				<a href={github.organization}>
-					<IconText>
-						<Icon name="github" />
-						<span>
-							<FormattedMessage id="SocialLinks.githubOrganizaton" />
 						</span>
 					</IconText>
 				</a>
