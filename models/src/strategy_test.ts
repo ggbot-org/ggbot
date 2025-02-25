@@ -1,6 +1,6 @@
+import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { assertEqual } from 'minimal-assertion-helpers'
 import { MaybeObject } from 'minimal-type-guard-helpers'
 
 import { nullId } from './item.js'
@@ -11,14 +11,20 @@ import { isStrategy, newStrategy, Strategy } from './strategy.js'
 import { createdNow } from './time.js'
 
 test('isStrategy', () => {
+	type TestData = Array<{
+		input: Partial<MaybeObject<Strategy>>;
+		output: boolean;
+	}>
+
 	const accountId = nullId
 	const kind = 'none'
 	const name = 'Name'
 	const { whenCreated } = createdNow()
-	assertEqual<Partial<MaybeObject<Strategy>>, boolean>(isStrategy, [
+
+	const testData: TestData = [
 		{
 			input: newStrategy({ accountId, kind, name }),
-			output: true
+			output: true,
 		},
 		{
 			input: {
@@ -26,17 +32,17 @@ test('isStrategy', () => {
 				id: invalidId,
 				kind,
 				name,
-				whenCreated
+				whenCreated,
 			},
-			output: false
+			output: false,
 		},
 		{
 			input: {
 				accountId,
 				id: nullId,
-				whenCreated: 'not a timestamp'
+				whenCreated: 'not a timestamp',
 			},
-			output: false
+			output: false,
 		},
 		...invalidNames.map((invalidName) => ({
 			input: {
@@ -44,9 +50,13 @@ test('isStrategy', () => {
 				id: nullId,
 				kind,
 				name: normalizeName(invalidName),
-				whenCreated
+				whenCreated,
 			},
-			output: false
-		}))
-	])
+			output: false,
+		})),
+	]
+
+	for (const { input, output } of testData) {
+		assert.equal(isStrategy(input), output)
+	}
 })

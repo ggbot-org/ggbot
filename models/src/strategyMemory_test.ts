@@ -1,28 +1,36 @@
+import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { assertEqual } from 'minimal-assertion-helpers'
 import { MaybeObject } from 'minimal-type-guard-helpers'
 
 import { isStrategyMemory, StrategyMemory } from './strategyMemory.js'
 import { invalidIdentifierStrings } from './strings_test.js'
 
 test('isStrategyMemory', () => {
-	assertEqual<MaybeObject<StrategyMemory>, boolean>(isStrategyMemory, [
+	type TestData = Array<{
+		input: MaybeObject<StrategyMemory>;
+		output: boolean;
+	}>
+	const testData: TestData = [
 		{
 			input: {},
-			output: true
+			output: true,
 		},
 		{
 			input: {
 				'label 1': true,
 				'label 2': 123,
-				label3: 'hello world'
+				label3: 'hello world',
 			},
-			output: true
+			output: true,
 		},
 		...invalidIdentifierStrings.map((key) => ({
 			input: { [key]: 'value' },
-			output: false
-		}))
-	])
+			output: false,
+		})),
+	]
+
+	for (const { input, output } of testData) {
+		assert.equal(isStrategyMemory(input), output)
+	}
 })

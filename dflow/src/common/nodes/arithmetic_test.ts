@@ -12,12 +12,12 @@ test('add', async () => {
 	const testData: ExecuteOperatorTestData[] = [
 		{
 			input: { a: 2, b: 3 },
-			output: 5
+			output: 5,
 		},
 		{
 			input: { a: 0.2, b: 0.1 },
-			output: 0.3
-		}
+			output: 0.3,
+		},
 	]
 
 	for (const { input, output } of testData) {
@@ -31,8 +31,8 @@ test('sub', async () => {
 	const testData: ExecuteOperatorTestData[] = [
 		{
 			input: { a: 2, b: 3 },
-			output: -1
-		}
+			output: -1,
+		},
 	]
 
 	for (const { input, output } of testData) {
@@ -46,8 +46,8 @@ test('mul', async () => {
 	const testData: ExecuteOperatorTestData[] = [
 		{
 			input: { a: 2, b: 3 },
-			output: 6
-		}
+			output: 6,
+		},
 	]
 
 	for (const { input, output } of testData) {
@@ -61,13 +61,13 @@ test('div', async () => {
 	const testData: ExecuteOperatorTestData[] = [
 		{
 			input: { a: 3, b: 2 },
-			output: 1.5
+			output: 1.5,
 		},
 		// Division by zero
 		{
 			input: { a: 1, b: 0 },
-			output: undefined
-		}
+			output: undefined,
+		},
 	]
 
 	for (const { input, output } of testData) {
@@ -83,46 +83,49 @@ type ArithmeticNodeKind =
 	| typeof Division.kind
 
 type ExecuteOperatorInput = {
-	a: number
-	b: number
+	a: number;
+	b: number;
 }
 
 type ExecuteOperatorOutput = number | undefined
 
 type ExecuteOperatorTestData = {
-	input: ExecuteOperatorInput
-	output: ExecuteOperatorOutput
+	input: ExecuteOperatorInput;
+	output: ExecuteOperatorOutput;
 }
 
-async function executeOperator (nodeKind: ArithmeticNodeKind, { a, b }: ExecuteOperatorInput): Promise<ExecuteOperatorOutput> {
+async function executeOperator(
+	nodeKind: ArithmeticNodeKind,
+	{ a, b }: ExecuteOperatorInput,
+): Promise<ExecuteOperatorOutput> {
 	const nodeId = 'operator'
 	const executor = new DflowCommonExecutor({
 		nodes: [
 			{
 				id: 'i1',
 				text: JSON.stringify(a),
-				outs: [{ id: 'o1' }]
+				outs: [{ id: 'o1' }],
 			},
 			{
 				id: 'i2',
 				text: JSON.stringify(b),
-				outs: [{ id: 'o2' }]
+				outs: [{ id: 'o2' }],
 			},
 			{
 				id: nodeId,
 				text: nodeKind,
-				ins: [{ id: 'a' }, { id: 'b' }]
-			}
+				ins: [{ id: 'a' }, { id: 'b' }],
+			},
 		],
 		edges: [
 			{ id: 'e1', from: ['i1', 'o1'], to: [nodeId, 'a'] },
-			{ id: 'e2', from: ['i2', 'o2'], to: [nodeId, 'b'] }
-		]
+			{ id: 'e2', from: ['i2', 'o2'], to: [nodeId, 'b'] },
+		],
 	})
 	const { execution } = await executor.run({
 		params: {},
 		memory: {},
-		time: now()
+		time: now(),
 	})
 	const result = getDflowExecutionOutputData(execution, nodeId, 0)
 	if (result === undefined || Dflow.isNumber(result)) return result

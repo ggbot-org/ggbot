@@ -1,23 +1,25 @@
+import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
-
-import { assertEqual } from 'minimal-assertion-helpers'
 
 import { everyOneHour, frequenciesAreEqual } from './frequency.js'
 
-type FrequenciesAreEqualArgs = Parameters<typeof frequenciesAreEqual>
-
 test('frequenciesAreEqual', () => {
-	assertEqual<FrequenciesAreEqualArgs, boolean>(
-		(frequencies: FrequenciesAreEqualArgs) => frequenciesAreEqual(...frequencies),
-		[
-			{
-				input: [everyOneHour(), undefined],
-				output: false
-			},
-			{
-				input: [everyOneHour(), everyOneHour()],
-				output: true
-			}
-		]
-	)
+	type TestData = Array<{
+		input: Parameters<typeof frequenciesAreEqual>;
+		output: boolean;
+	}>
+
+	const testData: TestData = [
+		{
+			input: [everyOneHour(), undefined],
+			output: false,
+		},
+		{
+			input: [everyOneHour(), everyOneHour()],
+			output: true,
+		},
+	]
+	for (const { input, output } of testData) {
+		assert.equal(frequenciesAreEqual(...input), output)
+	}
 })

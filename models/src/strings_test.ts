@@ -1,8 +1,6 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { assertEqual } from 'minimal-assertion-helpers'
-
 import { isFiniteString, isIdentifierString, isNonEmptyString, stringMaxLength } from './strings.js'
 
 const fooString = 'foo'
@@ -12,38 +10,58 @@ const stringWithLineBreaks = `
 hello
 world
 `
-export const invalidIdentifierStrings = [
-	emptyString,
-	stringTooLong,
-	stringWithLineBreaks
-]
+export const invalidIdentifierStrings = [emptyString, stringTooLong, stringWithLineBreaks]
 
 test('isFiniteString', () => {
 	assert.ok(stringTooLong.length > stringMaxLength)
 
-	assertEqual<unknown, boolean>(isFiniteString, [
+	type TestData = Array<{
+		input: unknown;
+		output: boolean;
+	}>
+	const testData: TestData = [
 		{ input: fooString, output: true },
 		{ input: stringWithLineBreaks, output: true },
 		{ input: emptyString, output: true },
-		{ input: stringTooLong, output: false }
-	])
+		{ input: stringTooLong, output: false },
+	]
+
+	for (const { input, output } of testData) {
+		assert.equal(isFiniteString(input), output)
+	}
 })
 
 test('isNonEmptyString', () => {
-	assertEqual<unknown, boolean>(isNonEmptyString, [
+	type TestData = Array<{
+		input: unknown;
+		output: boolean;
+	}>
+	const testData: TestData = [
 		{ input: fooString, output: true },
 		{ input: stringWithLineBreaks, output: true },
 		{ input: emptyString, output: false },
-		{ input: stringTooLong, output: false }
-	])
+		{ input: stringTooLong, output: false },
+	]
+
+	for (const { input, output } of testData) {
+		assert.equal(isNonEmptyString(input), output)
+	}
 })
 
 test('isIdentifierString', () => {
-	assertEqual<unknown, boolean>(isIdentifierString, [
+	type TestData = Array<{
+		input: unknown;
+		output: boolean;
+	}>
+	const testData: TestData = [
 		{ input: fooString, output: true },
-		...invalidIdentifierStrings.map((key) => ({
-			input: { [key]: 'value' },
-			output: false
-		}))
-	])
+		...invalidIdentifierStrings.map((input) => ({
+			input,
+			output: false,
+		})),
+	]
+
+	for (const { input, output } of testData) {
+		assert.equal(isIdentifierString(input), output)
+	}
 })

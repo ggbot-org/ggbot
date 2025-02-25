@@ -1,6 +1,5 @@
+import { strict as assert } from 'node:assert'
 import { describe, test } from 'node:test'
-
-import { assertDeepEqual } from 'minimal-assertion-helpers'
 
 import { DflowBinanceKlineInterval, dflowBinanceKlineIntervals } from './klineIntervals.js'
 
@@ -11,11 +10,19 @@ const sortIntervals = (values: TestInterval[]) => values.slice().sort(
 
 describe('dflowBinanceKlineIntervals', () => {
 	test('can be used to sort intervals', () => {
-		assertDeepEqual<TestInterval[], TestInterval[]>(sortIntervals, [
+		type TestData = Array<{
+			input: TestInterval[]
+			output: TestInterval[]
+		}>
+		const testData: TestData = [
 			{
 				input: [{ interval: '1d' }, { interval: '1h' }],
 				output: [{ interval: '1h' }, { interval: '1d' }]
 			}
-		])
+		]
+
+		for (const { input, output } of testData) {
+			assert.deepEqual(sortIntervals(input), output)
+		}
 	})
 })

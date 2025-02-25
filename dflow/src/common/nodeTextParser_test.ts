@@ -1,11 +1,14 @@
+import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
-
-import { assertEqual } from 'minimal-assertion-helpers'
 
 import { parsePercentage } from './nodeTextParser.js'
 
 test('parsePercentage', () => {
-	assertEqual<string, number>(parsePercentage, [
+	type TestData = Array<{
+		input: string;
+		output: number;
+	}>
+	const testData: TestData = [
 		{ input: '1%', output: 0.01 },
 		{ input: '-1%', output: -0.01 },
 		{ input: '42%', output: 0.42 },
@@ -18,5 +21,9 @@ test('parsePercentage', () => {
 		{ input: '- 1%', output: -0.01 },
 		{ input: '-1 %', output: -0.01 },
 		{ input: '- 1 %', output: -0.01 },
-	])
+	]
+
+	for (const { input, output } of testData) {
+		assert.equal(parsePercentage(input), output)
+	}
 })

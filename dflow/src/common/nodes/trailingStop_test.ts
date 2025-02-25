@@ -2,26 +2,32 @@ import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
 import { StrategyFlowGraphEdge, StrategyFlowGraphNode } from '@workspace/models'
-import { assertDeepEqual, assertEqual } from 'minimal-assertion-helpers'
 import { now } from 'minimal-time-helpers'
 
 import { DflowCommonContext } from '../context.js'
 import { DflowCommonExecutor, getDflowExecutionOutputData } from '../executor.js'
-import { ComputeStopPriceArg, computeStopPriceDown, computeStopPriceUp, trailingStop, TrailingStopDown, TrailingStopInput, trailingStopMemoryKeys, TrailingStopOutput, TrailingStopUp } from './trailingStop.js'
+import { ComputeStopPriceArg,
+	computeStopPriceDown,
+	computeStopPriceUp,
+	trailingStop,
+	TrailingStopDown,
+	TrailingStopInput,
+	trailingStopMemoryKeys,
+	TrailingStopOutput,
+	TrailingStopUp } from './trailingStop.js'
 
 type ExecuteTrailingStopInput = {
-	enterTrailing: unknown
-	resetTrailing?: unknown
-	memoryLabel: string
-	initialStopPrice?: number | undefined
+	enterTrailing: unknown;
+	resetTrailing?: unknown;
+	memoryLabel: string;
+	initialStopPrice?: number | undefined;
 } & Pick<TrailingStopInput, 'price' | 'percentageDelta'> &
 	Pick<DflowCommonContext, 'memory'>
-type ExecuteTrailingStopOutput = Partial<TrailingStopOutput> &
-	Pick<DflowCommonContext, 'memory' | 'memoryChanged'>
+type ExecuteTrailingStopOutput = Partial<TrailingStopOutput> & Pick<DflowCommonContext, 'memory' | 'memoryChanged'>
 
 type TrailingStopTestData = {
-	input: ExecuteTrailingStopInput
-	output: ExecuteTrailingStopOutput
+	input: ExecuteTrailingStopInput;
+	output: ExecuteTrailingStopOutput;
 }
 
 const invalidPercentageDeltaValues = [0, 1]
@@ -35,9 +41,17 @@ const exitTrailingAssertionError = 'check exitTrailing'
 const memoryAssertionError = 'check memory'
 const memoryChangedAssertionError = 'check memoryChanged'
 
-async function executeTrailingStop (
+async function executeTrailingStop(
 	nodeKind: typeof TrailingStopUp.kind,
-	{ enterTrailing, memoryLabel, price, percentageDelta, initialStopPrice, resetTrailing, memory: memoryInput }: ExecuteTrailingStopInput
+	{
+		enterTrailing,
+		memoryLabel,
+		price,
+		percentageDelta,
+		initialStopPrice,
+		resetTrailing,
+		memory: memoryInput,
+	}: ExecuteTrailingStopInput,
 ): Promise<ExecuteTrailingStopOutput> {
 	const nodeId = 'testId'
 	const hasInitialStopPrice = typeof initialStopPrice === 'number'
@@ -47,87 +61,84 @@ async function executeTrailingStop (
 		{
 			id: 'enterTrailing',
 			text: JSON.stringify(enterTrailing),
-			outs: [{ id: 'o' }]
+			outs: [{ id: 'o' }],
 		},
 		{
 			id: 'memoryLabel',
 			text: JSON.stringify(memoryLabel),
-			outs: [{ id: 'o' }]
+			outs: [{ id: 'o' }],
 		},
 		{
 			id: 'price',
 			text: JSON.stringify(price),
-			outs: [{ id: 'o' }]
+			outs: [{ id: 'o' }],
 		},
 		{
 			id: 'percentageDelta',
 			text: JSON.stringify(percentageDelta),
-			outs: [{ id: 'o' }]
+			outs: [{ id: 'o' }],
 		},
 		{
 			id: nodeId,
 			text: nodeKind,
-			ins: [
-				{ id: 'i1' },
-				{ id: 'i2' },
-				{ id: 'i3' },
-				{ id: 'i4' },
-				{ id: 'i5' },
-				{ id: 'i6' }
-			]
-		}
+			ins: [{ id: 'i1' }, { id: 'i2' }, { id: 'i3' }, { id: 'i4' }, { id: 'i5' }, { id: 'i6' }],
+		},
 	]
 
 	if (hasInitialStopPrice) nodes.push({
 		id: 'initialStopPrice',
 		text: JSON.stringify(initialStopPrice),
-		outs: [{ id: 'o' }]
+		outs: [{ id: 'o' }],
 	})
 	if (hasResetTrailing) nodes.push({
 		id: 'resetTrailing',
 		text: JSON.stringify(resetTrailing),
-		outs: [{ id: 'o' }]
+		outs: [{ id: 'o' }],
 	})
 
 	const edges: StrategyFlowGraphEdge[] = [
 		{
 			id: 'e1',
 			from: ['enterTrailing', 'o'],
-			to: [nodeId, 'i1']
+			to: [nodeId, 'i1'],
 		},
 		{ id: 'e2', from: ['memoryLabel', 'o'], to: [nodeId, 'i2'] },
 		{
 			id: 'e3',
 			from: ['price', 'o'],
-			to: [nodeId, 'i3']
+			to: [nodeId, 'i3'],
 		},
 		{
 			id: 'e4',
 			from: ['percentageDelta', 'o'],
-			to: [nodeId, 'i4']
-		}
+			to: [nodeId, 'i4'],
+		},
 	]
 
 	if (hasInitialStopPrice) edges.push({
 		id: 'e5',
 		from: ['initialStopPrice', 'o'],
-		to: [nodeId, 'i5']
+		to: [nodeId, 'i5'],
 	})
 	if (hasResetTrailing) edges.push({
 		id: 'e6',
 		from: ['resetTrailing', 'o'],
-		to: [nodeId, 'i6']
+		to: [nodeId, 'i6'],
 	})
 
 	const executor = new DflowCommonExecutor({ nodes, edges })
-	const { execution, memory: memoryOutput, memoryChanged } = await executor.run({ params: {}, memory: memoryInput, time: now() })
+	const {
+		execution,
+		memory: memoryOutput,
+		memoryChanged,
+	} = await executor.run({ params: {}, memory: memoryInput, time: now() })
 
 	const exitTrailing = getDflowExecutionOutputData(execution, nodeId, 0)
 
 	return {
 		exitTrailing: typeof exitTrailing === 'boolean' ? exitTrailing : undefined,
 		memory: memoryOutput,
-		memoryChanged
+		memoryChanged,
 	}
 }
 
@@ -142,13 +153,13 @@ test('TrailingStopUp', async () => {
 				memoryLabel,
 				price: 100,
 				percentageDelta,
-				memory: {}
+				memory: {},
 			},
 			output: {
 				exitTrailing: undefined,
 				memory: {},
-				memoryChanged: false
-			}
+				memoryChanged: false,
+			},
 		})),
 
 		// If `enterTrailing` is truthy, it gets initialized.
@@ -158,16 +169,16 @@ test('TrailingStopUp', async () => {
 				memoryLabel,
 				price: 100,
 				percentageDelta: 0.01,
-				memory: {}
+				memory: {},
 			},
 			output: {
 				exitTrailing: false,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 99
+					[stopPriceMemoryKey]: 99,
 				},
-				memoryChanged: true
-			}
+				memoryChanged: true,
+			},
 		})),
 
 		// If `initialStopPrice` is provided
@@ -181,16 +192,16 @@ test('TrailingStopUp', async () => {
 				price: 100,
 				initialStopPrice: 99.5,
 				percentageDelta: 0.01,
-				memory: {}
+				memory: {},
 			},
 			output: {
 				exitTrailing: false,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 99.5
+					[stopPriceMemoryKey]: 99.5,
 				},
-				memoryChanged: true
-			}
+				memoryChanged: true,
+			},
 		},
 
 		// If `initialStopPrice` is provided
@@ -204,16 +215,16 @@ test('TrailingStopUp', async () => {
 				price: 100,
 				initialStopPrice: 100.5,
 				percentageDelta: 0.01,
-				memory: {}
+				memory: {},
 			},
 			output: {
 				exitTrailing: false,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 99
+					[stopPriceMemoryKey]: 99,
 				},
-				memoryChanged: true
-			}
+				memoryChanged: true,
+			},
 		},
 
 		// If `enterTrailing` is falsy, it does not get initialized.
@@ -223,13 +234,13 @@ test('TrailingStopUp', async () => {
 				memoryLabel,
 				price: 100,
 				percentageDelta: 0.01,
-				memory: {}
+				memory: {},
 			},
 			output: {
 				exitTrailing: undefined,
 				memory: {},
-				memoryChanged: false
-			}
+				memoryChanged: false,
+			},
 		})),
 
 		// Regardless of `enterTrailing`,
@@ -242,17 +253,17 @@ test('TrailingStopUp', async () => {
 				percentageDelta: 0.01,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 99
-				}
+					[stopPriceMemoryKey]: 99,
+				},
 			},
 			output: {
 				exitTrailing: false,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 104.94
+					[stopPriceMemoryKey]: 104.94,
 				},
-				memoryChanged: true
-			}
+				memoryChanged: true,
+			},
 		})),
 
 		// Regardless of `enterTrailing`,
@@ -265,17 +276,17 @@ test('TrailingStopUp', async () => {
 				percentageDelta: 0.01,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 104.94
-				}
+					[stopPriceMemoryKey]: 104.94,
+				},
 			},
 			output: {
 				exitTrailing: false,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 104.94
+					[stopPriceMemoryKey]: 104.94,
 				},
-				memoryChanged: false
-			}
+				memoryChanged: false,
+			},
 		})),
 
 		// Regardless of `enterTrailing`,
@@ -289,14 +300,14 @@ test('TrailingStopUp', async () => {
 				percentageDelta: 0.01,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 104.94
-				}
+					[stopPriceMemoryKey]: 104.94,
+				},
 			},
 			output: {
 				exitTrailing: true,
 				memory: {},
-				memoryChanged: true
-			}
+				memoryChanged: true,
+			},
 		})),
 
 		// If `resetTrailing` is truthy, it cleans up memory.
@@ -311,15 +322,15 @@ test('TrailingStopUp', async () => {
 				resetTrailing,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 99
-				}
+					[stopPriceMemoryKey]: 99,
+				},
 			},
 			output: {
 				exitTrailing: undefined,
 				memory: {},
-				memoryChanged: true
-			}
-		}))
+				memoryChanged: true,
+			},
+		})),
 	]
 
 	for (const { input, output } of testData) {
@@ -341,13 +352,13 @@ test('TrailingStopDown', async () => {
 				memoryLabel,
 				price: 100,
 				percentageDelta,
-				memory: {}
+				memory: {},
 			},
 			output: {
 				exitTrailing: undefined,
 				memory: {},
-				memoryChanged: false
-			}
+				memoryChanged: false,
+			},
 		})),
 
 		// If `enterTrailing` is truthy, it gets initialized.
@@ -357,16 +368,16 @@ test('TrailingStopDown', async () => {
 				memoryLabel,
 				price: 100,
 				percentageDelta: 0.01,
-				memory: {}
+				memory: {},
 			},
 			output: {
 				exitTrailing: false,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 101
+					[stopPriceMemoryKey]: 101,
 				},
-				memoryChanged: true
-			}
+				memoryChanged: true,
+			},
 		})),
 
 		// If `initialStopPrice` is provided
@@ -380,16 +391,16 @@ test('TrailingStopDown', async () => {
 				price: 100,
 				initialStopPrice: 100.5,
 				percentageDelta: 0.01,
-				memory: {}
+				memory: {},
 			},
 			output: {
 				exitTrailing: false,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 100.5
+					[stopPriceMemoryKey]: 100.5,
 				},
-				memoryChanged: true
-			}
+				memoryChanged: true,
+			},
 		},
 
 		// If `initialStopPrice` is provided
@@ -403,16 +414,16 @@ test('TrailingStopDown', async () => {
 				price: 100,
 				initialStopPrice: 99.5,
 				percentageDelta: 0.01,
-				memory: {}
+				memory: {},
 			},
 			output: {
 				exitTrailing: false,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 101
+					[stopPriceMemoryKey]: 101,
 				},
-				memoryChanged: true
-			}
+				memoryChanged: true,
+			},
 		},
 
 		// If `enterTrailing` is falsy, it does not get initialized.
@@ -422,13 +433,13 @@ test('TrailingStopDown', async () => {
 				memoryLabel,
 				price: 100,
 				percentageDelta: 0.01,
-				memory: {}
+				memory: {},
 			},
 			output: {
 				exitTrailing: undefined,
 				memory: {},
-				memoryChanged: false
-			}
+				memoryChanged: false,
+			},
 		})),
 
 		// Regardless of `enterTrailing`,
@@ -441,17 +452,17 @@ test('TrailingStopDown', async () => {
 				percentageDelta: 0.01,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 99
-				}
+					[stopPriceMemoryKey]: 99,
+				},
 			},
 			output: {
 				exitTrailing: false,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 94.94
+					[stopPriceMemoryKey]: 94.94,
 				},
-				memoryChanged: true
-			}
+				memoryChanged: true,
+			},
 		})),
 
 		// Regardless of `enterTrailing`,
@@ -464,17 +475,17 @@ test('TrailingStopDown', async () => {
 				percentageDelta: 0.01,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 94.94
-				}
+					[stopPriceMemoryKey]: 94.94,
+				},
 			},
 			output: {
 				exitTrailing: false,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 94.94
+					[stopPriceMemoryKey]: 94.94,
 				},
-				memoryChanged: false
-			}
+				memoryChanged: false,
+			},
 		})),
 
 		// Regardless of `enterTrailing`,
@@ -488,14 +499,14 @@ test('TrailingStopDown', async () => {
 				percentageDelta: 0.01,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 94.94
-				}
+					[stopPriceMemoryKey]: 94.94,
+				},
 			},
 			output: {
 				exitTrailing: true,
 				memory: {},
-				memoryChanged: true
-			}
+				memoryChanged: true,
+			},
 		})),
 
 		// If `resetTrailing` is truthy, it cleans up memory.
@@ -510,15 +521,15 @@ test('TrailingStopDown', async () => {
 				resetTrailing,
 				memory: {
 					[entryPriceMemoryKey]: 100,
-					[stopPriceMemoryKey]: 101
-				}
+					[stopPriceMemoryKey]: 101,
+				},
 			},
 			output: {
 				exitTrailing: undefined,
 				memory: {},
-				memoryChanged: true
-			}
-		}))
+				memoryChanged: true,
+			},
+		})),
 	]
 
 	for (const { input, output } of testData) {
@@ -530,85 +541,106 @@ test('TrailingStopDown', async () => {
 })
 
 test('trailingStop', () => {
-	assertDeepEqual<TrailingStopInput, TrailingStopOutput>(trailingStop, [
+	type TestData = Array<{
+		input: TrailingStopInput;
+		output: TrailingStopOutput;
+	}>
+	const testData: TestData = [
 		// If `direction` is "UP" and `price` is below `stopPrice`, then `exitTrailing` is true.
 		{
 			input: {
 				direction: 'UP',
 				price: 99,
 				percentageDelta: 0,
-				stopPrice: 100
+				stopPrice: 100,
 			},
-			output: { exitTrailing: true, stopPrice: 100 }
+			output: { exitTrailing: true, stopPrice: 100 },
 		},
-
 		// If `direction` is "DOWN" and `price` is above `stopPrice`, then `exitTrailing` is true.
 		{
 			input: {
 				direction: 'DOWN',
 				price: 101,
 				percentageDelta: 0,
-				stopPrice: 100
+				stopPrice: 100,
 			},
-			output: { exitTrailing: true, stopPrice: 100 }
+			output: { exitTrailing: true, stopPrice: 100 },
 		},
-
 		// Return adjusted `stopPrice` according to `percentageDelta`.
 		{
 			input: {
 				direction: 'UP',
 				price: 100,
 				percentageDelta: 0.01,
-				stopPrice: 50
+				stopPrice: 50,
 			},
-			output: { exitTrailing: false, stopPrice: 99 }
+			output: { exitTrailing: false, stopPrice: 99 },
 		},
 		{
 			input: {
 				direction: 'DOWN',
 				price: 100,
 				percentageDelta: 0.01,
-				stopPrice: 150
+				stopPrice: 150,
 			},
-			output: { exitTrailing: false, stopPrice: 101 }
+			output: { exitTrailing: false, stopPrice: 101 },
 		},
-
 		// Leave `stopPrice` as is when `price` gets closer.
 		{
 			input: {
 				direction: 'UP',
 				price: 100,
 				percentageDelta: 0.02,
-				stopPrice: 99
+				stopPrice: 99,
 			},
-			output: { exitTrailing: false, stopPrice: 99 }
+			output: { exitTrailing: false, stopPrice: 99 },
 		},
 		{
 			input: {
 				direction: 'DOWN',
 				price: 100,
 				percentageDelta: 0.02,
-				stopPrice: 101
+				stopPrice: 101,
 			},
-			output: { exitTrailing: false, stopPrice: 101 }
-		}
-	])
+			output: { exitTrailing: false, stopPrice: 101 },
+		},
+	]
+
+	for (const { input, output } of testData) {
+		assert.deepEqual(trailingStop(input), output)
+	}
 })
 
 test('computeStopPriceDown', () => {
-	assertEqual<ComputeStopPriceArg, number>(computeStopPriceDown, [
+	type TestData = Array<{
+		input: ComputeStopPriceArg;
+		output: number;
+	}>
+	const testData: TestData = [
 		{
 			input: { price: 12345.6789, percentageDelta: 0.01 },
-			output: 12469.135689
-		}
-	])
+			output: 12469.135689,
+		},
+	]
+
+	for (const { input, output } of testData) {
+		assert.equal(computeStopPriceDown(input), output)
+	}
 })
 
 test('computeStopPriceUp', () => {
-	assertEqual<ComputeStopPriceArg, number>(computeStopPriceUp, [
+	type TestData = Array<{
+		input: ComputeStopPriceArg;
+		output: number;
+	}>
+	const testData: TestData = [
 		{
 			input: { price: 12345.6789, percentageDelta: 0.01 },
-			output: 12222.222111
-		}
-	])
+			output: 12222.222111,
+		},
+	]
+
+	for (const { input, output } of testData) {
+		assert.equal(computeStopPriceUp(input), output)
+	}
 })

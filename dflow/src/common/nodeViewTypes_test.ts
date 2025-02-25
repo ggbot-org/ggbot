@@ -17,28 +17,28 @@ test('perc nodes', async () => {
 			{
 				id: 'i1',
 				text: JSON.stringify(num),
-				outs: [{ id: 'o1' }]
+				outs: [{ id: 'o1' }],
 			},
 			{
 				id: 'i2',
 				text: percentageStr,
-				outs: [{ id: 'o2' }]
+				outs: [{ id: 'o2' }],
 			},
 			{
 				id: nodeId,
 				text: 'mul',
-				ins: [{ id: 'a' }, { id: 'b' }]
-			}
+				ins: [{ id: 'a' }, { id: 'b' }],
+			},
 		],
 		edges: [
 			{ id: 'e1', from: ['i1', 'o1'], to: [nodeId, 'a'] },
-			{ id: 'e2', from: ['i2', 'o2'], to: [nodeId, 'b'] }
-		]
+			{ id: 'e2', from: ['i2', 'o2'], to: [nodeId, 'b'] },
+		],
 	})
 	const { execution } = await executor.run({
 		params: {},
 		memory: {},
-		time: now()
+		time: now(),
 	})
 	const result = getDflowExecutionOutputData(execution, nodeId, 0)
 	assert.equal(result, num * percentageNum)

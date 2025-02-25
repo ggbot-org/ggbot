@@ -1,13 +1,20 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { assertDeepEqual } from 'minimal-assertion-helpers'
-
 import { DflowCommonContext as Context } from '../context.js'
-import { addMediation, AddMediationInput, AddMediationOutput, exitMediation, ExitMediationInput, MediatorMemory } from './mediator.js'
+import { addMediation,
+	AddMediationInput,
+	AddMediationOutput,
+	exitMediation,
+	ExitMediationInput,
+	MediatorMemory } from './mediator.js'
 
 test('addMediation', () => {
-	assertDeepEqual<AddMediationInput, AddMediationOutput>(addMediation, [
+	type TestData = Array<{
+		input: AddMediationInput;
+		output: AddMediationOutput;
+	}>
+	const testData: TestData = [
 		// First iteration.
 		{
 			input: {
@@ -16,15 +23,14 @@ test('addMediation', () => {
 				percentageGain: 0.01,
 				price: 100_000,
 				quantity: 0.42,
-				totalQuantity: 0
+				totalQuantity: 0,
 			},
 			output: {
 				numPositions: 1,
 				totalQuantity: 0.42,
-				averagePrice: 100000
-			}
+				averagePrice: 100000,
+			},
 		},
-
 		// First iteration.
 		{
 			input: {
@@ -33,15 +39,14 @@ test('addMediation', () => {
 				percentageGain: 0.01,
 				price: 100_000,
 				quantity: 0.42,
-				totalQuantity: 0
+				totalQuantity: 0,
 			},
 			output: {
 				numPositions: 1,
 				totalQuantity: 0.42,
-				averagePrice: 100000
-			}
+				averagePrice: 100000,
+			},
 		},
-
 		{
 			input: {
 				averagePrice: 80_000,
@@ -49,13 +54,13 @@ test('addMediation', () => {
 				percentageGain: 0.1,
 				price: 70_000,
 				quantity: 0.2,
-				totalQuantity: 0.1
+				totalQuantity: 0.1,
 			},
 			output: {
 				numPositions: 2,
 				totalQuantity: 0.3,
-				averagePrice: 73333.33333333
-			}
+				averagePrice: 73333.33333333,
+			},
 		},
 		{
 			input: {
@@ -64,13 +69,13 @@ test('addMediation', () => {
 				percentageGain: 0.1,
 				price: 80_000,
 				quantity: 0.002,
-				totalQuantity: 0.01
+				totalQuantity: 0.01,
 			},
 			output: {
 				numPositions: 2,
 				totalQuantity: 0.012,
-				averagePrice: 71666.66666667
-			}
+				averagePrice: 71666.66666667,
+			},
 		},
 		{
 			input: {
@@ -79,13 +84,13 @@ test('addMediation', () => {
 				percentageGain: 0.017,
 				price: 70_000,
 				quantity: 2,
-				totalQuantity: 1
+				totalQuantity: 1,
 			},
 			output: {
 				numPositions: 2,
 				totalQuantity: 3,
-				averagePrice: 73333.33333333
-			}
+				averagePrice: 73333.33333333,
+			},
 		},
 		{
 			input: {
@@ -94,47 +99,60 @@ test('addMediation', () => {
 				percentageGain: 0.017,
 				price: 0.0008,
 				quantity: 0.0002,
-				totalQuantity: 0.001
+				totalQuantity: 0.001,
 			},
 			output: {
 				numPositions: 2,
 				totalQuantity: 0.0012,
-				averagePrice: 0.00071667
-			}
-		}
-	])
+				averagePrice: 0.00071667,
+			},
+		},
+	]
+
+	for (const { input, output } of testData) {
+		assert.deepEqual(addMediation(input), output)
+	}
 })
 
 test('exitMediation', () => {
-	assertDeepEqual<ExitMediationInput, ReturnType<typeof exitMediation>>(exitMediation, [
+	type TestData = Array<{
+		input: ExitMediationInput;
+		output: ReturnType<typeof exitMediation>;
+	}>
+	const testData: TestData = [
 		// First iteration.
 		{
 			input: {
 				direction: 'LONG',
 				averagePrice: 0,
 				percentageGain: 0.01,
-				price: 100_000
+				price: 100_000,
 			},
-			output: false
+			output: false,
 		},
-
 		// First iteration.
 		{
 			input: {
 				direction: 'SHORT',
 				averagePrice: 0,
 				percentageGain: 0.01,
-				price: 100_000
+				price: 100_000,
 			},
-			output: false
-		}
-	])
+			output: false,
+		},
+	]
+
+	for (const { input, output } of testData) {
+		assert.equal(exitMediation(input), output)
+	}
 })
 
 test('MediatorMemory', () => {
 	const memoryValue = 'some memory value'
 	const context: Context = {
-		defaults: {}, params: {}, time: 0,
+		defaults: {},
+		params: {},
+		time: 0,
 		memory: { value: memoryValue },
 	}
 	const memory = new MediatorMemory(context, 'LABEL')

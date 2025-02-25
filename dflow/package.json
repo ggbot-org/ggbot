@@ -20,7 +20,6 @@
     "minimal-type-guard-helpers": "0.2.0"
   },
   "devDependencies": {
-    "@workspace/tsconfig": "0.0.0",
-    "minimal-assertion-helpers": "0.1.0"
+    "@workspace/tsconfig": "0.0.0"
   }
 }

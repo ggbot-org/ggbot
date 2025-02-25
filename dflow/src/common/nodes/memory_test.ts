@@ -18,17 +18,15 @@ describe('deleteMemory', () => {
 					{
 						id: 'key',
 						text: JSON.stringify(key),
-						outs: [{ id: 'out' }]
+						outs: [{ id: 'out' }],
 					},
 					{
 						id: nodeId,
 						text: 'deleteMemory',
-						ins: [{ id: 'key' }]
-					}
+						ins: [{ id: 'key' }],
+					},
 				],
-				edges: [
-					{ id: 'e', from: ['key', 'out'], to: [nodeId, 'key'] }
-				]
+				edges: [{ id: 'e', from: ['key', 'out'], to: [nodeId, 'key'] }],
 			})
 			const { memory, memoryChanged } = await executor.run({ params: {}, memory: { [key]: value }, time: now() })
 			assert.equal(memoryChanged, true)
@@ -47,19 +45,21 @@ describe('getMemory', () => {
 					{
 						id: 'key',
 						text: JSON.stringify(key),
-						outs: [{ id: 'out' }]
+						outs: [{ id: 'out' }],
 					},
 					{
 						id: nodeId,
 						text: 'getMemory',
-						ins: [{ id: 'key' }, { id: 'default' }]
-					}
+						ins: [{ id: 'key' }, { id: 'default' }],
+					},
 				],
-				edges: [
-					{ id: 'e', from: ['key', 'out'], to: [nodeId, 'key'] }
-				]
+				edges: [{ id: 'e', from: ['key', 'out'], to: [nodeId, 'key'] }],
 			})
-			const { execution, memory, memoryChanged } = await executor.run({ params: {}, memory: { [key]: value }, time: now() })
+			const { execution, memory, memoryChanged } = await executor.run({
+				params: {},
+				memory: { [key]: value },
+				time: now(),
+			})
 			assert.equal(memoryChanged, false)
 			assert.deepEqual(memory[key], value)
 			assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
@@ -75,27 +75,27 @@ describe('getMemory', () => {
 					{
 						id: 'key',
 						text: JSON.stringify(key),
-						outs: [{ id: 'out' }]
+						outs: [{ id: 'out' }],
 					},
 					{
 						id: 'default',
 						text: JSON.stringify(value),
-						outs: [{ id: 'out' }]
+						outs: [{ id: 'out' }],
 					},
 					{
 						id: nodeId,
 						text: 'getMemory',
-						ins: [{ id: 'key' }, { id: 'default' }]
-					}
+						ins: [{ id: 'key' }, { id: 'default' }],
+					},
 				],
 				edges: [
 					{ id: 'e1', from: ['key', 'out'], to: [nodeId, 'key'] },
 					{
 						id: 'e2',
 						from: ['default', 'out'],
-						to: [nodeId, 'default']
-					}
-				]
+						to: [nodeId, 'default'],
+					},
+				],
 			})
 			const { execution, memory, memoryChanged } = await executor.run({ params: {}, memory: {}, time: now() })
 			assert.equal(memoryChanged, false)
@@ -114,29 +114,33 @@ describe('getMemory', () => {
 					{
 						id: 'key',
 						text: JSON.stringify(key),
-						outs: [{ id: 'out' }]
+						outs: [{ id: 'out' }],
 					},
 					{
 						id: 'default',
 						text: JSON.stringify(defaultValue),
-						outs: [{ id: 'out' }]
+						outs: [{ id: 'out' }],
 					},
 					{
 						id: nodeId,
 						text: 'getMemory',
-						ins: [{ id: 'key' }, { id: 'default' }]
-					}
+						ins: [{ id: 'key' }, { id: 'default' }],
+					},
 				],
 				edges: [
 					{ id: 'e1', from: ['key', 'out'], to: [nodeId, 'key'] },
 					{
 						id: 'e2',
 						from: ['default', 'out'],
-						to: [nodeId, 'default']
-					}
-				]
+						to: [nodeId, 'default'],
+					},
+				],
 			})
-			const { execution, memory, memoryChanged } = await executor.run({ params: {}, memory: { [key]: value }, time: now() })
+			const { execution, memory, memoryChanged } = await executor.run({
+				params: {},
+				memory: { [key]: value },
+				time: now(),
+			})
 			assert.equal(memoryChanged, false)
 			assert.equal(memory[key], value)
 			assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
@@ -154,27 +158,27 @@ describe('setMemory', () => {
 					{
 						id: 'key',
 						text: JSON.stringify(key),
-						outs: [{ id: 'out' }]
+						outs: [{ id: 'out' }],
 					},
 					{
 						id: 'value',
 						text: JSON.stringify(value),
-						outs: [{ id: 'out' }]
+						outs: [{ id: 'out' }],
 					},
 					{
 						id: nodeId,
 						text: 'setMemory',
-						ins: [{ id: 'key' }, { id: 'value' }]
-					}
+						ins: [{ id: 'key' }, { id: 'value' }],
+					},
 				],
 				edges: [
 					{ id: 'e1', from: ['key', 'out'], to: [nodeId, 'key'] },
 					{
 						id: 'e2',
 						from: ['value', 'out'],
-						to: [nodeId, 'value']
-					}
-				]
+						to: [nodeId, 'value'],
+					},
+				],
 			})
 			const { memory, memoryChanged } = await executor.run({ params: {}, memory: {}, time: now() })
 			assert.equal(memoryChanged, true)

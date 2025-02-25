@@ -1,45 +1,38 @@
+import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { assertEqual } from 'minimal-assertion-helpers'
-import { MaybeObject } from 'minimal-type-guard-helpers'
-
 import { nullId } from './item.js'
-import { isStrategyScheduling, StrategyScheduling } from './strategyScheduling.js'
+import { isStrategyScheduling } from './strategyScheduling.js'
 
 test('isStrategyScheduling', () => {
-	assertEqual<MaybeObject<StrategyScheduling>, boolean>(
-		isStrategyScheduling,
-		[
-			{
-				input: {
-					id: nullId,
-					status: 'active',
-					frequency: { every: 1, interval: '1h' }
-				},
-				output: true
+	for (const { input, output } of [
+		{
+			input: {
+				id: nullId,
+				status: 'active',
+				frequency: { every: 1, interval: '1h' },
 			},
-			{
-				input: {
-					id: nullId,
-					status: 'active',
-					frequency: { every: 1, interval: '1h' },
-					params: {
-						'param 1': 123
-					}
-				},
-				output: true
+			output: true,
+		},
+		{
+			input: {
+				id: nullId,
+				status: 'active',
+				frequency: { every: 1, interval: '1h' },
+				params: { 'param 1': 123 },
 			},
-			{
-				input: {
-					id: nullId,
-					status: 'active',
-					frequency: { every: 1, interval: '1h' },
-					memory: {
-						'label 1': 123
-					}
-				},
-				output: true
-			}
-		]
-	)
+			output: true,
+		},
+		{
+			input: {
+				id: nullId,
+				status: 'active',
+				frequency: { every: 1, interval: '1h' },
+				memory: { 'label 1': 123 },
+			},
+			output: true,
+		},
+	]) {
+		assert.equal(isStrategyScheduling(input), output)
+	}
 })

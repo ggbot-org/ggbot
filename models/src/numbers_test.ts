@@ -1,39 +1,42 @@
+import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
-
-import { assertEqual } from 'minimal-assertion-helpers'
 
 import { isFiniteNumber, isNaturalNumber } from './numbers.js'
 
 const notAllowed = [NaN, Infinity]
 
 test('isFiniteNumber', () => {
-	assertEqual<unknown, boolean>(isFiniteNumber, [
+	for (const { input, output } of [
 		{
 			input: 1,
-			output: true
+			output: true,
 		},
 		{
 			input: -1.2,
-			output: true
+			output: true,
 		},
-		...notAllowed.map((input) => ({ input, output: false }))
-	])
+		...notAllowed.map((input) => ({ input, output: false })),
+	]) {
+		assert.equal(isFiniteNumber(input), output)
+	}
 })
 
 test('isNaturalNumber', () => {
-	assertEqual<unknown, boolean>(isNaturalNumber, [
+	for (const { input, output } of [
 		{
 			input: 1,
-			output: true
+			output: true,
 		},
 		{
 			input: 2.1,
-			output: false
+			output: false,
 		},
 		{
 			input: -1,
-			output: false
+			output: false,
 		},
-		...notAllowed.map((input) => ({ input, output: false }))
-	])
+		...notAllowed.map((input) => ({ input, output: false })),
+	]) {
+		assert.equal(isNaturalNumber(input), output)
+	}
 })

@@ -1,56 +1,69 @@
+import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { assertEqual } from 'minimal-assertion-helpers'
 import { getDay, today } from 'minimal-time-helpers'
 
-import { isSubscription, numDaysSubscriptionExpirationTolerance, statusOfSubscription, Subscription, SubscriptionStatus } from './subscription.js'
+import { isSubscription,
+	numDaysSubscriptionExpirationTolerance,
+	statusOfSubscription,
+	Subscription,
+	SubscriptionStatus } from './subscription.js'
 
 test('isSubscription', () => {
-	assertEqual<Subscription, boolean>(isSubscription, [
+	type TestData = Array<{
+		input: Subscription;
+		output: boolean;
+	}>
+	const testData: TestData = [
 		{
 			input: {
 				plan: 'basic',
-				end: '2022-01-01'
+				end: '2022-01-01',
 			},
-			output: true
-		}
-	])
+			output: true,
+		},
+	]
+
+	for (const { input, output } of testData) {
+		assert.equal(isSubscription(input), output)
+	}
 })
 
 test('statusOfSubscription', () => {
-	assertEqual<Pick<Subscription, 'end'>, SubscriptionStatus>(
-		statusOfSubscription,
-		[
-			{
-				input: {
-					end: '2000-01-01'
-				},
-				output: 'expired'
+	type TestData = Array<{
+		input: Pick<Subscription, 'end'>;
+		output: SubscriptionStatus;
+	}>
+	const testData: TestData = [
+		{
+			input: {
+				end: '2000-01-01',
 			},
-			{
-				input: {
-					end: today()
-				},
-				output: 'active'
+			output: 'expired',
+		},
+		{
+			input: {
+				end: today(),
 			},
-			// If subscription ended few days ago, according to expiration tolerance, it's still active.
-			{
-				input: {
-					end: getDay(today()).minus(
-						numDaysSubscriptionExpirationTolerance - 1
-					).days
-				},
-				output: 'active'
+			output: 'active',
+		},
+		// If subscription ended few days ago, according to expiration tolerance, it's still active.
+		{
+			input: {
+				end: getDay(today()).minus(numDaysSubscriptionExpirationTolerance - 1).days,
 			},
-			// If subscription ended `numDaysSubscriptionExpirationTolerance + 1` days ago, it's expired.
-			{
-				input: {
-					end: getDay(today()).minus(
-						numDaysSubscriptionExpirationTolerance + 1
-					).days
-				},
-				output: 'expired'
-			}
-		]
-	)
+			output: 'active',
+		},
+		// If subscription ended `numDaysSubscriptionExpirationTolerance + 1` days ago, it's expired.
+		{
+			input: {
+				end: getDay(today()).minus(numDaysSubscriptionExpirationTolerance + 1).days,
+			},
+			output: 'expired',
+		},
+	]
+
+	for (const { input, output } of testData) {
+		assert.equal(statusOfSubscription(input), output)
+	}
 })

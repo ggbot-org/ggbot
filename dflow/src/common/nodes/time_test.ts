@@ -1,14 +1,17 @@
 import { strict as assert } from 'node:assert'
 import { describe, test } from 'node:test'
 
-import { assertEqual } from 'minimal-assertion-helpers'
 import { dayToTime } from 'minimal-time-helpers'
 
 import { DflowCommonExecutor, getDflowExecutionOutputData } from '../executor.js'
 import { coerceToTimeUnit } from './time.js'
 
 test('coerceToTimeUnit', () => {
-	assertEqual<string, ReturnType<typeof coerceToTimeUnit>>(coerceToTimeUnit, [
+	type TestData = Array<{
+		input: string;
+		output: ReturnType<typeof coerceToTimeUnit>;
+	}>
+	const testData: TestData = [
 		{ input: 'not a TimeUnit', output: undefined },
 		{ input: 'seconds', output: 'second' },
 		{ input: '1s', output: 'second' },
@@ -17,8 +20,12 @@ test('coerceToTimeUnit', () => {
 		{ input: 'hours', output: 'hour' },
 		{ input: '1h', output: 'hour' },
 		{ input: 'days', output: 'day' },
-		{ input: '1d', output: 'day' }
-	])
+		{ input: '1d', output: 'day' },
+	]
+
+	for (const { input, output } of testData) {
+		assert.equal(coerceToTimeUnit(input), output)
+	}
 })
 
 describe('today', () => {
@@ -27,7 +34,7 @@ describe('today', () => {
 		const nodeId = 'a'
 		const executor = new DflowCommonExecutor({
 			nodes: [{ id: nodeId, text: 'today' }],
-			edges: []
+			edges: [],
 		})
 		const { execution } = await executor.run({ params: {}, memory: {}, time: dayToTime(day) })
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), day)
