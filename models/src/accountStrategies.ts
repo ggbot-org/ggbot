@@ -17,24 +17,23 @@ export const accountStrategiesModifier = {
 		accountStrategy: AccountStrategy,
 		subscriptionPlan: SubscriptionPlan | undefined
 	) {
-		const accountStrategies = [
-			...previousAccountStrategies,
-			accountStrategy,
-		]
+		const accountStrategies = [...previousAccountStrategies, accountStrategy]
 
 		// Check num strategies does not exceed quota, according to subscription.
 		if (
-			accountStrategies.length > quota.MAX_STRATEGIES_PER_ACCOUNT(subscriptionPlan)
-		) throw new ErrorExceededQuota({ type: 'MAX_STRATEGIES_PER_ACCOUNT' })
+			accountStrategies.length >
+			quota.MAX_STRATEGIES_PER_ACCOUNT(subscriptionPlan)
+		)
+			throw new ErrorExceededQuota({ type: 'MAX_STRATEGIES_PER_ACCOUNT' })
 
 		// Check num active schedulings does not exceed quota, according to subscription.
 		let numSchedulings = 0
-		for (const { schedulings } of accountStrategies) numSchedulings += schedulings.length
-		if (
-			numSchedulings > quota.MAX_SCHEDULINGS_PER_ACCOUNT(subscriptionPlan)
-		) throw new ErrorExceededQuota({
-			type: 'MAX_SCHEDULINGS_PER_ACCOUNT'
-		})
+		for (const { schedulings } of accountStrategies)
+			numSchedulings += schedulings.length
+		if (numSchedulings > quota.MAX_SCHEDULINGS_PER_ACCOUNT(subscriptionPlan))
+			throw new ErrorExceededQuota({
+				type: 'MAX_SCHEDULINGS_PER_ACCOUNT',
+			})
 
 		return accountStrategies
 	},
@@ -43,9 +42,7 @@ export const accountStrategiesModifier = {
 		accountStrategies: AccountStrategy[],
 		strategyId: AccountStrategy['strategyId']
 	) {
-		return accountStrategies.filter(
-			(item) => item.strategyId !== strategyId
-		)
+		return accountStrategies.filter((item) => item.strategyId !== strategyId)
 	},
 
 	suspendScheduling(
@@ -55,15 +52,15 @@ export const accountStrategiesModifier = {
 	) {
 		return accountStrategies.map((item) => ({
 			...item,
-			schedulings: item.strategyId === strategyId
-				? item.schedulings.map<StrategyScheduling>(
-					({ status, ...scheduling }) => ({
-						...scheduling,
-						status: schedulingId === scheduling.id
-							? 'suspended'
-							: status
-					}))
-				: item.schedulings
+			schedulings:
+				item.strategyId === strategyId
+					? item.schedulings.map<StrategyScheduling>(
+							({ status, ...scheduling }) => ({
+								...scheduling,
+								status: schedulingId === scheduling.id ? 'suspended' : status,
+							})
+						)
+					: item.schedulings,
 		}))
 	},
 
@@ -73,13 +70,15 @@ export const accountStrategiesModifier = {
 	) {
 		return accountStrategies.map((item) => ({
 			...item,
-			schedulings: item.strategyId === strategyId
-				? item.schedulings.map<StrategyScheduling>(
-					({ status: _status, ...scheduling }) => ({
-						...scheduling,
-						status: 'suspended'
-					}))
-				: item.schedulings
+			schedulings:
+				item.strategyId === strategyId
+					? item.schedulings.map<StrategyScheduling>(
+							({ status: _status, ...scheduling }) => ({
+								...scheduling,
+								status: 'suspended',
+							})
+						)
+					: item.schedulings,
 		}))
 	},
 
@@ -91,15 +90,14 @@ export const accountStrategiesModifier = {
 	) {
 		return accountStrategies.map((item) => ({
 			...item,
-			schedulings: item.strategyId === strategyId
-				? item.schedulings.map<StrategyScheduling>(
-					(scheduling) => ({
-						...scheduling,
-						memory: schedulingId === scheduling.id
-							? memory
-							: scheduling.memory
-					}))
-				: item.schedulings
+			schedulings:
+				item.strategyId === strategyId
+					? item.schedulings.map<StrategyScheduling>((scheduling) => ({
+							...scheduling,
+							memory:
+								schedulingId === scheduling.id ? memory : scheduling.memory,
+						}))
+					: item.schedulings,
 		}))
-	}
+	},
 }

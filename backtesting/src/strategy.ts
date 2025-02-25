@@ -8,7 +8,9 @@ export class BacktestingStrategy {
 	strategyName: Strategy['name']
 
 	constructor({
-		flow, strategyKey, strategyName
+		flow,
+		strategyKey,
+		strategyName,
 	}: Pick<BacktestingStrategy, 'flow' | 'strategyKey' | 'strategyName'>) {
 		this.flow = flow
 		this.strategyKey = strategyKey

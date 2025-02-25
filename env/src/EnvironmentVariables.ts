@@ -8,7 +8,9 @@ function getVariable(
 ) {
 	if (typeof VARIABLE_VALUE === 'string') return VARIABLE_VALUE
 	if (DEFAULT_VALUE) {
-		console.error(`Missing environment variable ${VARIABLE_NAME}, using default value ${DEFAULT_VALUE}`)
+		console.error(
+			`Missing environment variable ${VARIABLE_NAME}, using default value ${DEFAULT_VALUE}`
+		)
 		return DEFAULT_VALUE
 	}
 	throw new Error(`Missing environment variable ${VARIABLE_NAME}`)
@@ -20,7 +22,10 @@ class EnvironmentVariables {
 	}
 
 	AUTHENTICATION_SECRET() {
-		return getVariable(process.env.AUTHENTICATION_SECRET, 'AUTHENTICATION_SECRET')
+		return getVariable(
+			process.env.AUTHENTICATION_SECRET,
+			'AUTHENTICATION_SECRET'
+		)
 	}
 
 	AWS_ACCOUNT_ID() {
@@ -28,7 +33,10 @@ class EnvironmentVariables {
 	}
 
 	AWS_BINANCE_PROXY_REGION() {
-		return getVariable(process.env.AWS_BINANCE_PROXY_REGION, 'AWS_BINANCE_PROXY_REGION')
+		return getVariable(
+			process.env.AWS_BINANCE_PROXY_REGION,
+			'AWS_BINANCE_PROXY_REGION'
+		)
 	}
 
 	AWS_DATA_REGION() {
@@ -44,8 +52,13 @@ class EnvironmentVariables {
 	}
 
 	DEPLOY_STAGE(): DeployStage {
-		const deployStage = getVariable(process.env.DEPLOY_STAGE, 'DEPLOY_STAGE', 'local')
-		if (['local', 'next', 'main'].includes(deployStage)) return deployStage as DeployStage
+		const deployStage = getVariable(
+			process.env.DEPLOY_STAGE,
+			'DEPLOY_STAGE',
+			'local'
+		)
+		if (['local', 'next', 'main'].includes(deployStage))
+			return deployStage as DeployStage
 		throw new Error(`Invalid DeployStage ${deployStage}`)
 	}
 
@@ -54,19 +67,34 @@ class EnvironmentVariables {
 	}
 
 	PROJECT_SHORT_NAME() {
-		return getVariable(process.env.PROJECT_SHORT_NAME, 'PROJECT_SHORT_NAME', 'project')
+		return getVariable(
+			process.env.PROJECT_SHORT_NAME,
+			'PROJECT_SHORT_NAME',
+			'project'
+		)
 	}
 
 	PROJECT_TAG_LINE() {
-		return getVariable(process.env.PROJECT_TAG_LINE, 'PROJECT_TAG_LINE', 'tag line')
+		return getVariable(
+			process.env.PROJECT_TAG_LINE,
+			'PROJECT_TAG_LINE',
+			'tag line'
+		)
 	}
 
 	STRIPE_PLAN_BASIC_MONTHLY_PRICE(defaultValue?: string) {
-		return getVariable(process.env.STRIPE_PLAN_BASIC_MONTHLY_PRICE, 'STRIPE_PLAN_BASIC_MONTHLY_PRICE', defaultValue)
+		return getVariable(
+			process.env.STRIPE_PLAN_BASIC_MONTHLY_PRICE,
+			'STRIPE_PLAN_BASIC_MONTHLY_PRICE',
+			defaultValue
+		)
 	}
 
 	STRIPE_PLAN_BASIC_PRICE_ID() {
-		return getVariable(process.env.STRIPE_PLAN_BASIC_PRICE_ID, 'STRIPE_PLAN_BASIC_PRICE_ID')
+		return getVariable(
+			process.env.STRIPE_PLAN_BASIC_PRICE_ID,
+			'STRIPE_PLAN_BASIC_PRICE_ID'
+		)
 	}
 
 	STRIPE_SECRET_KEY() {
@@ -74,7 +102,11 @@ class EnvironmentVariables {
 	}
 
 	TELEGRAM_SUPPORT_URL(defaultValue?: string) {
-		return getVariable(process.env.TELEGRAM_SUPPORT_URL, 'TELEGRAM_SUPPORT_URL', defaultValue)
+		return getVariable(
+			process.env.TELEGRAM_SUPPORT_URL,
+			'TELEGRAM_SUPPORT_URL',
+			defaultValue
+		)
 	}
 }
 

@@ -13,7 +13,8 @@ export type Scheduling = {
 }
 
 export const isScheduling = objectTypeGuard<Scheduling>(
-	({ frequency, status }) => isFrequency(frequency) && isSchedulingStatus(status)
+	({ frequency, status }) =>
+		isFrequency(frequency) && isSchedulingStatus(status)
 )
 
 export function schedulingsAreInactive(schedulings: Scheduling[]) {
@@ -29,7 +30,7 @@ export function getSchedulingSummary(
 	const summary: SchedulingSummary = {
 		active: 0,
 		inactive: 0,
-		suspended: 0
+		suspended: 0,
 	}
 	for (const { status } of schedulings) summary[status]++
 	return summary

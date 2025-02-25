@@ -8,7 +8,7 @@ const colorOf: Record<
 > = {
 	active: 'primary',
 	inactive: undefined,
-	suspended: 'danger'
+	suspended: 'danger',
 }
 
 type _TagLabelProps = {

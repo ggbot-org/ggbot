@@ -31,5 +31,6 @@ export const itemKey: Record<ItemKey, (...args: any[]) => string> = {
 	doNotShowPleasePurchase: () => 'doNotShowPleasePurchase',
 	gotFirstPageView: () => 'gotFirstPageView',
 	hideInactiveStrategies: () => 'hideInactiveStrategies',
-	strategy: ({ strategyId, strategyKind }: StrategyKey) => `strategy:${strategyKind}:${strategyId}`,
+	strategy: ({ strategyId, strategyKind }: StrategyKey) =>
+		`strategy:${strategyKind}:${strategyId}`,
 }

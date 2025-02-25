@@ -49,6 +49,7 @@ export function normalizeEmailAddress(email: EmailAddress): EmailAddress {
 	const userWithNoDots = user.replace(/\./g, '')
 	// Return normalized email as a lowercase string
 	const normalizeEmail = `${userWithNoDots}@${domain}`.toLowerCase()
-	if (!isEmailAddress(normalizeEmail)) throw new ErrorInvalidArg({ type: 'EmailAddress', arg: normalizeEmail })
+	if (!isEmailAddress(normalizeEmail))
+		throw new ErrorInvalidArg({ type: 'EmailAddress', arg: normalizeEmail })
 	return normalizeEmail
 }

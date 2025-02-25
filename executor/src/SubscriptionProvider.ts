@@ -1,6 +1,12 @@
 import { CacheMap } from '@workspace/cache'
 import { ExecutorDatabase } from '@workspace/database'
-import { AccountKey, isSubscription, statusOfSubscription, Subscription, SubscriptionPlan } from '@workspace/models'
+import {
+	AccountKey,
+	isSubscription,
+	statusOfSubscription,
+	Subscription,
+	SubscriptionPlan,
+} from '@workspace/models'
 
 import { ONE_DAY } from './durations.js'
 
@@ -20,20 +26,21 @@ export class SubscriptionProvider {
 		subscriptionPlan: SubscriptionPlan | undefined
 	}> {
 		const cached = cache.get(accountId)
-		if (cached) return {
-			hasActiveSubscription: statusOfSubscription(cached) === 'active',
-			subscriptionPlan: cached.plan
-		}
+		if (cached)
+			return {
+				hasActiveSubscription: statusOfSubscription(cached) === 'active',
+				subscriptionPlan: cached.plan,
+			}
 		const subscription = await this.database.ReadSubscription({ accountId })
-		if (!isSubscription(subscription)) return {
-			hasActiveSubscription: false,
-			subscriptionPlan: undefined
-		}
+		if (!isSubscription(subscription))
+			return {
+				hasActiveSubscription: false,
+				subscriptionPlan: undefined,
+			}
 		cache.set(accountId, subscription)
 		return {
-			hasActiveSubscription:
-				statusOfSubscription(subscription) === 'active',
-			subscriptionPlan: subscription.plan
+			hasActiveSubscription: statusOfSubscription(subscription) === 'active',
+			subscriptionPlan: subscription.plan,
 		}
 	}
 }

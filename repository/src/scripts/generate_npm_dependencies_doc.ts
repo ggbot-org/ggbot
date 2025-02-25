@@ -32,7 +32,9 @@ function allDependencies(
 		if (packageName !== wantedPackageName) continue
 		if (dependencies.includes(dependency)) continue
 		dependencies.push(dependency)
-		dependencies.push(...allDependencies(dependency, internalDependencyGraph, dependencies))
+		dependencies.push(
+			...allDependencies(dependency, internalDependencyGraph, dependencies)
+		)
 	}
 	return dependencies
 }
@@ -41,14 +43,21 @@ function isRedundantDependency(
 	[packageName, dependency]: InternalDependencyRelation,
 	internalDependencyGraph: InternalDependencyGraph
 ): boolean {
-	const packageDependencies = internalDependencyGraph.filter((item) => item[0] === packageName)
+	const packageDependencies = internalDependencyGraph.filter(
+		(item) => item[0] === packageName
+	)
 
 	for (const dependencyRelation of packageDependencies) {
 		const siblingDependencyRelations = packageDependencies.filter(
 			([_, dependency]) => dependencyRelation[1] !== dependency
 		)
 		for (const [_, siblingDependency] of siblingDependencyRelations) {
-			if (allDependencies(siblingDependency, internalDependencyGraph).includes(dependency)) return true
+			if (
+				allDependencies(siblingDependency, internalDependencyGraph).includes(
+					dependency
+				)
+			)
+				return true
 		}
 	}
 
@@ -73,8 +82,14 @@ for (const dependencyRelation of internalDependencyGraph) {
 	}
 }
 
-function graphRows(graphInternalDependencyRows: string[]){
-	return ['```mermaid', 'graph LR', ...graphInternalDependencyRows, '```', ''].join('\n')
+function graphRows(graphInternalDependencyRows: string[]) {
+	return [
+		'```mermaid',
+		'graph LR',
+		...graphInternalDependencyRows,
+		'```',
+		'',
+	].join('\n')
 }
 
 const content = `

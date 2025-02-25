@@ -2,7 +2,7 @@ import { Dflow, DflowDataType } from 'dflow'
 
 const { input, output } = Dflow
 
-export function inputDefaultParameter (dataType: DflowDataType) {
+export function inputDefaultParameter(dataType: DflowDataType) {
 	return input(dataType, { name: 'default' })
 }
 
@@ -10,7 +10,7 @@ export const inputArray = input('array', { name: 'array' })
 
 export const inputExecute = input('boolean', {
 	name: 'execute',
-	optional: true
+	optional: true,
 })
 
 export const inputClose = input('array', { name: 'close' })
@@ -19,8 +19,14 @@ export const outputClose = output('array', { name: 'close' })
 export const inputHigh = input('array', { name: 'high' })
 export const outputHigh = output('array', { name: 'high' })
 
-export const inputOrderQuantity = input('number', { name: 'quantity', optional: true })
-export const outputOrderQuantity = input('number', { name: 'quantity', optional: true })
+export const inputOrderQuantity = input('number', {
+	name: 'quantity',
+	optional: true,
+})
+export const outputOrderQuantity = input('number', {
+	name: 'quantity',
+	optional: true,
+})
 
 export const inputKey = input('string', { name: 'key' })
 
@@ -38,7 +44,10 @@ export const inputPrice = input('number', { name: 'price' })
 export const outputPrice = output('number', { name: 'price' })
 
 export const pinSymbolName = 'symbol'
-export const inputSymbol = input('string', { name: pinSymbolName, optional: true })
+export const inputSymbol = input('string', {
+	name: pinSymbolName,
+	optional: true,
+})
 export const outputSymbol = input('string', { name: pinSymbolName })
 
 export const pinIntervalName = 'interval'

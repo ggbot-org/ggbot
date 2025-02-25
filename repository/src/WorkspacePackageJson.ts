@@ -32,17 +32,25 @@ export class WorkspacePackageJson implements FileProvider {
 		this.directoryPathname = directoryPathname
 	}
 
-	static isInternalDependency(packageName: string){
+	static isInternalDependency(packageName: string) {
 		return packageName.startsWith(WorkspacePackageJson.scope)
 	}
 
-	static workspacePathnameFromInternalDependency(internalDependency: string): Workspace['pathname'] {
+	static workspacePathnameFromInternalDependency(
+		internalDependency: string
+	): Workspace['pathname'] {
 		const workspacePathname = internalDependency.split('/').pop()
-		if (!workspacePathname) throw new Error(`Cannot get workspace pathname from ${internalDependency}`)
+		if (!workspacePathname)
+			throw new Error(
+				`Cannot get workspace pathname from ${internalDependency}`
+			)
 		return workspacePathname
 	}
 
-	static externalDependenciesChain(workspacePathname: Workspace['pathname'], workspaces: Repository['workspaces']) {
+	static externalDependenciesChain(
+		workspacePathname: Workspace['pathname'],
+		workspaces: Repository['workspaces']
+	) {
 		const workspace = workspaces.get(workspacePathname)
 		if (!workspace) throw Error(`Cannot get workspace ${workspacePathname}`)
 		const seen = new Set<string>()
@@ -50,11 +58,18 @@ export class WorkspacePackageJson implements FileProvider {
 		for (const dependency of workspace.packageJson.dependencies) {
 			const [dependencyName] = dependency
 			if (WorkspacePackageJson.isInternalDependency(dependencyName)) {
-				const dependencyWorkspacePathname = WorkspacePackageJson.workspacePathnameFromInternalDependency(dependencyName)
+				const dependencyWorkspacePathname =
+					WorkspacePackageJson.workspacePathnameFromInternalDependency(
+						dependencyName
+					)
 				const dependencyWorkspace = workspaces.get(dependencyWorkspacePathname)
-				if (!dependencyWorkspace) throw Error(`Cannot get workspace ${dependencyWorkspace}`)
+				if (!dependencyWorkspace)
+					throw Error(`Cannot get workspace ${dependencyWorkspace}`)
 				if (dependencyWorkspace.packageJson.dependencies.size === 0) continue
-				for (const subDependency of WorkspacePackageJson.externalDependenciesChain(dependencyWorkspacePathname, workspaces)) {
+				for (const subDependency of WorkspacePackageJson.externalDependenciesChain(
+					dependencyWorkspacePathname,
+					workspaces
+				)) {
 					const [subDependencyName] = subDependency
 					if (!seen.has(subDependencyName)) {
 						seen.add(subDependencyName)
@@ -71,16 +86,29 @@ export class WorkspacePackageJson implements FileProvider {
 		return result
 	}
 
-	static internalDependenciesChain(workspacePathname: Workspace['pathname'], workspaces: Repository['workspaces']) {
+	static internalDependenciesChain(
+		workspacePathname: Workspace['pathname'],
+		workspaces: Repository['workspaces']
+	) {
 		const workspace = workspaces.get(workspacePathname)
 		if (!workspace) throw Error(`Cannot get workspace ${workspacePathname}`)
 		const result = Array.from(workspace.packageJson.internalDependencies)
 		for (const internalDependency of result) {
-			const dependencyWorkspacePathname = WorkspacePackageJson.workspacePathnameFromInternalDependency(internalDependency)
+			const dependencyWorkspacePathname =
+				WorkspacePackageJson.workspacePathnameFromInternalDependency(
+					internalDependency
+				)
 			const dependencyWorkspace = workspaces.get(dependencyWorkspacePathname)
-			if (!dependencyWorkspace) throw Error(`Cannot get workspace ${dependencyWorkspace}`)
-			if (dependencyWorkspace.packageJson.internalDependencies.size === 0) continue
-			result.push(...WorkspacePackageJson.internalDependenciesChain(dependencyWorkspacePathname, workspaces))
+			if (!dependencyWorkspace)
+				throw Error(`Cannot get workspace ${dependencyWorkspace}`)
+			if (dependencyWorkspace.packageJson.internalDependencies.size === 0)
+				continue
+			result.push(
+				...WorkspacePackageJson.internalDependenciesChain(
+					dependencyWorkspacePathname,
+					workspaces
+				)
+			)
 		}
 		return [...new Set(result)]
 	}
@@ -93,19 +121,22 @@ export class WorkspacePackageJson implements FileProvider {
 			private: isPrivate,
 			dependencies,
 			devDependencies,
-			scripts
+			scripts,
 		} = packageContent
 		this.packageName = name
 		this.isPrivate = Boolean(isPrivate)
 
-		if (dependencies) for (const [key, value] of Object.entries(dependencies)) {
-			if (typeof value === 'string') this.dependencies.set(key, value)
-			if (key.startsWith(WorkspacePackageJson.scope)) this.internalDependencies.add(key)
-		}
+		if (dependencies)
+			for (const [key, value] of Object.entries(dependencies)) {
+				if (typeof value === 'string') this.dependencies.set(key, value)
+				if (key.startsWith(WorkspacePackageJson.scope))
+					this.internalDependencies.add(key)
+			}
 
-		if (devDependencies) for (const [key, value] of Object.entries(devDependencies)) {
-			if (typeof value === 'string') this.devDependencies.set(key, value)
-		}
+		if (devDependencies)
+			for (const [key, value] of Object.entries(devDependencies)) {
+				if (typeof value === 'string') this.devDependencies.set(key, value)
+			}
 
 		if (scripts && typeof scripts === 'object') {
 			this.buildScriptCommand = scripts[WorkspacePackageJson.buildScriptKey]

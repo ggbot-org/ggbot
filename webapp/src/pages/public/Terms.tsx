@@ -37,13 +37,19 @@ export function TermsPage() {
 					<FormattedMessage id="Terms.strategies" />
 				</Paragraph>
 				<Paragraph>
-					<FormattedMessage id="Terms.profitAndLoss" values={{ href: telegram.support }} />
+					<FormattedMessage
+						id="Terms.profitAndLoss"
+						values={{ href: telegram.support }}
+					/>
 				</Paragraph>
 				<H2>
 					<FormattedMessage id="Terms.binance" />
 				</H2>
 				<Paragraph>
-					<FormattedMessage id="Terms.binanceApi" values={{ href: exchange.binance.homepage }} />
+					<FormattedMessage
+						id="Terms.binanceApi"
+						values={{ href: exchange.binance.homepage }}
+					/>
 				</Paragraph>
 				<Paragraph>
 					<FormattedMessage id="Terms.binanceNoWithdrawals" />
@@ -67,13 +73,19 @@ export function TermsPage() {
 					<FormattedMessage id="Terms.paymentsFullfillment" />
 				</H3>
 				<Paragraph>
-					<FormattedMessage id="Terms.fullfillmentPolicies" values={{ href: telegram.support }} />
+					<FormattedMessage
+						id="Terms.fullfillmentPolicies"
+						values={{ href: telegram.support }}
+					/>
 				</Paragraph>
 				<H2>
 					<FormattedMessage id="Privacy.title" />
 				</H2>
 				<Paragraph>
-					<FormattedMessage id="Terms.privacy" values={{ href: webapp.privacy.pathname }} />
+					<FormattedMessage
+						id="Terms.privacy"
+						values={{ href: webapp.privacy.pathname }}
+					/>
 				</Paragraph>
 			</Content>
 		</Page>

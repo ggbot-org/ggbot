@@ -9,7 +9,7 @@ export type MaybeNumber = string | number | undefined
 
 type ValidNumber = number
 
-function isValidNumber (arg: MaybeNumber): arg is ValidNumber {
+function isValidNumber(arg: MaybeNumber): arg is ValidNumber {
 	const num = Number(arg)
 	if (Number.isNaN(num)) return false
 	return Number.isFinite(num)

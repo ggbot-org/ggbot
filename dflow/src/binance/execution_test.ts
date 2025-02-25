@@ -16,7 +16,7 @@ test('getBalanceFromExecutionSteps', async () => {
 	const testData: TestData = [
 		{
 			input: [],
-			output: []
+			output: [],
 		},
 		{
 			input: executionStepsBuyBTCUSD,
@@ -24,15 +24,15 @@ test('getBalanceFromExecutionSteps', async () => {
 				{
 					asset: 'BTC',
 					free: '0.00096',
-					locked: '0.00000000'
+					locked: '0.00000000',
 				},
 				{
 					asset: 'BUSD',
 					free: '-19.88287',
-					locked: '0.00000000'
-				}
-			]
-		}
+					locked: '0.00000000',
+				},
+			],
+		},
 	]
 
 	for (const { input, output } of testData) {

@@ -23,11 +23,11 @@ const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
 
 export function browserBundle({
 	entryPoints,
-	outfile
+	outfile,
 }: Pick<BuildOptions, 'entryPoints' | 'outfile'>) {
 	return build({
 		alias: {
-			'react': 'preact/compat',
+			react: 'preact/compat',
 			'react-dom/test-utils': 'preact/test-utils',
 			'react-dom': 'preact/compat',
 			'react/jsx-runtime': 'preact/jsx-runtime',

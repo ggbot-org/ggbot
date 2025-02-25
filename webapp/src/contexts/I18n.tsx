@@ -2,7 +2,13 @@ import { Navbar } from '_/components/library'
 import { detectLanguage, translationPathname } from '_/i18n/languages'
 import { I18nMessagesRecord } from '_/i18n/messages'
 import { defaultLanguage, Language } from '@workspace/models'
-import { createContext, PropsWithChildren, useEffect, useMemo, useReducer } from 'react'
+import {
+	createContext,
+	PropsWithChildren,
+	useEffect,
+	useMemo,
+	useReducer,
+} from 'react'
 
 type ContextValue = {
 	language: Language
@@ -23,35 +29,42 @@ type Action =
 	| { type: 'READ_INTL_MESSAGES_REQUEST' }
 	| { type: 'READ_INTL_MESSAGES_FAILURE' }
 	| {
-		type: 'READ_INTL_MESSAGES_SUCCESS'
-		messages: I18nMessagesRecord
-	}
+			type: 'READ_INTL_MESSAGES_SUCCESS'
+			messages: I18nMessagesRecord
+	  }
 
 export function I18nProvider({ children }: PropsWithChildren) {
 	const [{ messages, readHasError, readIsPending }, dispatch] = useReducer<
-		State, [any]
-	>((state, action: Action) => {
-		if (action.type == 'READ_INTL_MESSAGES_REQUEST') return {
-			readHasError: false,
-			readIsPending: true,
-		}
+		State,
+		[any]
+	>(
+		(state, action: Action) => {
+			if (action.type == 'READ_INTL_MESSAGES_REQUEST')
+				return {
+					readHasError: false,
+					readIsPending: true,
+				}
 
-		if (action.type == 'READ_INTL_MESSAGES_FAILURE') return {
-			readHasError: true,
+			if (action.type == 'READ_INTL_MESSAGES_FAILURE')
+				return {
+					readHasError: true,
+					readIsPending: false,
+				}
+
+			if (action.type == 'READ_INTL_MESSAGES_SUCCESS')
+				return {
+					readHasError: false,
+					readIsPending: false,
+					messages: action.messages,
+				}
+
+			return state
+		},
+		{
 			readIsPending: false,
-		}
-
-		if (action.type == 'READ_INTL_MESSAGES_SUCCESS') return {
 			readHasError: false,
-			readIsPending: false,
-			messages: action.messages,
 		}
-
-		return state
-	}, {
-		readIsPending: false,
-		readHasError: false,
-	})
+	)
 
 	const language = detectLanguage()
 
@@ -60,18 +73,24 @@ export function I18nProvider({ children }: PropsWithChildren) {
 		if (messages) return
 		// Get messages via HTTP.
 		dispatch({ type: 'READ_INTL_MESSAGES_REQUEST' })
-		fetch(translationPathname(language)).then((response) => response.json())
-			.then((json) => dispatch({ type: 'READ_INTL_MESSAGES_SUCCESS', messages: json }))
+		fetch(translationPathname(language))
+			.then((response) => response.json())
+			.then((json) =>
+				dispatch({ type: 'READ_INTL_MESSAGES_SUCCESS', messages: json })
+			)
 			.catch((error) => {
 				console.error(error)
 				dispatch({ type: 'READ_INTL_MESSAGES_FAILURE' })
 			})
 	}, [language, messages, readHasError, readIsPending])
 
-	const contextValue = useMemo<ContextValue>(() => ({
-		language,
-		messages,
-	}), [language, messages])
+	const contextValue = useMemo<ContextValue>(
+		() => ({
+			language,
+			messages,
+		}),
+		[language, messages]
+	)
 
 	return (
 		<I18nContext.Provider value={contextValue}>

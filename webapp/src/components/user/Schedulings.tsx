@@ -1,7 +1,18 @@
 import { Classname } from '_/classnames'
-import { Button, Buttons, Column, Columns, Level, LevelItem, Title } from '_/components/library'
+import {
+	Button,
+	Buttons,
+	Column,
+	Columns,
+	Level,
+	LevelItem,
+	Title,
+} from '_/components/library'
 import { Memory } from '_/components/Memory'
-import { SchedulingItem, SchedulingItemProps } from '_/components/user/SchedulingItem'
+import {
+	SchedulingItem,
+	SchedulingItemProps,
+} from '_/components/user/SchedulingItem'
 import { SchedulingParameters } from '_/components/user/SchedulingParameters'
 import { SchedulingsErrorExceededQuota } from '_/components/user/SchedulingsErrorExceededQuota'
 import { SchedulingsStatusBadges } from '_/components/user/SchedulingsStatusBadges'
@@ -12,12 +23,30 @@ import { useSubscription } from '_/hooks/user/useSubscription'
 import { useStrategyFlow } from '_/hooks/useStrategyFlow'
 import { FormattedMessage } from '_/i18n/components'
 import { useIntl } from '_/i18n/hooks'
-import { AccountStrategy, isStrategyScheduling, newStrategyScheduling, PRO_FREQUENCY_INTERVALS, StrategyKey, StrategyScheduling } from '@workspace/models'
-import { MouseEventHandler, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import {
+	AccountStrategy,
+	isStrategyScheduling,
+	newStrategyScheduling,
+	PRO_FREQUENCY_INTERVALS,
+	StrategyKey,
+	StrategyScheduling,
+} from '@workspace/models'
+import {
+	MouseEventHandler,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from 'react'
 
 import { SchedulingParameterItemProps } from './SchedulingParameterItem'
 
-export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
+export function Schedulings({
+	strategyKey,
+}: {
+	strategyKey: StrategyKey | undefined
+}) {
 	const strategyId = strategyKey?.strategyId
 
 	const { formatMessage } = useIntl()
@@ -30,20 +59,24 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 	const { hasActiveSubscription, isPro } = useSubscription()
 	const { accountStrategies } = useAccountStrategies()
 
-	const [currentAccountStrategies, setCurrentAccountStrategies] = useState<AccountStrategy[]>([])
+	const [currentAccountStrategies, setCurrentAccountStrategies] = useState<
+		AccountStrategy[]
+	>([])
 
 	const WRITE = useWriteAccountStrategiesItemSchedulings()
 	const error = WRITE.error
 
-	const [schedulingItems, setSchedulingItems] = useState<Array<SchedulingItemProps['scheduling']>>([])
+	const [schedulingItems, setSchedulingItems] = useState<
+		Array<SchedulingItemProps['scheduling']>
+	>([])
 
 	const currentSchedulings = useMemo<StrategyScheduling[] | undefined>(() => {
 		if (currentAccountStrategies === undefined) return
 		return currentAccountStrategies
 			.filter((accountStrategy) => accountStrategy.strategyId === strategyId)
-			.reduce<StrategyScheduling[]>(
-				(list, accountStrategy) => list.concat(accountStrategy.schedulings), []
-			)
+			.reduce<
+				StrategyScheduling[]
+			>((list, accountStrategy) => list.concat(accountStrategy.schedulings), [])
 	}, [currentAccountStrategies, strategyId])
 
 	const someSchedulingChanged = useMemo(() => {
@@ -54,27 +87,35 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 		// Here the number of schedulingItem and currentSchedulings is the same.
 		// Check every schedulingItem:
 		for (const schedulingItem of schedulingItems) {
-			const currentScheduling = currentSchedulings.find(({ id }) => schedulingItem.id === id)
+			const currentScheduling = currentSchedulings.find(
+				({ id }) => schedulingItem.id === id
+			)
 			// if there is no corresponding currentScheduling, it is a new item;
 			if (!currentScheduling) return true
 			// check if schedulingItem is valid, and some of its attribute changed.
 			if (
 				isStrategyScheduling(schedulingItem) &&
 				(schedulingItem.status !== currentScheduling.status ||
-					schedulingItem.frequency.every !== currentScheduling.frequency.every ||
-					schedulingItem.frequency.interval !== currentScheduling.frequency.interval)
-			) return true
+					schedulingItem.frequency.every !==
+						currentScheduling.frequency.every ||
+					schedulingItem.frequency.interval !==
+						currentScheduling.frequency.interval)
+			)
+				return true
 			// Compare startegy params.
-			if (currentScheduling.params === undefined && schedulingItem.params) return true
-			if (currentScheduling.params && schedulingItem.params === undefined) return true
+			if (currentScheduling.params === undefined && schedulingItem.params)
+				return true
+			if (currentScheduling.params && schedulingItem.params === undefined)
+				return true
 			if (currentScheduling.params && schedulingItem.params) {
 				if (
-					Object.keys(currentScheduling.params).length !== Object.keys(schedulingItem.params).length
-				) return true
+					Object.keys(currentScheduling.params).length !==
+					Object.keys(schedulingItem.params).length
+				)
+					return true
 				for (const key in currentScheduling.params) {
-					if (
-						currentScheduling.params[key] !== schedulingItem.params[key]
-					) return true
+					if (currentScheduling.params[key] !== schedulingItem.params[key])
+						return true
 				}
 			}
 		}
@@ -86,54 +127,74 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 		[schedulingItems]
 	)
 
-	const canSave = someSchedulingChanged && schedulingItems.every(isStrategyScheduling)
+	const canSave =
+		someSchedulingChanged && schedulingItems.every(isStrategyScheduling)
 
 	const setSchedulingItemFrequency = useCallback<
 		(id: StrategyScheduling['id']) => SchedulingItemProps['setFrequency']
-	>((id) => (frequency) => setSchedulingItems(
-				(schedulingItems) => schedulingItems.map((schedulingItem) => {
+	>(
+		(id) => (frequency) =>
+			setSchedulingItems((schedulingItems) =>
+				schedulingItems.map((schedulingItem) => {
 					if (schedulingItem.id !== id) return schedulingItem
 					return { ...schedulingItem, frequency }
-				})), [])
+				})
+			),
+		[]
+	)
 
 	const setSchedulingItemStatus = useCallback<
 		(id: StrategyScheduling['id']) => SchedulingItemProps['setStatus']
-	>((id) => (status) => setSchedulingItems(
-				(schedulingItems) => schedulingItems.map((schedulingItem) => {
+	>(
+		(id) => (status) =>
+			setSchedulingItems((schedulingItems) =>
+				schedulingItems.map((schedulingItem) => {
 					if (schedulingItem.id !== id) return schedulingItem
 					return { ...schedulingItem, status }
-				})), [])
+				})
+			),
+		[]
+	)
 
 	const setSchedulingParam = useCallback<
-		(id: StrategyScheduling['id'],) => SchedulingParameterItemProps['setParam']
-	>((id) => (key, value) => setSchedulingItems(
-				(schedulingItems) => schedulingItems.map((schedulingItem) => {
+		(id: StrategyScheduling['id']) => SchedulingParameterItemProps['setParam']
+	>(
+		(id) => (key, value) =>
+			setSchedulingItems((schedulingItems) =>
+				schedulingItems.map((schedulingItem) => {
 					if (schedulingItem.id !== id) return schedulingItem
 					const params = Object.assign({}, schedulingItem.params)
 					if (value === undefined) delete params[key]
 					else params[key] = value
 					return { ...schedulingItem, params }
-				})), [])
+				})
+			),
+		[]
+	)
 
 	const removeSchedulingItem = useCallback<
-		(id: StrategyScheduling['id'],) => SchedulingItemProps['removeScheduling']
-	>((id) => () => setSchedulingItems(
-				(schedulingItems) => schedulingItems.filter(
-					(schedulingItem) => schedulingItem.id !== id,
-				)), [])
+		(id: StrategyScheduling['id']) => SchedulingItemProps['removeScheduling']
+	>(
+		(id) => () =>
+			setSchedulingItems((schedulingItems) =>
+				schedulingItems.filter((schedulingItem) => schedulingItem.id !== id)
+			),
+		[]
+	)
 
 	const addSchedulingItem = useCallback(() => {
 		if (!hasActiveSubscription) {
 			toast.warning(formatMessage({ id: 'Schedulings.noActiveSubscription' }))
 			return
 		}
-		setSchedulingItems(
-			(schedulingItems) => schedulingItems.concat(
+		setSchedulingItems((schedulingItems) =>
+			schedulingItems.concat(
 				newStrategyScheduling({
 					frequency: { every: 1, interval: '1h' },
 					status: 'inactive',
 				})
-			))
+			)
+		)
 	}, [formatMessage, hasActiveSubscription, toast])
 
 	const onClickSave = useCallback(() => {
@@ -142,11 +203,14 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 		WRITE.request({ schedulings: wantedSchedulings, ...strategyKey })
 	}, [WRITE, canSave, strategyKey, wantedSchedulings])
 
-	const onClickCancel = useCallback<MouseEventHandler>((event) => {
-		event.preventDefault()
-		if (!currentSchedulings) return
-		setSchedulingItems(currentSchedulings)
-	}, [currentSchedulings])
+	const onClickCancel = useCallback<MouseEventHandler>(
+		(event) => {
+			event.preventDefault()
+			if (!currentSchedulings) return
+			setSchedulingItems(currentSchedulings)
+		},
+		[currentSchedulings]
+	)
 
 	// Update accountStrategies once fetched.
 	useEffect(() => {
@@ -166,7 +230,12 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 	return (
 		<>
 			<Columns>
-				<Column bulma={['is-narrow', { 'is-skeleton': accountStrategies === undefined }]}>
+				<Column
+					bulma={[
+						'is-narrow',
+						{ 'is-skeleton': accountStrategies === undefined },
+					]}
+				>
 					<form
 						className={'box' satisfies Classname}
 						onSubmit={(event) => event.preventDefault()}
@@ -191,9 +260,7 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 								<LevelItem>
 									<Buttons>
 										<Button
-											color={
-												canSave ? 'primary' : undefined
-											}
+											color={canSave ? 'primary' : undefined}
 											isLoading={WRITE.isPending}
 											onClick={onClickSave}
 										>

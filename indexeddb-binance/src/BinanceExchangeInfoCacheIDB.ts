@@ -1,10 +1,15 @@
-import { BinanceExchangeInfo, BinanceExchangeInfoCacheProvider } from '@workspace/binance'
+import {
+	BinanceExchangeInfo,
+	BinanceExchangeInfoCacheProvider,
+} from '@workspace/binance'
 
 import { BinanceIDB } from './BinanceIDB.js'
 
 const ONE_DAY = 86_400_000
 
-export class BinanceExchangeInfoCacheIDB implements BinanceExchangeInfoCacheProvider {
+export class BinanceExchangeInfoCacheIDB
+	implements BinanceExchangeInfoCacheProvider
+{
 	binanceIDB: BinanceIDB
 
 	constructor(binanceIDB: BinanceIDB) {

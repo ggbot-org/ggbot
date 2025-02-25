@@ -1,5 +1,9 @@
 import { BinanceExchangeInfo, BinanceKline } from '@workspace/binance'
-import { CacheObjectStore, IDBInstance, IDBProvider } from '@workspace/indexeddb'
+import {
+	CacheObjectStore,
+	IDBInstance,
+	IDBProvider,
+} from '@workspace/indexeddb'
 
 export class BinanceIDB extends IDBProvider implements IDBInstance {
 	static exchangeInfoKey = 'exchangeInfo'
@@ -11,7 +15,10 @@ export class BinanceIDB extends IDBProvider implements IDBInstance {
 
 	constructor() {
 		super()
-		this.objectStore = new CacheObjectStore(this.databaseName, this.databaseVersion)
+		this.objectStore = new CacheObjectStore(
+			this.databaseName,
+			this.databaseVersion
+		)
 		super.open(this)
 	}
 
@@ -35,21 +42,35 @@ export class BinanceIDB extends IDBProvider implements IDBInstance {
 
 	readExchangeInfo(): Promise<BinanceExchangeInfo | undefined> {
 		if (!this.db) return Promise.reject()
-		return this.objectStore.read<BinanceExchangeInfo>(this.db, BinanceIDB.exchangeInfoKey)
+		return this.objectStore.read<BinanceExchangeInfo>(
+			this.db,
+			BinanceIDB.exchangeInfoKey
+		)
 	}
 
 	readKline(key: string): Promise<BinanceKline | undefined> {
 		if (!this.db) return Promise.reject()
-		return this.objectStore.read<BinanceKline>(this.db, BinanceIDB.klineKey(key))
+		return this.objectStore.read<BinanceKline>(
+			this.db,
+			BinanceIDB.klineKey(key)
+		)
 	}
 
 	writeExchangeInfo(data: BinanceExchangeInfo): Promise<void> {
 		if (!this.db) return Promise.reject()
-		return this.objectStore.write<BinanceExchangeInfo>(this.db, BinanceIDB.exchangeInfoKey, data)
+		return this.objectStore.write<BinanceExchangeInfo>(
+			this.db,
+			BinanceIDB.exchangeInfoKey,
+			data
+		)
 	}
 
 	writeKline(key: string, data: BinanceKline): Promise<void> {
 		if (!this.db) return Promise.reject()
-		return this.objectStore.write<BinanceKline>(this.db, BinanceIDB.klineKey(key), data)
+		return this.objectStore.write<BinanceKline>(
+			this.db,
+			BinanceIDB.klineKey(key),
+			data
+		)
 	}
 }

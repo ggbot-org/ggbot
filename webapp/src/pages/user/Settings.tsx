@@ -16,24 +16,18 @@ export function SettingsPage() {
 				tabs={[
 					{
 						tabId: 'account',
-						content: <AccountSettings />
+						content: <AccountSettings />,
 					},
 					{
 						tabId: 'billing',
 						// Do not render content if tab is not active, avoid unnecessary network calls.
-						content:
-							activeTabId === 'billing' ? (
-								<BillingSettings />
-							) : null
+						content: activeTabId === 'billing' ? <BillingSettings /> : null,
 					},
 					{
 						tabId: 'binance',
 						// Do not render content if tab is not active, avoid unnecessary network calls.
-						content:
-							activeTabId === 'binance' ? (
-								<BinanceSettings />
-							) : null
-					}
+						content: activeTabId === 'binance' ? <BinanceSettings /> : null,
+					},
 				]}
 			/>
 		</PageContainer>

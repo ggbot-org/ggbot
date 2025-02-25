@@ -1,12 +1,12 @@
 import { Executor } from './Executor.js'
 
-function sleep (delay: number) {
+function sleep(delay: number) {
 	return new Promise((resolve) => {
 		setTimeout(resolve, delay)
 	})
 }
 
-async function start () {
+async function start() {
 	const executor = new Executor()
 
 	let canRun = true

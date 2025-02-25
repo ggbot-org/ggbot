@@ -1,5 +1,10 @@
 import { Classname } from '_/classnames'
-import { Navbar, NavbarEnd, NavbarLink, NavbarStart } from '_/components/library'
+import {
+	Navbar,
+	NavbarEnd,
+	NavbarLink,
+	NavbarStart,
+} from '_/components/library'
 import { AuthenticationContext } from '_/contexts/Authentication'
 import { FormattedMessage } from '_/i18n/components'
 import { GOTO } from '_/routing/navigation'
@@ -12,9 +17,7 @@ export function Navigation() {
 	return (
 		<Navbar>
 			<NavbarStart>
-				<NavbarLink
-					onClick={() => GOTO(webapp.user.dashboard)}
-				>
+				<NavbarLink onClick={() => GOTO(webapp.user.dashboard)}>
 					<FormattedMessage id="Navigation.dashboard" />
 				</NavbarLink>
 				<NavbarLink onClick={() => GOTO(webapp.user.settings)}>

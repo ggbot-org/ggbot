@@ -1,5 +1,17 @@
 import { Classname } from '_/classnames'
-import { BrandName, BrandTagline, Button, Div, Hero, HeroBody, HeroFoot, Level, LevelItem, Logo, Page } from '_/components/library'
+import {
+	BrandName,
+	BrandTagline,
+	Button,
+	Div,
+	Hero,
+	HeroBody,
+	HeroFoot,
+	Level,
+	LevelItem,
+	Logo,
+	Page,
+} from '_/components/library'
 import { Footer } from '_/components/public/Footer'
 import { FormattedMessage } from '_/i18n/components'
 import { GOTO } from '_/routing/navigation'
@@ -26,9 +38,7 @@ export function Homepage() {
 								<Logo animated={!gotFirstPageView} size={200} />
 							</LevelItem>
 							<LevelItem>
-								<Div
-									bulma={['is-flex', 'is-flex-direction-column']}
-								>
+								<Div bulma={['is-flex', 'is-flex-direction-column']}>
 									<BrandName size="large" />
 									<BrandTagline animated={!gotFirstPageView} />
 								</Div>
@@ -41,7 +51,7 @@ export function Homepage() {
 								'is-flex',
 								'is-justify-content-center',
 								'is-align-content-center',
-								'mb-6'
+								'mb-6',
 							]}
 						>
 							<Button

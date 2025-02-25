@@ -1,4 +1,7 @@
-import { isSerializablePrimitive, SerializablePrimitive } from './serializable.js'
+import {
+	isSerializablePrimitive,
+	SerializablePrimitive,
+} from './serializable.js'
 import { IdentifierString, isIdentifierString } from './strings.js'
 
 export type StrategyMemory = {
@@ -6,8 +9,11 @@ export type StrategyMemory = {
 }
 
 export function isStrategyMemory(arg: unknown): arg is StrategyMemory {
-	if (arg === null || typeof arg !== 'object' || Array.isArray(arg)) return false
+	if (arg === null || typeof arg !== 'object' || Array.isArray(arg))
+		return false
 	return Object.entries(arg).every(
-		([key, value]) => isIdentifierString(key) && (value === undefined ? true : isSerializablePrimitive(value))
+		([key, value]) =>
+			isIdentifierString(key) &&
+			(value === undefined ? true : isSerializablePrimitive(value))
 	)
 }

@@ -11,29 +11,33 @@ export function BrandName({ size }: Partial<SizeProp<'large'>>) {
 				'has-text-weight-semibold',
 				{
 					'is-size-1': size === 'large',
-					'is-size-5': size === undefined
-				}
+					'is-size-5': size === undefined,
+				},
 			]}
 		>
-			<FormattedMessage
-				id="Brand.name"
-				values={{ name: PROJECT_SHORT_NAME }}
-			/>
+			<FormattedMessage id="Brand.name" values={{ name: PROJECT_SHORT_NAME }} />
 		</Span>
 	)
 }
 
-export function BrandTagline({ animated }: {
-	animated?: boolean
-}) {
+export function BrandTagline({ animated }: { animated?: boolean }) {
 	return (
-		<div className={classnames({ 'brand-tagline--animated': animated }, 'is-unselectable', 'is-italic')}>
+		<div
+			className={classnames(
+				{ 'brand-tagline--animated': animated },
+				'is-unselectable',
+				'is-italic'
+			)}
+		>
 			<FormattedMessage id="Brand.tagline" />
 		</div>
 	)
 }
 
-export function Logo({ animated, size }: {
+export function Logo({
+	animated,
+	size,
+}: {
 	animated?: boolean
 	size?: number
 }) {

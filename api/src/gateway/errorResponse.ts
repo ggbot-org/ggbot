@@ -8,6 +8,6 @@ export function errorResponse(
 		body: '',
 		headers: commonHeaders,
 		isBase64Encoded: false,
-		statusCode
+		statusCode,
 	}
 }

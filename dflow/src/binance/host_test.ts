@@ -20,7 +20,7 @@ describe('DflowBinanceHost', () => {
 					defaults: {},
 					params: {},
 					memory: {},
-					time: truncateTime(now()).to.minute
+					time: truncateTime(now()).to.minute,
 				}
 			)
 			dflow.load({
@@ -28,9 +28,9 @@ describe('DflowBinanceHost', () => {
 				nodes: [
 					{
 						id: 'a',
-						text: 'BTC/BUSD'
-					}
-				]
+						text: 'BTC/BUSD',
+					},
+				],
 			})
 			assert.ok(dflow.getNodeById('a') !== undefined)
 		})

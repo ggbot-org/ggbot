@@ -1,17 +1,25 @@
 import { DayIntervalBox } from '_/components/DayIntervalBox'
 import { Column, Columns, OneColumn } from '_/components/library'
-import { StrategyErrorsTable, StrategyErrorsTableProps } from '_/components/user/StrategyErrorsTable'
+import {
+	StrategyErrorsTable,
+	StrategyErrorsTableProps,
+} from '_/components/user/StrategyErrorsTable'
 import { useReadStrategyErrors } from '_/hooks/user/api'
 import { useStrategiesDayInterval } from '_/hooks/user/useStrategiesDayInterval'
 import { StrategyKey } from '@workspace/models'
 import { useCallback, useEffect, useState } from 'react'
 
-export function StrategyErrors({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
+export function StrategyErrors({
+	strategyKey,
+}: {
+	strategyKey: StrategyKey | undefined
+}) {
 	const { min, max, start, setStart, end, setEnd } = useStrategiesDayInterval()
 
 	const [errors, setErrors] = useState<StrategyErrorsTableProps['errors']>()
 
-	const { canRun, data, isDone, isPending, request, reset } = useReadStrategyErrors()
+	const { canRun, data, isDone, isPending, request, reset } =
+		useReadStrategyErrors()
 
 	const onClickUpdate = useCallback(() => {
 		if (!strategyKey) return

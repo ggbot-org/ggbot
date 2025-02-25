@@ -1,5 +1,9 @@
 import { ENV } from '@workspace/env'
-import { ClientSession, clientSessionNumDays, isClientSession } from '@workspace/models'
+import {
+	ClientSession,
+	clientSessionNumDays,
+	isClientSession,
+} from '@workspace/models'
 import { getDay, today } from 'minimal-time-helpers'
 
 import { decrypt, encrypt } from './crypto.js'
@@ -19,7 +23,9 @@ export async function signSession(session: ClientSession) {
  * if (!session) console.error(401) // Unauthorized
  * ```
  */
-export async function readSessionFromAuthorizationHeader(headerContent: unknown): Promise<ClientSession | null> {
+export async function readSessionFromAuthorizationHeader(
+	headerContent: unknown
+): Promise<ClientSession | null> {
 	if (typeof headerContent !== 'string') return null
 	let sessionJson = ''
 	try {
@@ -30,6 +36,7 @@ export async function readSessionFromAuthorizationHeader(headerContent: unknown)
 	const session: unknown = JSON.parse(sessionJson)
 	if (!isClientSession(session)) return null
 	// Check that "expiration day" i.e. `creationDay` + `clientSessionNumDays` is not in the past yet.
-	if (getDay(session.creationDay).plus(clientSessionNumDays).days < today()) return null
+	if (getDay(session.creationDay).plus(clientSessionNumDays).days < today())
+		return null
 	return session
 }

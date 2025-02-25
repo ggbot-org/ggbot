@@ -1,6 +1,20 @@
 import { createHmac } from 'node:crypto'
 
-import { balanceIsNotEmpty, BinanceAccountInformation, BinanceApiKeyPermission, BinanceApiPrivateEndpoint, BinanceApiRequestMethod, BinanceApiRequestParams, BinanceConnector, BinanceExchange, BinanceExchangeInfoCacheMap, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType } from '@workspace/binance'
+import {
+	balanceIsNotEmpty,
+	BinanceAccountInformation,
+	BinanceApiKeyPermission,
+	BinanceApiPrivateEndpoint,
+	BinanceApiRequestMethod,
+	BinanceApiRequestParams,
+	BinanceConnector,
+	BinanceExchange,
+	BinanceExchangeInfoCacheMap,
+	BinanceNewOrderOptions,
+	BinanceOrder,
+	BinanceOrderSide,
+	BinanceOrderType,
+} from '@workspace/binance'
 
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 
@@ -32,16 +46,24 @@ export class BinanceClient {
 		params?: BinanceApiRequestParams
 	) {
 		const searchParams = new URLSearchParams()
-		if (params) for (const [key, value] of Object.entries(params)) searchParams.append(key, String(value))
+		if (params)
+			for (const [key, value] of Object.entries(params))
+				searchParams.append(key, String(value))
 
 		searchParams.append('timestamp', String(Date.now()))
 
 		searchParams.append(
 			'signature',
-			createHmac('sha256', this.apiSecret).update(searchParams.toString()).digest('hex')
+			createHmac('sha256', this.apiSecret)
+				.update(searchParams.toString())
+				.digest('hex')
 		)
 
-		return await this.connector.request<Data>(method, endpoint, Object.fromEntries(searchParams))
+		return await this.connector.request<Data>(
+			method,
+			endpoint,
+			Object.fromEntries(searchParams)
+		)
 	}
 
 	/**
@@ -50,17 +72,24 @@ export class BinanceClient {
 	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#account-information-user_data}
 	 */
 	async account(): Promise<BinanceAccountInformation> {
-		const { balances, ...rest } = await this.privateRequest<BinanceAccountInformation>('GET', '/api/v3/account')
+		const { balances, ...rest } =
+			await this.privateRequest<BinanceAccountInformation>(
+				'GET',
+				'/api/v3/account'
+			)
 
 		return {
 			// Filter empty balances
 			balances: balances.filter(balanceIsNotEmpty),
-			...rest
+			...rest,
 		}
 	}
 
 	async apiRestrictions(): Promise<BinanceApiKeyPermission> {
-		return this.privateRequest<BinanceApiKeyPermission>('GET', '/sapi/v1/account/apiRestrictions')
+		return this.privateRequest<BinanceApiKeyPermission>(
+			'GET',
+			'/sapi/v1/account/apiRestrictions'
+		)
 	}
 
 	/**
@@ -75,6 +104,11 @@ export class BinanceClient {
 		orderOptions: BinanceNewOrderOptions
 	): Promise<BinanceOrder> {
 		const options = await this.exchange.prepareOrder(symbol, type, orderOptions)
-		return await this.privateRequest<BinanceOrder>('POST', '/api/v3/order', { symbol, side, type, ...options })
+		return await this.privateRequest<BinanceOrder>('POST', '/api/v3/order', {
+			symbol,
+			side,
+			type,
+			...options,
+		})
 	}
 }

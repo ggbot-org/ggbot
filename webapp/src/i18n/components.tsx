@@ -1,18 +1,28 @@
 import { randomKey } from '_/components/library/randomKey'
 import { I18nContext } from '_/contexts/I18n'
-import { formatMessage, FormatMessageValues, i18nRichTextTags } from '_/i18n/messages'
+import {
+	formatMessage,
+	FormatMessageValues,
+	i18nRichTextTags,
+} from '_/i18n/messages'
 import { ReactNode, useContext, useMemo } from 'react'
 
 import { FormatjsIntlMessageId } from '../types/FormatjsIntlMessageIds'
 
-export function FormattedDate({ value, ...format }: {
+export function FormattedDate({
+	value,
+	...format
+}: {
 	value: string
 } & Intl.DateTimeFormatOptions) {
 	const { language } = useContext(I18nContext)
-	return new Intl.DateTimeFormat(language,	format).format(new Date(value))
+	return new Intl.DateTimeFormat(language, format).format(new Date(value))
 }
 
-export function FormattedMessage({ id, values }: {
+export function FormattedMessage({
+	id,
+	values,
+}: {
 	id: FormatjsIntlMessageId
 	values?: FormatMessageValues
 }) {
@@ -49,9 +59,12 @@ export function FormattedMessage({ id, values }: {
 				if (typeof num != 'number') return null
 				num += offset
 				if (pluralType == 'cardinal') {
-					if (options['=0'] && num == 0) return options['=0'].value.map(pluralFormatter(num))
-					if (options['=1'] && num == 1) return options['=1'].value.map(pluralFormatter(num))
-					if (options.other) return options.other.value.map(pluralFormatter(num))
+					if (options['=0'] && num == 0)
+						return options['=0'].value.map(pluralFormatter(num))
+					if (options['=1'] && num == 1)
+						return options['=1'].value.map(pluralFormatter(num))
+					if (options.other)
+						return options.other.value.map(pluralFormatter(num))
 				}
 			}
 			if (type == 8) {

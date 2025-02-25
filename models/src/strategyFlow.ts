@@ -64,11 +64,11 @@ export type StrategyFlow = UpdateTime & {
 }
 
 export function newStrategyFlow({
-	view
+	view,
 }: Pick<StrategyFlow, 'view'>): StrategyFlow {
 	return {
 		view,
-		...updatedNow()
+		...updatedNow(),
 	}
 }
 
@@ -84,35 +84,35 @@ export const welcomeFlow: StrategyFlowView = {
 			text: 'candles',
 			ins: [
 				{
-					id: 'i0'
+					id: 'i0',
 				},
 				{
-					id: 'i1'
+					id: 'i1',
 				},
 				{
-					id: 'i2'
-				}
+					id: 'i2',
+				},
 			],
 			outs: [
 				{
-					id: 'o0'
+					id: 'o0',
 				},
 				{
-					id: 'o1'
+					id: 'o1',
 				},
 				{
-					id: 'o2'
+					id: 'o2',
 				},
 				{
-					id: 'o3'
+					id: 'o3',
 				},
 				{
-					id: 'o4'
-				}
+					id: 'o4',
+				},
 			],
 			x: 100,
-			y: 100
-		}
+			y: 100,
+		},
 	],
-	edges: []
+	edges: [],
 }

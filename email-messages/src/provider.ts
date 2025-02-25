@@ -9,16 +9,27 @@ import { suspendedStrategyEmailMessage } from './messageSuspendedStrategy.js'
 import { EmailMessageContent } from './types.js'
 
 export class SendEmailProvider implements SendEmailAction {
-	sesClient = new SESClient({ apiVersion: '2010-12-01', region: ENV.AWS_SES_REGION() })
+	sesClient = new SESClient({
+		apiVersion: '2010-12-01',
+		region: ENV.AWS_SES_REGION(),
+	})
 
-	async SendOneTimePassword({ email, oneTimePassword, language }: Input['SendOneTimePassword']) {
+	async SendOneTimePassword({
+		email,
+		oneTimePassword,
+		language,
+	}: Input['SendOneTimePassword']) {
 		await this.sendEmail(
 			email,
 			oneTimePasswordEmailMessage(language, { oneTimePassword })
 		)
 	}
 
-	async SuspendedStrategy({ email, language, ...strategyKey }: Input['SuspendedStrategy']) {
+	async SuspendedStrategy({
+		email,
+		language,
+		...strategyKey
+	}: Input['SuspendedStrategy']) {
 		await this.sendEmail(
 			email,
 			suspendedStrategyEmailMessage(language, strategyKey)
@@ -32,11 +43,12 @@ export class SendEmailProvider implements SendEmailAction {
 				Message: {
 					Body: {
 						Html: { Charset: 'UTF-8', Data: emailMessage.html },
-						Text: { Charset: 'UTF-8', Data: emailMessage.text }
+						Text: { Charset: 'UTF-8', Data: emailMessage.text },
 					},
-					Subject: { Charset: 'UTF-8', Data: emailMessage.subject }
+					Subject: { Charset: 'UTF-8', Data: emailMessage.subject },
 				},
-				Source: noReplyEmailAddress(ENV.DNS_DOMAIN())
-			}))
+				Source: noReplyEmailAddress(ENV.DNS_DOMAIN()),
+			})
+		)
 	}
 }

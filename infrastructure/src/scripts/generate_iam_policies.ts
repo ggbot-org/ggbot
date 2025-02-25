@@ -11,9 +11,13 @@ import { S3ReadWriteDataPolicy } from '../aws/S3ReadWriteDataPolicy.js'
 import { SesNoreplyPolicy } from '../aws/SesNopeplyPolicy.js'
 import { iamDir } from '../package.js'
 
-function writePolicy ({
-	name: policyName, policyDocument
-}: { name: string } & Pick<IamPolicyDocument<string, string>, 'policyDocument'>) {
+function writePolicy({
+	name: policyName,
+	policyDocument,
+}: { name: string } & Pick<
+	IamPolicyDocument<string, string>,
+	'policyDocument'
+>) {
 	const filePath = join(iamDir, `${policyName}.json`)
 	console.info(`Generate IAM policy ${filePath}`)
 	return writeFile(filePath, JSON.stringify(policyDocument, null, 2))

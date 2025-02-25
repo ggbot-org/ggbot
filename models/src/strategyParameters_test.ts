@@ -20,8 +20,14 @@ test('isStrategyParameters', () => {
 			},
 			output: true,
 		},
-		...invalidIdentifierStrings.map((key) => ({ input: { [key]: 'value' }, output: false })),
-		...invalidValues.map((invalidValue) => ({ input: { key: invalidValue }, output: false })),
+		...invalidIdentifierStrings.map((key) => ({
+			input: { [key]: 'value' },
+			output: false,
+		})),
+		...invalidValues.map((invalidValue) => ({
+			input: { key: invalidValue },
+			output: false,
+		})),
 	]) {
 		assert.equal(isStrategyParameters(input), output)
 	}

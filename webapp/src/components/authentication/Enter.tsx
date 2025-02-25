@@ -1,15 +1,32 @@
 import { Classname } from '_/classnames'
 import { GenericError } from '_/components/GenericError'
-import { Button, Checkbox, Control, Field, InputField, Message, Title } from '_/components/library'
+import {
+	Button,
+	Checkbox,
+	Control,
+	Field,
+	InputField,
+	Message,
+	Title,
+} from '_/components/library'
 import { TermsAndPolicyLinks } from '_/components/TermsAndPolicyLinks'
 import { TimeoutError } from '_/components/TimeoutError'
 import { FormattedMessage } from '_/i18n/components'
 import { useIntl } from '_/i18n/hooks'
 import { api } from '_/routing/api'
-import { isApiAuthEnterRequestData, isApiAuthEnterResponseData } from '@workspace/api'
+import {
+	isApiAuthEnterRequestData,
+	isApiAuthEnterResponseData,
+} from '@workspace/api'
 import { EmailAddress, isEmailAddress } from '@workspace/models'
 import { isMaybeObject } from 'minimal-type-guard-helpers'
-import { ChangeEventHandler, InputHTMLAttributes, useCallback, useReducer, useState } from 'react'
+import {
+	ChangeEventHandler,
+	InputHTMLAttributes,
+	useCallback,
+	useReducer,
+	useState,
+} from 'react'
 
 type FormField = {
 	email: { value: string }
@@ -36,22 +53,28 @@ type Action =
 export function AuthEnter({ setEmail }: AuthEnterProps) {
 	const { formatMessage } = useIntl()
 
-	const [{ gotTimeout, hasGenericError, hasInvalidInput, isPending }, dispatch] = useReducer<
-		Partial<State>, [any]
-	>((state, action: Action) => {
+	const [
+		{ gotTimeout, hasGenericError, hasInvalidInput, isPending },
+		dispatch,
+	] = useReducer<Partial<State>, [any]>((state, action: Action) => {
 		if (action.type === 'ENTER_REQUEST') return { isPending: true }
 		if (action.type === 'ENTER_FAILURE') return { hasGenericError: true }
 		if (action.type === 'ENTER_TIMEOUT') return { gotTimeout: true }
-		if (action.type === 'SET_HAS_INVALID_INPUT') return { hasInvalidInput: true }
+		if (action.type === 'SET_HAS_INVALID_INPUT')
+			return { hasInvalidInput: true }
 		return state
 	}, {})
 
-	const [termsAndPolicyAccepted, setTermsAndPolicyAccepted] = useState<boolean>(false)
+	const [termsAndPolicyAccepted, setTermsAndPolicyAccepted] =
+		useState<boolean>(false)
 
 	const disabled = !termsAndPolicyAccepted
 
-	const onChangeTermsAndPolicyAccepted = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
-		const { checked } = event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+	const onChangeTermsAndPolicyAccepted = useCallback<
+		ChangeEventHandler<HTMLInputElement>
+	>((event) => {
+		const { checked } =
+			event.target as unknown as InputHTMLAttributes<HTMLInputElement>
 		setTermsAndPolicyAccepted(Boolean(checked))
 	}, [])
 
@@ -88,7 +111,7 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 						body: JSON.stringify({ type: 'Enter', data: requestData }),
 						headers: new Headers({ 'Content-Type': 'application/json' }),
 						method: 'POST',
-						signal: controller.signal
+						signal: controller.signal,
 					})
 
 					clearTimeout(timeoutId)
@@ -133,7 +156,7 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 							id="AuthEnter.termsAndPolicy"
 							values={{
 								terms: formatMessage({ id: 'Terms.title' }),
-								policy: formatMessage({ id: 'Privacy.title' })
+								policy: formatMessage({ id: 'Privacy.title' }),
 							}}
 						/>
 					</Checkbox>

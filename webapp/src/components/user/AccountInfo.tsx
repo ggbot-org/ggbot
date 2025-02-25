@@ -5,7 +5,9 @@ import { FormattedMessage } from '_/i18n/components'
 import { useContext } from 'react'
 
 export function AccountInfo() {
-	const { accountId, accountEmail, accountWhenCreated } = useContext(AuthenticationContext)
+	const { accountId, accountEmail, accountWhenCreated } = useContext(
+		AuthenticationContext
+	)
 
 	return (
 		<Div bulma="box">

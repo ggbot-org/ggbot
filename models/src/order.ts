@@ -11,7 +11,7 @@ export type Order = Item &
 export const newOrder = ({ info }: NewItem<Order>): Order => ({
 	...createdNow(),
 	id: newId(),
-	info
+	info,
 })
 
 export type AccountDailyOrder = StrategyKey & { order: Order }

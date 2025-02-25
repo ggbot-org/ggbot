@@ -23,17 +23,20 @@ export class RepositoryPackageJson implements FileProvider {
 	}
 
 	static buildCommandSequence(workspaces: Repository['workspaces']) {
-		const workspacePathnames = Array.from(workspaces.keys()).filter(RepositoryPackageJson.onlyWorkspacesWithBuild(workspaces))
+		const workspacePathnames = Array.from(workspaces.keys()).filter(
+			RepositoryPackageJson.onlyWorkspacesWithBuild(workspaces)
+		)
 
 		const dependenciesMap = new Map<string, string[]>()
 		for (const workspacePathname of workspacePathnames) {
 			const dependencies = WorkspacePackageJson.internalDependenciesChain(
-				workspacePathname, workspaces
+				workspacePathname,
+				workspaces
 			).map(WorkspacePackageJson.workspacePathnameFromInternalDependency)
 			dependenciesMap.set(workspacePathname, dependencies)
 		}
 
-		function levelOf (dependency: string): number {
+		function levelOf(dependency: string): number {
 			const dependencies = dependenciesMap.get(dependency) ?? []
 			if (dependencies.length == 0) return 0
 			let max = 0
@@ -43,9 +46,12 @@ export class RepositoryPackageJson implements FileProvider {
 			return max + 1
 		}
 
-		return workspacePathnames.sort((a, b) => levelOf(a) > levelOf(b) ? 1 : -1).map(
-			(workspacePathname) => RepositoryPackageJson.workspaceBuildCommand(workspacePathname)
-		).join(' && ')
+		return workspacePathnames
+			.sort((a, b) => (levelOf(a) > levelOf(b) ? 1 : -1))
+			.map((workspacePathname) =>
+				RepositoryPackageJson.workspaceBuildCommand(workspacePathname)
+			)
+			.join(' && ')
 	}
 
 	static onlyWorkspacesWithBuild(workspaces: Repository['workspaces']) {
@@ -73,9 +79,16 @@ export class RepositoryPackageJson implements FileProvider {
 		workspaces: Repository['workspaces']
 	) {
 		return internalDependenciesChain
-			.map((internalDependency) => WorkspacePackageJson.workspacePathnameFromInternalDependency(internalDependency))
+			.map((internalDependency) =>
+				WorkspacePackageJson.workspacePathnameFromInternalDependency(
+					internalDependency
+				)
+			)
 			.filter(RepositoryPackageJson.onlyWorkspacesWithBuild(workspaces))
-			.map((workspacePathname) => RepositoryPackageJson.workspaceBuildCommand(workspacePathname)).join(' && ')
+			.map((workspacePathname) =>
+				RepositoryPackageJson.workspaceBuildCommand(workspacePathname)
+			)
+			.join(' && ')
 	}
 
 	static workspacePrebuildScriptKey(workspacePathname: string) {
@@ -84,7 +97,10 @@ export class RepositoryPackageJson implements FileProvider {
 
 	async read() {
 		const {
-			dependencies, private: isPrivate, scripts, workspaces
+			dependencies,
+			private: isPrivate,
+			scripts,
+			workspaces,
 		} = await readFile<PackageJson>(join(this.directoryPathname, this.filename))
 		this.dependencies = dependencies
 		this.isPrivate = isPrivate

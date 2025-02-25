@@ -1,13 +1,18 @@
 import { strict as assert } from 'node:assert'
 import { describe, test } from 'node:test'
 
-import { getSchedulingSummary, Scheduling, schedulingsAreInactive, SchedulingSummary } from './scheduling.js'
+import {
+	getSchedulingSummary,
+	Scheduling,
+	schedulingsAreInactive,
+	SchedulingSummary,
+} from './scheduling.js'
 
 describe('getSchedulingSummary', () => {
 	test('return a SchedulingSummary', () => {
 		type TestData = Array<{
-			input: Scheduling[];
-			output: SchedulingSummary;
+			input: Scheduling[]
+			output: SchedulingSummary
 		}>
 		const testData: TestData = [
 			{
@@ -80,8 +85,8 @@ describe('getSchedulingSummary', () => {
 describe('schedulingsAreInactive', () => {
 	test('checks if schedulings are inactive overall', () => {
 		type TestData = Array<{
-			input: Scheduling[];
-			output: boolean;
+			input: Scheduling[]
+			output: boolean
 		}>
 		const testData: TestData = [
 			{

@@ -37,7 +37,10 @@ export function PrivacyPage() {
 					<FormattedMessage id="Privacy.cloudProvider" />
 				</H3>
 				<Paragraph>
-					<FormattedMessage id="Privacy.personalDataSecureStorage" values={{ href: amazonWebServices.homepage }} />
+					<FormattedMessage
+						id="Privacy.personalDataSecureStorage"
+						values={{ href: amazonWebServices.homepage }}
+					/>
 				</Paragraph>
 				<Paragraph>
 					<FormattedMessage id="Privacy.personalDataEmailService" />
@@ -49,7 +52,10 @@ export function PrivacyPage() {
 					<FormattedMessage id="Privacy.paymentProvider" />
 				</H3>
 				<Paragraph>
-					<FormattedMessage id="Privacy.stripe" values={{ href: stripe.homepage }} />
+					<FormattedMessage
+						id="Privacy.stripe"
+						values={{ href: stripe.homepage }}
+					/>
 				</Paragraph>
 				<H2>
 					<FormattedMessage id="Privacy.marketProviders" />
@@ -58,10 +64,16 @@ export function PrivacyPage() {
 					<FormattedMessage id="Privacy.binance" />
 				</H3>
 				<Paragraph>
-					<FormattedMessage id="Privacy.binanceCustomerData" values={{ href: exchange.binance.homepage }} />
+					<FormattedMessage
+						id="Privacy.binanceCustomerData"
+						values={{ href: exchange.binance.homepage }}
+					/>
 				</Paragraph>
 				<Paragraph>
-					<FormattedMessage id="Privacy.binanceTradingData" values={{ numYears: numYearsTradingOperationsRetention }} />
+					<FormattedMessage
+						id="Privacy.binanceTradingData"
+						values={{ numYears: numYearsTradingOperationsRetention }}
+					/>
 				</Paragraph>
 			</Content>
 		</Page>

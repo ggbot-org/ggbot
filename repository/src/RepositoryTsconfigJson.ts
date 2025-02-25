@@ -16,12 +16,16 @@ export class RepositoryTsconfigJson implements FileProvider {
 	}
 
 	async read() {
-		const { compilerOptions } = await readFile<TsconfigJson>(join(this.directoryPathname, this.filename))
+		const { compilerOptions } = await readFile<TsconfigJson>(
+			join(this.directoryPathname, this.filename)
+		)
 		if (!compilerOptions) return
 		const { paths } = compilerOptions
 		if (!paths) return
-		for (const [key, path] of Object.entries(paths).map(
-			([key, list]) => [key, list[0]])
-		) this.paths.set(key, path)
+		for (const [key, path] of Object.entries(paths).map(([key, list]) => [
+			key,
+			list[0],
+		]))
+			this.paths.set(key, path)
 	}
 }

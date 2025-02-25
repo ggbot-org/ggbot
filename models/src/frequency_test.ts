@@ -5,8 +5,8 @@ import { everyOneHour, frequenciesAreEqual } from './frequency.js'
 
 test('frequenciesAreEqual', () => {
 	type TestData = Array<{
-		input: Parameters<typeof frequenciesAreEqual>;
-		output: boolean;
+		input: Parameters<typeof frequenciesAreEqual>
+		output: boolean
 	}>
 
 	const testData: TestData = [

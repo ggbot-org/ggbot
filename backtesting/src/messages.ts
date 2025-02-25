@@ -20,22 +20,22 @@ export type BacktestingMessageInData =
 	| { type: 'PAUSE' }
 	| { type: 'RESUME' }
 	| { type: 'STOP' }
+	| ({
+			type: 'SET_AFTER_STEP_BEHAVIOUR'
+	  } & Pick<BacktestingSession, 'afterStepBehaviour'>)
 	| {
-		type: 'SET_AFTER_STEP_BEHAVIOUR'
-	} & Pick<BacktestingSession, 'afterStepBehaviour'>
+			type: 'SET_DAY_INTERVAL'
+			dayInterval: DayInterval
+	  }
 	| {
-		type: 'SET_DAY_INTERVAL'
-		dayInterval: DayInterval
-	}
-	| {
-		type: 'SET_FREQUENCY'
-		frequency: Frequency
-	}
-	| {
-		type: 'START'
-		dayInterval: DayInterval
-		frequency: Frequency
-	} & Pick<BacktestingStrategy, 'flow' | 'strategyKey' | 'strategyName'>
+			type: 'SET_FREQUENCY'
+			frequency: Frequency
+	  }
+	| ({
+			type: 'START'
+			dayInterval: DayInterval
+			frequency: Frequency
+	  } & Pick<BacktestingStrategy, 'flow' | 'strategyKey' | 'strategyName'>)
 
 /**
  * @example
@@ -50,15 +50,15 @@ export type BacktestingMessageInData =
  */
 export type BacktestingMessageOutData =
 	| {
-		type: 'STATUS_CHANGED'
-		status: BacktestingStatus
-	}
-	| {
-		type: 'UPDATED_MEMORY'
-	} & Pick<BacktestingSession, 'memory'>
-	| {
-		type: 'UPDATED_ORDERS'
-	} & Pick<BacktestingSession, 'orders'>
-	| {
-		type: 'UPDATED_PROGRESS'
-	} & Pick<BacktestingSession, 'currentTimestamp' | 'stepIndex' | 'numSteps'>
+			type: 'STATUS_CHANGED'
+			status: BacktestingStatus
+	  }
+	| ({
+			type: 'UPDATED_MEMORY'
+	  } & Pick<BacktestingSession, 'memory'>)
+	| ({
+			type: 'UPDATED_ORDERS'
+	  } & Pick<BacktestingSession, 'orders'>)
+	| ({
+			type: 'UPDATED_PROGRESS'
+	  } & Pick<BacktestingSession, 'currentTimestamp' | 'stepIndex' | 'numSteps'>)

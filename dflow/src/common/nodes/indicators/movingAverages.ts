@@ -1,13 +1,21 @@
 import { DflowNode } from 'dflow'
 
 import { add, div, mul, sub } from '../arithmetic.js'
-import { inputPeriod, inputValues, outputLastValue, outputValues } from '../commonIO.js'
+import {
+	inputPeriod,
+	inputValues,
+	outputLastValue,
+	outputValues,
+} from '../commonIO.js'
 
 const movingAverageInputs = [inputValues, inputPeriod]
 
 const movingAverageOutputs = [outputValues, outputLastValue]
 
-export function exponentialMovingAverage(values: number[], period: number): number[] {
+export function exponentialMovingAverage(
+	values: number[],
+	period: number
+): number[] {
 	const size = values.length
 	if (size < period) return []
 	const result: number[] = [values[0]]
@@ -15,10 +23,7 @@ export function exponentialMovingAverage(values: number[], period: number): numb
 		const previous = result[i - 1]
 		result.push(
 			// It is ok to cast to `number`, since `period` cannot be -1 cause it is greater than `size`.
-			add(
-				div(mul(sub(values[i], previous), 2), period + 1),
-				previous
-			) as number
+			add(div(mul(sub(values[i], previous), 2), period + 1), previous) as number
 		)
 	}
 	return result
@@ -37,14 +42,19 @@ export class ExponentialMovingAverage extends DflowNode {
 	}
 }
 
-export function simpleMovingAverage(values: number[], period: number): number[] {
+export function simpleMovingAverage(
+	values: number[],
+	period: number
+): number[] {
 	if (values.length < period) return []
 	return values.reduce<number[]>((result, _value, index, array) => {
 		if (index < period - 1) return result
 		const movingValues = array.slice(index - period + 1, index + 1)
 		const sum = movingValues.reduce<number>(
 			// It is ok to cast to `number` cause inputs are numbers.
-			(a, b) => add(a, b) as number, 0)
+			(a, b) => add(a, b) as number,
+			0
+		)
 		// It is ok to cast to `number`, since `period` is greater than `index + 1` where `index` starts from zero.
 		const average = div(sum, period) as number
 		return result.concat(average)
@@ -74,7 +84,7 @@ export function wilderSmoothing(values: number[], period: number): number[] {
 	)
 	const result: number[] = [
 		// It is ok to cast to number cause `period` is greater than `size` hence it is positive.
-		div(sum, period) as number
+		div(sum, period) as number,
 	]
 	for (let i = period; i < size; i++) {
 		const previous = result[i - period]

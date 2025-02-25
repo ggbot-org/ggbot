@@ -1,9 +1,25 @@
 import { getBinanceSymbolInfo } from '_/binance/getSymbolInfo'
 import { classnames } from '_/classnames'
-import { DateTime, Div, Level, LevelItem, SizeProp, Title } from '_/components/library'
+import {
+	DateTime,
+	Div,
+	Level,
+	LevelItem,
+	SizeProp,
+	Title,
+} from '_/components/library'
 import { useBinanceSymbols } from '_/hooks/useBinanceSymbols'
 import { FormattedMessage } from '_/i18n/components'
-import { add, BinanceFill, greaterThan, isBinanceFill, lessThan, mul, neg, sub } from '@workspace/binance'
+import {
+	add,
+	BinanceFill,
+	greaterThan,
+	isBinanceFill,
+	lessThan,
+	mul,
+	neg,
+	sub,
+} from '@workspace/binance'
 import { Order, StrategyKind } from '@workspace/models'
 import { DayInterval } from 'minimal-time-helpers'
 import { arrayTypeGuard, objectTypeGuard } from 'minimal-type-guard-helpers'
@@ -14,7 +30,9 @@ function toNumber(value: string, precision: number) {
 }
 
 function Label({ children, size }: PropsWithChildren<SizeProp<'large'>>) {
-	return <p className={classnames({ 'is-size-6': size === 'large' })}>{children}</p>
+	return (
+		<p className={classnames({ 'is-size-6': size === 'large' })}>{children}</p>
+	)
 }
 
 function Value({ children, size }: PropsWithChildren<SizeProp<'large'>>) {
@@ -33,88 +51,111 @@ function Value({ children, size }: PropsWithChildren<SizeProp<'large'>>) {
 }
 
 type Fee = {
-	asset: string;
-	quantity: string;
+	asset: string
+	quantity: string
 }
 
 type SymbolStats = {
-	symbol: string;
-	maxPrice: string;
-	minPrice: string;
-	baseQuantity: string;
-	quoteQuantity: string;
+	symbol: string
+	maxPrice: string
+	minPrice: string
+	baseQuantity: string
+	quoteQuantity: string
 }
 
 type ProfitSummaryProps = {
-	dayInterval: DayInterval | undefined;
-	orders: Order[] | undefined;
-	strategyKind: StrategyKind | undefined;
+	dayInterval: DayInterval | undefined
+	orders: Order[] | undefined
+	strategyKind: StrategyKind | undefined
 }
 
-export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSummaryProps) {
+export function ProfitSummary({
+	orders,
+	dayInterval,
+	strategyKind,
+}: ProfitSummaryProps) {
 	const binanceSymbols = useBinanceSymbols(strategyKind)
 
 	let numBuys: number | undefined = undefined
 	let numSells: number | undefined = undefined
 
 	const feesMap = new Map<Fee['asset'], Fee['quantity']>()
-	const symbolStats = new Map<SymbolStats['symbol'], Omit<SymbolStats, 'symbol'>>()
+	const symbolStats = new Map<
+		SymbolStats['symbol'],
+		Omit<SymbolStats, 'symbol'>
+	>()
 
 	if (strategyKind === 'binance') {
-		if (orders) for (const { info } of orders) {
-			if (
-				!objectTypeGuard<{
-					fills: unknown[];
-					side: string;
-					status: string;
-					symbol: string;
-					type: string;
-				}>(
-					({ fills, side, status, symbol, type }) => Array.isArray(fills) &&
-						[side, status, symbol, type].every((item) => typeof item === 'string'),
-				)(info)
-			) continue
+		if (orders)
+			for (const { info } of orders) {
+				if (
+					!objectTypeGuard<{
+						fills: unknown[]
+						side: string
+						status: string
+						symbol: string
+						type: string
+					}>(
+						({ fills, side, status, symbol, type }) =>
+							Array.isArray(fills) &&
+							[side, status, symbol, type].every(
+								(item) => typeof item === 'string'
+							)
+					)(info)
+				)
+					continue
 
-			if (info.status !== 'FILLED') continue
-			if (info.type !== 'MARKET') continue
-			const { fills, side, symbol } = info
+				if (info.status !== 'FILLED') continue
+				if (info.type !== 'MARKET') continue
+				const { fills, side, symbol } = info
 
-			const isBuy = side === 'BUY'
+				const isBuy = side === 'BUY'
 
-			// Count buys and sells.
-			if (isBuy) numBuys === undefined ? (numBuys = 1) : numBuys++
-			else numSells === undefined ? (numSells = 1) : numSells++
+				// Count buys and sells.
+				if (isBuy) numBuys === undefined ? (numBuys = 1) : numBuys++
+				else numSells === undefined ? (numSells = 1) : numSells++
 
-			if (!arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) continue
+				if (!arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) continue
 
-			for (const { commission, commissionAsset, price, qty: baseQty } of fills) {
-				const quoteQty = mul(price, baseQty)
+				for (const {
+					commission,
+					commissionAsset,
+					price,
+					qty: baseQty,
+				} of fills) {
+					const quoteQty = mul(price, baseQty)
 
-				// Sum fees.
-				const previousFees = feesMap.get(commissionAsset)
-				if (previousFees) feesMap.set(commissionAsset, add(previousFees, commission))
-				else feesMap.set(commissionAsset, commission)
+					// Sum fees.
+					const previousFees = feesMap.get(commissionAsset)
+					if (previousFees)
+						feesMap.set(commissionAsset, add(previousFees, commission))
+					else feesMap.set(commissionAsset, commission)
 
-				// Statistics.
-				const previousSymbolStats = symbolStats.get(symbol)
-				if (previousSymbolStats) {
-					const { minPrice, maxPrice, baseQuantity, quoteQuantity } = previousSymbolStats
-					symbolStats.set(symbol, {
-						baseQuantity: isBuy ? add(baseQuantity, baseQty) : sub(baseQuantity, baseQty),
-						maxPrice: greaterThan(price, maxPrice) ? price : maxPrice,
-						minPrice: lessThan(price, minPrice) ? price : minPrice,
-						quoteQuantity: isBuy ? sub(quoteQuantity, quoteQty) : add(quoteQuantity, quoteQty),
-					})
-				} else {
-					symbolStats.set(symbol, {
-						baseQuantity: isBuy ? baseQty : neg(baseQty),
-						maxPrice: price,
-						minPrice: price,
-						quoteQuantity: isBuy ? neg(quoteQty) : quoteQty,
-					})
+					// Statistics.
+					const previousSymbolStats = symbolStats.get(symbol)
+					if (previousSymbolStats) {
+						const { minPrice, maxPrice, baseQuantity, quoteQuantity } =
+							previousSymbolStats
+						symbolStats.set(symbol, {
+							baseQuantity: isBuy
+								? add(baseQuantity, baseQty)
+								: sub(baseQuantity, baseQty),
+							maxPrice: greaterThan(price, maxPrice) ? price : maxPrice,
+							minPrice: lessThan(price, minPrice) ? price : minPrice,
+							quoteQuantity: isBuy
+								? sub(quoteQuantity, quoteQty)
+								: add(quoteQuantity, quoteQty),
+						})
+					} else {
+						symbolStats.set(symbol, {
+							baseQuantity: isBuy ? baseQty : neg(baseQty),
+							maxPrice: price,
+							minPrice: price,
+							quoteQuantity: isBuy ? neg(quoteQty) : quoteQty,
+						})
+					}
 				}
 			}
-		}
 	}
 
 	if (orders === undefined) return null
@@ -163,16 +204,29 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 			</Level>
 			{Array.from(symbolStats, ([symbol, stats]) => {
 				const symbolInfo = getBinanceSymbolInfo(symbol, binanceSymbols)
-				if (!symbolInfo) return {
-					baseAsset: '',
-					baseAssetPrecision: 0,
-					quoteAsset: '',
-					quoteAssetPrecision: 0,
+				if (!symbolInfo)
+					return {
+						baseAsset: '',
+						baseAssetPrecision: 0,
+						quoteAsset: '',
+						quoteAssetPrecision: 0,
+						symbol,
+						...stats,
+					}
+				const {
+					baseAsset,
+					baseAssetPrecision,
+					quoteAsset,
+					quoteAssetPrecision,
+				} = symbolInfo
+				return {
+					baseAsset,
+					baseAssetPrecision,
+					quoteAsset,
+					quoteAssetPrecision,
 					symbol,
 					...stats,
 				}
-				const { baseAsset, baseAssetPrecision, quoteAsset, quoteAssetPrecision } = symbolInfo
-				return { baseAsset, baseAssetPrecision, quoteAsset, quoteAssetPrecision, symbol, ...stats }
 			}).map(
 				({
 					baseAsset,
@@ -193,13 +247,17 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 							<LevelItem bulma="has-text-centered">
 								<div>
 									<Label size="large">{baseAsset}</Label>
-									<Value size="large">{toNumber(baseQuantity, baseAssetPrecision)}</Value>
+									<Value size="large">
+										{toNumber(baseQuantity, baseAssetPrecision)}
+									</Value>
 								</div>
 							</LevelItem>
 							<LevelItem bulma="has-text-centered">
 								<div>
 									<Label size="large">{quoteAsset}</Label>
-									<Value size="large">{toNumber(quoteQuantity, quoteAssetPrecision)}</Value>
+									<Value size="large">
+										{toNumber(quoteQuantity, quoteAssetPrecision)}
+									</Value>
 								</div>
 							</LevelItem>
 						</Level>
@@ -222,7 +280,7 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 							</LevelItem>
 						</Level>
 					</Fragment>
-				),
+				)
 			)}
 			<Level>
 				<LevelItem>
@@ -230,14 +288,16 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 						<FormattedMessage id="ProfitSummary.fees" />
 					</p>
 				</LevelItem>
-				{Array.from(feesMap, ([asset, quantity]) => ({ asset, quantity })).map(({ asset, quantity }) => (
-					<LevelItem key={asset} bulma="has-text-centered">
-						<div>
-							<Label>{asset}</Label>
-							<Value>{quantity}</Value>
-						</div>
-					</LevelItem>
-				))}
+				{Array.from(feesMap, ([asset, quantity]) => ({ asset, quantity })).map(
+					({ asset, quantity }) => (
+						<LevelItem key={asset} bulma="has-text-centered">
+							<div>
+								<Label>{asset}</Label>
+								<Value>{quantity}</Value>
+							</div>
+						</LevelItem>
+					)
+				)}
 			</Level>
 		</Div>
 	)

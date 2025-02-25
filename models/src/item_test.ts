@@ -7,8 +7,8 @@ export const invalidId = 'not an id'
 
 test('isItemId', () => {
 	type TestData = Array<{
-		input: unknown;
-		output: boolean;
+		input: unknown
+		output: boolean
 	}>
 	const testData: TestData = [
 		{ input: undefined, output: false },

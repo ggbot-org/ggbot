@@ -4,13 +4,24 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { DayDropdown, DayDropdownProps } from './DayDropdown'
 
-export type DayIntervalProps = Pick<DayDropdownProps, 'disabled' | 'min' | 'max'> & {
+export type DayIntervalProps = Pick<
+	DayDropdownProps,
+	'disabled' | 'min' | 'max'
+> & {
 	start: Pick<DayDropdownProps, 'day' | 'setDay'>
 	end: Pick<DayDropdownProps, 'day' | 'setDay'>
 }
 
-export function DayInterval({ disabled, min, max, start, end }: DayIntervalProps) {
-	const [activeDropdown, setActiveDropdown] = useState<'start' | 'end' | undefined>()
+export function DayInterval({
+	disabled,
+	min,
+	max,
+	start,
+	end,
+}: DayIntervalProps) {
+	const [activeDropdown, setActiveDropdown] = useState<
+		'start' | 'end' | undefined
+	>()
 
 	const closeDropdowns = useCallback<DayDropdownProps['close']>(() => {
 		setActiveDropdown(undefined)

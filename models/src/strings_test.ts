@@ -1,7 +1,12 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { isFiniteString, isIdentifierString, isNonEmptyString, stringMaxLength } from './strings.js'
+import {
+	isFiniteString,
+	isIdentifierString,
+	isNonEmptyString,
+	stringMaxLength,
+} from './strings.js'
 
 const fooString = 'foo'
 const stringTooLong = 'x'.repeat(999)
@@ -10,14 +15,18 @@ const stringWithLineBreaks = `
 hello
 world
 `
-export const invalidIdentifierStrings = [emptyString, stringTooLong, stringWithLineBreaks]
+export const invalidIdentifierStrings = [
+	emptyString,
+	stringTooLong,
+	stringWithLineBreaks,
+]
 
 test('isFiniteString', () => {
 	assert.ok(stringTooLong.length > stringMaxLength)
 
 	type TestData = Array<{
-		input: unknown;
-		output: boolean;
+		input: unknown
+		output: boolean
 	}>
 	const testData: TestData = [
 		{ input: fooString, output: true },
@@ -33,8 +42,8 @@ test('isFiniteString', () => {
 
 test('isNonEmptyString', () => {
 	type TestData = Array<{
-		input: unknown;
-		output: boolean;
+		input: unknown
+		output: boolean
 	}>
 	const testData: TestData = [
 		{ input: fooString, output: true },
@@ -50,8 +59,8 @@ test('isNonEmptyString', () => {
 
 test('isIdentifierString', () => {
 	type TestData = Array<{
-		input: unknown;
-		output: boolean;
+		input: unknown
+		output: boolean
 	}>
 	const testData: TestData = [
 		{ input: fooString, output: true },

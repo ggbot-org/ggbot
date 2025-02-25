@@ -2,7 +2,21 @@ import { AuthenticationContext } from '_/contexts/Authentication'
 import { ToastContext } from '_/contexts/Toast'
 import { useIntl } from '_/i18n/hooks'
 import { localWebStorage } from '_/storages/local'
-import { ActionIO, ApiActionError, BadGatewayError, BadRequestError, clientAction, ClientActionHeaders, GatewayTimeoutError, GenericError, InternalServerError, isApiActionOutputData, isApiActionOutputError, TimeoutError, UnauthorizedError } from '@workspace/api'
+import {
+	ActionIO,
+	ApiActionError,
+	BadGatewayError,
+	BadRequestError,
+	clientAction,
+	ClientActionHeaders,
+	GatewayTimeoutError,
+	GenericError,
+	InternalServerError,
+	isApiActionOutputData,
+	isApiActionOutputError,
+	TimeoutError,
+	UnauthorizedError,
+} from '@workspace/api'
 import { useCallback, useContext, useState } from 'react'
 
 export type UseActionApiArg = {
@@ -42,10 +56,11 @@ export type UseActionApiArg = {
  * }, [FooBar])
  * ```
  */
-export function useAction<ActionType extends string, Input extends ActionIO, Output extends ActionIO>(
-	{ url, withAuth }: UseActionApiArg,
-	type: ActionType
-) {
+export function useAction<
+	ActionType extends string,
+	Input extends ActionIO,
+	Output extends ActionIO,
+>({ url, withAuth }: UseActionApiArg, type: ActionType) {
 	const { formatMessage } = useIntl()
 	const { toast } = useContext(ToastContext)
 	const { exit } = useContext(AuthenticationContext)
@@ -64,7 +79,7 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 
 	const request = useCallback(
 		(inputData?: Input) => {
-			(async function () {
+			;(async function () {
 				try {
 					const headers = new ClientActionHeaders()
 					if (withAuth) {
@@ -74,7 +89,10 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 					}
 
 					setIsPending(true)
-					const output = await clientAction(url, headers, { type, data: inputData })
+					const output = await clientAction(url, headers, {
+						type,
+						data: inputData,
+					})
 
 					if (isApiActionOutputData(output)) {
 						const { data: outputData } = output
@@ -87,7 +105,8 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 					}
 				} catch (error) {
 					// This AbortError is called on component unmount.
-					if (error instanceof DOMException && error.name === 'AbortError') return
+					if (error instanceof DOMException && error.name === 'AbortError')
+						return
 
 					console.error(error)
 
@@ -118,7 +137,8 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 
 					// TODO in case of test Binance error a toast and the proxy is down
 					// the toast should say contact support.
-					if (error instanceof BadGatewayError) return setError({ name: BadGatewayError.name })
+					if (error instanceof BadGatewayError)
+						return setError({ name: BadGatewayError.name })
 
 					setError({ name: GenericError.errorName })
 				} finally {

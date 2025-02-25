@@ -3,16 +3,18 @@ import { test } from 'node:test'
 
 import { getDay, today } from 'minimal-time-helpers'
 
-import { isSubscription,
+import {
+	isSubscription,
 	numDaysSubscriptionExpirationTolerance,
 	statusOfSubscription,
 	Subscription,
-	SubscriptionStatus } from './subscription.js'
+	SubscriptionStatus,
+} from './subscription.js'
 
 test('isSubscription', () => {
 	type TestData = Array<{
-		input: Subscription;
-		output: boolean;
+		input: Subscription
+		output: boolean
 	}>
 	const testData: TestData = [
 		{
@@ -31,8 +33,8 @@ test('isSubscription', () => {
 
 test('statusOfSubscription', () => {
 	type TestData = Array<{
-		input: Pick<Subscription, 'end'>;
-		output: SubscriptionStatus;
+		input: Pick<Subscription, 'end'>
+		output: SubscriptionStatus
 	}>
 	const testData: TestData = [
 		{
@@ -50,14 +52,16 @@ test('statusOfSubscription', () => {
 		// If subscription ended few days ago, according to expiration tolerance, it's still active.
 		{
 			input: {
-				end: getDay(today()).minus(numDaysSubscriptionExpirationTolerance - 1).days,
+				end: getDay(today()).minus(numDaysSubscriptionExpirationTolerance - 1)
+					.days,
 			},
 			output: 'active',
 		},
 		// If subscription ended `numDaysSubscriptionExpirationTolerance + 1` days ago, it's expired.
 		{
 			input: {
-				end: getDay(today()).minus(numDaysSubscriptionExpirationTolerance + 1).days,
+				end: getDay(today()).minus(numDaysSubscriptionExpirationTolerance + 1)
+					.days,
 			},
 			output: 'expired',
 		},

@@ -7,7 +7,8 @@ import { CreationDay, isCreationDay } from './time.js'
 export type ClientSession = AccountKey & CreationDay
 
 export const isClientSession = objectTypeGuard<ClientSession>(
-	({ accountId, creationDay }) => isAccountKey({ accountId }) && isCreationDay({ creationDay })
+	({ accountId, creationDay }) =>
+		isAccountKey({ accountId }) && isCreationDay({ creationDay })
 )
 
 export const clientSessionNumDays = 30

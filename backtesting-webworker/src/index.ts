@@ -1,4 +1,10 @@
-import { BacktestingBinanceClient, BacktestingMessageInData, BacktestingMessageOutData, BacktestingSession, BacktestingStrategy } from '@workspace/backtesting'
+import {
+	BacktestingBinanceClient,
+	BacktestingMessageInData,
+	BacktestingMessageOutData,
+	BacktestingSession,
+	BacktestingStrategy,
+} from '@workspace/backtesting'
 import { DflowBinanceExecutor } from '@workspace/dflow'
 import { newId, Order } from '@workspace/models'
 import { Time } from 'minimal-time-helpers'
@@ -14,19 +20,19 @@ let memoryChangedOnSomeStep = false
 const orderSet = new Set<Order>()
 
 function STATUS_CHANGED(session: BacktestingSession) {
-	return ({
+	return {
 		type: 'STATUS_CHANGED',
-		status: session.status
-	} satisfies BacktestingMessageOutData)
+		status: session.status,
+	} satisfies BacktestingMessageOutData
 }
 
 function UPDATED_PROGRESS(session: BacktestingSession) {
-	return ({
+	return {
 		type: 'UPDATED_PROGRESS',
 		currentTimestamp: session.currentTimestamp,
 		stepIndex: session.stepIndex,
-		numSteps: session.numSteps
-	} satisfies BacktestingMessageOutData)
+		numSteps: session.numSteps,
+	} satisfies BacktestingMessageOutData
 }
 
 // TODO refactor this function, it depends on when it is called, and which status the session is.
@@ -34,7 +40,8 @@ function UPDATED_PROGRESS(session: BacktestingSession) {
 function updateUI(session: BacktestingSession) {
 	// Check if session should be stopped before handling memory or orders.
 	if (
-		(memoryChangedOnSomeStep && session.afterStepBehaviour.pauseOnMemoryChange) ||
+		(memoryChangedOnSomeStep &&
+			session.afterStepBehaviour.pauseOnMemoryChange) ||
 		(orderSet.size > 0 && session.afterStepBehaviour.pauseOnNewOrder)
 	) {
 		const statusChanged = session.pause()
@@ -44,13 +51,19 @@ function updateUI(session: BacktestingSession) {
 	postMessage(UPDATED_PROGRESS(session))
 	// Update memory.
 	if (memoryChangedOnSomeStep) {
-		postMessage({ type: 'UPDATED_MEMORY', memory: session.memory } satisfies BacktestingMessageOutData)
+		postMessage({
+			type: 'UPDATED_MEMORY',
+			memory: session.memory,
+		} satisfies BacktestingMessageOutData)
 		memoryChangedOnSomeStep = false
 	}
 	// Update orders.
 	if (orderSet.size > 0) {
 		const orders = Array.from(orderSet.values())
-		postMessage({ type: 'UPDATED_ORDERS', orders } satisfies BacktestingMessageOutData)
+		postMessage({
+			type: 'UPDATED_ORDERS',
+			orders,
+		} satisfies BacktestingMessageOutData)
 		orderSet.clear()
 	}
 }
@@ -59,7 +72,7 @@ function updateUI(session: BacktestingSession) {
 async function runBinance(
 	binance: BacktestingBinanceClient,
 	binanceExecutor: DflowBinanceExecutor,
-	session: BacktestingSession,
+	session: BacktestingSession
 ) {
 	const flow = session.strategy?.flow
 	if (!flow) {
@@ -76,13 +89,15 @@ async function runBinance(
 		binance.time = time
 		// Run executor.
 		try {
-			const {
-				memory, memoryChanged, orders
-			} = await binanceExecutor.run({ binance, params: {}, memory: session.memory, time }, flow)
+			const { memory, memoryChanged, orders } = await binanceExecutor.run(
+				{ binance, params: {}, memory: session.memory, time },
+				flow
+			)
 			if (memoryChanged) {
 				memoryChangedOnSomeStep = true
 				session.memory = memory
-				if (session.afterStepBehaviour.pauseOnMemoryChange) shouldUpdateUI = true
+				if (session.afterStepBehaviour.pauseOnMemoryChange)
+					shouldUpdateUI = true
 			}
 			if (orders.length) {
 				if (session.afterStepBehaviour.pauseOnNewOrder) shouldUpdateUI = true
@@ -125,7 +140,9 @@ async function runBacktesting(session: BacktestingSession): Promise<void> {
 	}
 }
 
-self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData>) => {
+self.onmessage = async ({
+	data: message,
+}: MessageEvent<BacktestingMessageInData>) => {
 	try {
 		const { type: messageType } = message
 
@@ -147,12 +164,17 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 		}
 
 		if (messageType === 'START') {
-			const { dayInterval, flow, frequency, strategyKey, strategyName } = message
+			const { dayInterval, flow, frequency, strategyKey, strategyName } =
+				message
 			// Initialize session.
 			session.dayInterval = dayInterval
 			session.frequency = frequency
 			session.computeTimes()
-			const strategy = new BacktestingStrategy({ strategyKey, strategyName, flow })
+			const strategy = new BacktestingStrategy({
+				strategyKey,
+				strategyName,
+				flow,
+			})
 			session.strategy = strategy
 
 			// Start session (if possible) and notify UI.

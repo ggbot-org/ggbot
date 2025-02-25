@@ -27,10 +27,10 @@ The root package.json can expose scripts for the workspace, for example
 
 A basic workspace package is a folder with the following files:
 
--   .gitignore
--   package.json
--   src/index.ts
--   tsconfig.json
+- .gitignore
+- package.json
+- src/index.ts
+- tsconfig.json
 
 ### .gitignore
 
@@ -54,20 +54,20 @@ This is a sample _package.json_ for a generic workspace.
 	// Package may not be consumed as a dependency: `types` and `exports` are optional
 	"types": "./dist/index.d.ts",
 	"exports": {
-		"import": "./dist/index.js"
+		"import": "./dist/index.js",
 	},
 	"scripts": {
 		"build": "tsc --build",
 		"cleanup": "tsc --build",
 		"check_types": "tsc --noEmit",
-		"test": "node --test --env-file ../.typescript.env ./src/*_test.ts"
+		"test": "node --test --env-file ../.typescript.env ./src/*_test.ts",
 	},
 	"dependencies": {
-		"@workspace/another-package": "0.0.0"
+		"@workspace/another-package": "0.0.0",
 	},
 	"devDependencies": {
-		"@workspace/tsconfig": "0.0.0"
-	}
+		"@workspace/tsconfig": "0.0.0",
+	},
 }
 ```
 
@@ -78,7 +78,7 @@ Every TypeScript source file importing another file **must** explicitly set the 
 extension.
 
 ```ts
-export * from "./foo.js"
+export * from './foo.js'
 ```
 
 ### tsconfig.json
@@ -87,6 +87,6 @@ A generic tsconfig could be just the following
 
 ```jsonc
 {
-	"extends": "@workspace/tsconfig/default"
+	"extends": "@workspace/tsconfig/default",
 }
 ```

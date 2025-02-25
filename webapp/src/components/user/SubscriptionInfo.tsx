@@ -1,4 +1,12 @@
-import { Control, Div, Field, MainColor, OneColumn, Tag, Title } from '_/components/library'
+import {
+	Control,
+	Div,
+	Field,
+	MainColor,
+	OneColumn,
+	Tag,
+	Title,
+} from '_/components/library'
 import { SubscriptionEnd, SubscriptionPlan } from '_/components/readonlyFields'
 import { useSubscription } from '_/hooks/user/useSubscription'
 import { FormattedMessage } from '_/i18n/components'
@@ -6,7 +14,7 @@ import { SubscriptionStatus as Status } from '@workspace/models'
 
 const colorOf: Record<Status, Extract<MainColor, 'primary' | 'warning'>> = {
 	active: 'primary',
-	expired: 'warning'
+	expired: 'warning',
 }
 
 function SubscriptionStatus({ status }: { status: Status | undefined }) {
@@ -19,7 +27,12 @@ function SubscriptionStatus({ status }: { status: Status | undefined }) {
 }
 
 export function SubscriptionInfo() {
-	const { subscriptionEnd, subscriptionPlan, subscriptionStatus, hasActiveSubscription } = useSubscription()
+	const {
+		subscriptionEnd,
+		subscriptionPlan,
+		subscriptionStatus,
+		hasActiveSubscription,
+	} = useSubscription()
 	if (!hasActiveSubscription) return null
 	return (
 		<OneColumn>
@@ -29,7 +42,9 @@ export function SubscriptionInfo() {
 				</Title>
 				<Field>
 					<Control>
-						{subscriptionStatus ? (<SubscriptionStatus status={subscriptionStatus} />) : null}
+						{subscriptionStatus ? (
+							<SubscriptionStatus status={subscriptionStatus} />
+						) : null}
 					</Control>
 				</Field>
 				<SubscriptionPlan value={subscriptionPlan} />

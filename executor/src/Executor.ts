@@ -2,7 +2,17 @@ import { BinanceErrorCode, ErrorBinanceHTTP } from '@workspace/binance'
 import { ExecutorDatabase, PublicDatabase } from '@workspace/database'
 // TODO enable emails
 // import { SendEmailProvider } from "@workspace/email-messages"
-import { AccountStrategyKey, createdNow, ErrorAccountItemNotFound, ErrorStrategyItemNotFound, ErrorUnknownItem, frequencyIntervalDuration, isAccountKey, PRO_FREQUENCY_INTERVALS, StrategyScheduling } from '@workspace/models'
+import {
+	AccountStrategyKey,
+	createdNow,
+	ErrorAccountItemNotFound,
+	ErrorStrategyItemNotFound,
+	ErrorUnknownItem,
+	frequencyIntervalDuration,
+	isAccountKey,
+	PRO_FREQUENCY_INTERVALS,
+	StrategyScheduling,
+} from '@workspace/models'
 import { documentProvider } from '@workspace/s3-data-bucket'
 import { now, Time, today, truncateTime } from 'minimal-time-helpers'
 
@@ -27,7 +37,9 @@ export class Executor {
 		const publicDatabase = new PublicDatabase(documentProvider)
 		this.executorDatabase = new ExecutorDatabase(documentProvider)
 		this.accountKeysProvider = new AccountKeysProvider(this.executorDatabase)
-		this.accountStrategiesProvider = new AccountStrategiesProvider(this.executorDatabase)
+		this.accountStrategiesProvider = new AccountStrategiesProvider(
+			this.executorDatabase
+		)
 		this.strategyFlowProvider = new StrategyFlowProvider(publicDatabase)
 		this.subscriptionProvider = new SubscriptionProvider(this.executorDatabase)
 	}
@@ -35,7 +47,10 @@ export class Executor {
 	/**
 	 * Execute strategies if scheduling is active and according to scheduling frequency.
 	 */
-	async manageStrategyExecution({ accountId, strategyKind, strategyId }: AccountStrategyKey, scheduling: StrategyScheduling) {
+	async manageStrategyExecution(
+		{ accountId, strategyKind, strategyId }: AccountStrategyKey,
+		scheduling: StrategyScheduling
+	) {
 		const { strategyWhenExecuted } = this
 		const { status, frequency } = scheduling
 		const schedulingId = scheduling.id
@@ -50,8 +65,16 @@ export class Executor {
 
 		if (strategyKind === 'binance') {
 			try {
-				const strategyFlow = await this.strategyFlowProvider.readStrategyFlow({ strategyId, strategyKind })
-				if (!strategyFlow) throw new ErrorStrategyItemNotFound({ type: 'StrategyFlow', strategyId, strategyKind })
+				const strategyFlow = await this.strategyFlowProvider.readStrategyFlow({
+					strategyId,
+					strategyKind,
+				})
+				if (!strategyFlow)
+					throw new ErrorStrategyItemNotFound({
+						type: 'StrategyFlow',
+						strategyId,
+						strategyKind,
+					})
 
 				const { memory, memoryChanged } = await executeBinanceStrategy(
 					{ accountId, strategyId, strategyKind },
@@ -60,14 +83,19 @@ export class Executor {
 					this.executorDatabase
 				)
 				if (memoryChanged) {
-					await this.accountStrategiesProvider.updateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId }, memory)
+					await this.accountStrategiesProvider.updateAccountStrategySchedulingMemory(
+						{ accountId, strategyId, schedulingId },
+						memory
+					)
 				}
 			} catch (error) {
 				if (error instanceof ErrorBinanceHTTP) {
 					await this.executorDatabase.AppendStrategyDailyErrors({
-						accountId, strategyId, strategyKind,
+						accountId,
+						strategyId,
+						strategyKind,
 						day: today(),
-						items: [{ error: error.toJSON(), ...createdNow() }]
+						items: [{ error: error.toJSON(), ...createdNow() }],
 					})
 
 					const { code } = error.info.payload
@@ -85,9 +113,12 @@ export class Executor {
 					}
 
 					// If error code is not handled, suspend startegy.
-					await this.accountStrategiesProvider.suspendAccountStrategyScheduling({
-						accountId, strategyId, schedulingId
-					}
+					await this.accountStrategiesProvider.suspendAccountStrategyScheduling(
+						{
+							accountId,
+							strategyId,
+							schedulingId,
+						}
 						// TODO enable emails
 						// strategyKind
 					)
@@ -114,7 +145,8 @@ export class Executor {
 			try {
 				// Check subscription or suspend account strategies.
 
-				const { hasActiveSubscription, subscriptionPlan } = await this.subscriptionProvider.checkSubscription(accountKey)
+				const { hasActiveSubscription, subscriptionPlan } =
+					await this.subscriptionProvider.checkSubscription(accountKey)
 
 				if (!hasActiveSubscription) {
 					// Cleanup cache.
@@ -123,24 +155,38 @@ export class Executor {
 				}
 
 				// Get strategies.
-				const accountStrategies = await this.accountStrategiesProvider.getAccountStrategies(accountKey)
+				const accountStrategies =
+					await this.accountStrategiesProvider.getAccountStrategies(accountKey)
 
-				for (
-					const { strategyId, strategyKind, schedulings } of accountStrategies
-				) for (const scheduling of schedulings) {
-					// Suspend scheduling if frequency interval is not allowed in subscription plan.
-					if (subscriptionPlan !== 'pro' && PRO_FREQUENCY_INTERVALS.includes(scheduling.frequency.interval)) {
-						// TODO enable emails
-						// pass strategyKind
-						await this.accountStrategiesProvider.suspendAccountStrategyScheduling({ accountId, strategyId, schedulingId: scheduling.id })
-						continue
+				for (const {
+					strategyId,
+					strategyKind,
+					schedulings,
+				} of accountStrategies)
+					for (const scheduling of schedulings) {
+						// Suspend scheduling if frequency interval is not allowed in subscription plan.
+						if (
+							subscriptionPlan !== 'pro' &&
+							PRO_FREQUENCY_INTERVALS.includes(scheduling.frequency.interval)
+						) {
+							// TODO enable emails
+							// pass strategyKind
+							await this.accountStrategiesProvider.suspendAccountStrategyScheduling(
+								{ accountId, strategyId, schedulingId: scheduling.id }
+							)
+							continue
+						}
+
+						await this.manageStrategyExecution(
+							{ accountId, strategyId, strategyKind },
+							scheduling
+						)
 					}
-
-					await this.manageStrategyExecution({ accountId, strategyId, strategyKind }, scheduling)
-				}
 			} catch (error) {
 				if (error instanceof ErrorStrategyItemNotFound) {
-					await this.accountStrategiesProvider.suspendAccountStrategySchedulings({ accountId, strategyId: error.strategyId })
+					await this.accountStrategiesProvider.suspendAccountStrategySchedulings(
+						{ accountId, strategyId: error.strategyId }
+					)
 					continue
 				}
 

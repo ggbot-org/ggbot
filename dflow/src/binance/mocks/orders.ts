@@ -15,8 +15,8 @@ export const orderBuyBTCBUSD1: BinanceOrder = {
 			qty: '0.00096000',
 			commission: '0.00000000',
 			commissionAsset: 'BNB',
-		}
-	]
+		},
+	],
 }
 
 // TODO add this to tests

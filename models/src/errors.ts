@@ -8,7 +8,7 @@ export class ErrorAccountItemNotFound extends Error {
 	readonly accountId: AccountKey['accountId']
 	constructor({
 		type,
-		accountId
+		accountId,
 	}: Pick<ErrorAccountItemNotFound, 'type' | 'accountId'>) {
 		super(ErrorAccountItemNotFound.message({ type, accountId }))
 		this.type = type
@@ -16,7 +16,7 @@ export class ErrorAccountItemNotFound extends Error {
 	}
 	static message({
 		type,
-		accountId
+		accountId,
 	}: Pick<ErrorAccountItemNotFound, 'type' | 'accountId'>) {
 		return `${type} not found, accountId=${accountId}`
 	}
@@ -25,8 +25,8 @@ export class ErrorAccountItemNotFound extends Error {
 			name: ErrorAccountItemNotFound.errorName,
 			info: {
 				accountId: String(this.accountId),
-				type: this.type
-			}
+				type: this.type,
+			},
 		}
 	}
 }
@@ -45,8 +45,8 @@ export class ErrorExceededQuota extends Error {
 		return {
 			name: ErrorExceededQuota.errorName,
 			info: {
-				type: this.type
-			}
+				type: this.type,
+			},
 		}
 	}
 }
@@ -73,11 +73,8 @@ export class ErrorStrategyItemNotFound extends Error {
 	constructor({
 		type,
 		strategyKind,
-		strategyId
-	}: Pick<
-		ErrorStrategyItemNotFound,
-		'type' | 'strategyKind' | 'strategyId'
-	>) {
+		strategyId,
+	}: Pick<ErrorStrategyItemNotFound, 'type' | 'strategyKind' | 'strategyId'>) {
 		super(ErrorStrategyItemNotFound.message({ type, strategyId }))
 		this.type = type
 		this.strategyKind = strategyKind
@@ -85,7 +82,7 @@ export class ErrorStrategyItemNotFound extends Error {
 	}
 	static message({
 		type,
-		strategyId
+		strategyId,
 	}: Pick<ErrorStrategyItemNotFound, 'type' | 'strategyId'>) {
 		return `${type} not found, strategyId=${strategyId}`
 	}
@@ -103,7 +100,7 @@ export class ErrorPermissionOnStrategyItem extends Error {
 		action,
 		strategyKind,
 		strategyId,
-		type
+		type,
 	}: Pick<
 		ErrorPermissionOnStrategyItem,
 		'accountId' | 'action' | 'type' | 'strategyKind' | 'strategyId'
@@ -117,7 +114,7 @@ export class ErrorPermissionOnStrategyItem extends Error {
 	}
 	static message({
 		action,
-		type
+		type,
 	}: Pick<ErrorPermissionOnStrategyItem, 'action' | 'type'>) {
 		return `Cannot ${action} ${type}`
 	}
@@ -152,7 +149,7 @@ export class ErrorUnknownItem extends Error {
 	toJSON() {
 		return {
 			name: ErrorUnknownItem.errorName,
-			info: { itemName: this.itemName, itemType: this.itemType }
+			info: { itemName: this.itemName, itemType: this.itemType },
 		}
 	}
 }

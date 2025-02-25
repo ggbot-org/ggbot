@@ -2,7 +2,12 @@ import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
 import { extractCommonParametersFromFlow } from './flow.js'
-import { BooleanParameter, NumberParameter, PercentageParameter, StringParameter } from './nodes/parameters.js'
+import {
+	BooleanParameter,
+	NumberParameter,
+	PercentageParameter,
+	StringParameter,
+} from './nodes/parameters.js'
 import { parsePercentage } from './nodeTextParser.js'
 
 test('extractCommonParametersFromFlow', async () => {
@@ -46,7 +51,7 @@ test('extractCommonParametersFromFlow', async () => {
 				key: booleanKey,
 				defaultValue: booleanValue,
 			},
-		],
+		]
 	)
 
 	assert.deepEqual(
@@ -80,7 +85,7 @@ test('extractCommonParametersFromFlow', async () => {
 				key: numberKey,
 				defaultValue: numberValue,
 			},
-		],
+		]
 	)
 
 	assert.deepEqual(
@@ -114,7 +119,7 @@ test('extractCommonParametersFromFlow', async () => {
 				key: percKey,
 				defaultValue: parsePercentage(percValue),
 			},
-		],
+		]
 	)
 
 	assert.deepEqual(
@@ -148,6 +153,6 @@ test('extractCommonParametersFromFlow', async () => {
 				key: stringKey,
 				defaultValue: stringValue,
 			},
-		],
+		]
 	)
 })

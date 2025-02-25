@@ -5,8 +5,8 @@ import { nodeTextToDflowKind, nodeTextToViewType } from './nodeResolution.js'
 
 test('nodeTextToDflowKind', () => {
 	type TestData = Array<{
-		input: string;
-		output: ReturnType<typeof nodeTextToDflowKind>;
+		input: string
+		output: ReturnType<typeof nodeTextToDflowKind>
 	}>
 	const testData: TestData = [
 		{ input: 'this is a comment', output: 'info' },
@@ -23,8 +23,8 @@ test('nodeTextToDflowKind', () => {
 type NodeTextToViewType = typeof nodeTextToViewType
 test('nodeTextToViewType', () => {
 	type TestData = Array<{
-		input: Parameters<NodeTextToViewType>[0];
-		output: ReturnType<NodeTextToViewType>;
+		input: Parameters<NodeTextToViewType>[0]
+		output: ReturnType<NodeTextToViewType>
 	}>
 	const testData: TestData = [
 		// Resolves node containing comments to `info` type.

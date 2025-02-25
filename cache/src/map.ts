@@ -50,7 +50,7 @@ export class CacheMap<Data> {
 		// No `whenUpdated` found means it is not possible to know if it is up to date.
 		const whenUpdated = this.whenUpdatedMap.get(key)
 		// If is not up to date, delete item and return.
-		if (!whenUpdated || (whenUpdated + this.timeToLive < Date.now())) {
+		if (!whenUpdated || whenUpdated + this.timeToLive < Date.now()) {
 			this.delete(key)
 			return
 		}

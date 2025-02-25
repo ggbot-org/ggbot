@@ -8,7 +8,9 @@ export function isFiniteString(arg: unknown): arg is FiniteString {
 
 export type NonEmptyString<T = string> = T extends '' ? never : T
 
-export function isNonEmptyString(arg: unknown): arg is NonEmptyString<FiniteString> {
+export function isNonEmptyString(
+	arg: unknown
+): arg is NonEmptyString<FiniteString> {
 	return isFiniteString(arg) && arg !== ''
 }
 

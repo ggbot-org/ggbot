@@ -1,7 +1,10 @@
 import { Classname } from '_/classnames'
 import { Button, Control, Field, Title } from '_/components/library'
 import { ApiKey } from '_/components/readonlyFields'
-import { BinanceApiKeyPermissions, BinanceApiKeyPermissionsProps } from '_/components/user/BinanceApiKeyPermissions'
+import {
+	BinanceApiKeyPermissions,
+	BinanceApiKeyPermissionsProps,
+} from '_/components/user/BinanceApiKeyPermissions'
 import { ToastContext } from '_/contexts/Toast'
 import { useReadBinanceAccountApiRestrictions } from '_/hooks/user/api'
 import { FormattedMessage } from '_/i18n/components'
@@ -14,7 +17,8 @@ export function BinanceApi({ apiKey }: { apiKey: string }) {
 
 	const { toast } = useContext(ToastContext)
 
-	const [permissions, setPermissions] = useState<BinanceApiKeyPermissionsProps['permissions']>()
+	const [permissions, setPermissions] =
+		useState<BinanceApiKeyPermissionsProps['permissions']>()
 
 	const READ = useReadBinanceAccountApiRestrictions()
 	const isLoading = READ.isPending

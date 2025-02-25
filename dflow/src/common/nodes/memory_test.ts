@@ -4,7 +4,10 @@ import { describe, test } from 'node:test'
 import { SerializablePrimitive } from '@workspace/models'
 import { now } from 'minimal-time-helpers'
 
-import { DflowCommonExecutor, getDflowExecutionOutputData } from '../executor.js'
+import {
+	DflowCommonExecutor,
+	getDflowExecutionOutputData,
+} from '../executor.js'
 
 const testValues: SerializablePrimitive[] = [42, 'a string']
 
@@ -28,7 +31,11 @@ describe('deleteMemory', () => {
 				],
 				edges: [{ id: 'e', from: ['key', 'out'], to: [nodeId, 'key'] }],
 			})
-			const { memory, memoryChanged } = await executor.run({ params: {}, memory: { [key]: value }, time: now() })
+			const { memory, memoryChanged } = await executor.run({
+				params: {},
+				memory: { [key]: value },
+				time: now(),
+			})
 			assert.equal(memoryChanged, true)
 			assert.equal(memory[key], undefined)
 		}
@@ -97,7 +104,11 @@ describe('getMemory', () => {
 					},
 				],
 			})
-			const { execution, memory, memoryChanged } = await executor.run({ params: {}, memory: {}, time: now() })
+			const { execution, memory, memoryChanged } = await executor.run({
+				params: {},
+				memory: {},
+				time: now(),
+			})
 			assert.equal(memoryChanged, false)
 			assert.equal(memory[key], undefined)
 			assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
@@ -180,7 +191,11 @@ describe('setMemory', () => {
 					},
 				],
 			})
-			const { memory, memoryChanged } = await executor.run({ params: {}, memory: {}, time: now() })
+			const { memory, memoryChanged } = await executor.run({
+				params: {},
+				memory: {},
+				time: now(),
+			})
 			assert.equal(memoryChanged, true)
 			assert.deepEqual(memory[key], value)
 		}

@@ -1,7 +1,15 @@
 import * as stream from 'node:stream'
 
 import { S3Client } from '@aws-sdk/client-s3'
-import { DeleteObjectCommand, GetObjectCommand, ListObjectsV2Command, ListObjectsV2CommandInput, ListObjectsV2CommandOutput, PutObjectCommand, S3ServiceException } from '@aws-sdk/client-s3'
+import {
+	DeleteObjectCommand,
+	GetObjectCommand,
+	ListObjectsV2Command,
+	ListObjectsV2CommandInput,
+	ListObjectsV2CommandOutput,
+	PutObjectCommand,
+	S3ServiceException,
+} from '@aws-sdk/client-s3'
 
 function streamToString(stream: NodeJS.ReadableStream): Promise<string> {
 	return new Promise((resolve, reject) => {
@@ -38,24 +46,20 @@ export class S3IOClient {
 		}
 	}
 
-	async listObjects(params: Pick<ListObjectsV2CommandInput,
-		| 'ContinuationToken'
-		| 'Delimiter'
-		| 'MaxKeys'
-		| 'Prefix'
-	>): Promise<Pick<ListObjectsV2CommandOutput,
-		| 'Contents'
-		| 'ContinuationToken'
-		| 'NextContinuationToken'
-		| 'IsTruncated'>
-		> {
+	async listObjects(
+		params: Pick<
+			ListObjectsV2CommandInput,
+			'ContinuationToken' | 'Delimiter' | 'MaxKeys' | 'Prefix'
+		>
+	): Promise<
+		Pick<
+			ListObjectsV2CommandOutput,
+			'Contents' | 'ContinuationToken' | 'NextContinuationToken' | 'IsTruncated'
+		>
+	> {
 		const command = new ListObjectsV2Command({ Bucket: this.Bucket, ...params })
-		const {
-			Contents,
-			ContinuationToken,
-			IsTruncated,
-			NextContinuationToken,
-		} = await this.client.send(command)
+		const { Contents, ContinuationToken, IsTruncated, NextContinuationToken } =
+			await this.client.send(command)
 
 		return {
 			Contents,

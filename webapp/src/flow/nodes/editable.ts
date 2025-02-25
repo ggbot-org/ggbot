@@ -81,7 +81,7 @@ export class FlowViewNodeEditable extends FlowViewNode {
 		const {
 			// @ts-expect-error
 			contentDiv: { textContent },
-			text
+			text,
 		} = this
 		if (textContent && text !== textContent) {
 			this.text = textContent

@@ -13,10 +13,14 @@ import { useState } from 'react'
 export function StrategyPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>('manage')
 	const { strategyKey } = useStrategyKey()
-	const { strategyNotFound, ...otherStrategyActionProps } = useStrategy(strategyKey)
+	const { strategyNotFound, ...otherStrategyActionProps } =
+		useStrategy(strategyKey)
 	return (
 		<PageContainer>
-			<StrategyPageContainer strategyKey={strategyKey} strategyNotFound={strategyNotFound}>
+			<StrategyPageContainer
+				strategyKey={strategyKey}
+				strategyNotFound={strategyNotFound}
+			>
 				<Tabs
 					activeTabId={activeTabId}
 					setActiveTabId={setActiveTabId}
@@ -26,21 +30,22 @@ export function StrategyPage() {
 							renderIfInactive: true,
 							content: (
 								<>
-									<StrategyActions strategyKey={strategyKey} {...otherStrategyActionProps} />
+									<StrategyActions
+										strategyKey={strategyKey}
+										{...otherStrategyActionProps}
+									/>
 									<Schedulings strategyKey={strategyKey} />
 								</>
-							)
+							),
 						},
 						{
 							tabId: 'profits',
-							content: (
-								<StrategyProfits strategyKey={strategyKey} />
-							)
+							content: <StrategyProfits strategyKey={strategyKey} />,
 						},
 						{
 							tabId: 'errors',
-							content: <StrategyErrors strategyKey={strategyKey} />
-						}
+							content: <StrategyErrors strategyKey={strategyKey} />,
+						},
 					]}
 				/>
 				<PleasePurchase />

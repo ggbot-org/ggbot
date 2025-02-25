@@ -14,7 +14,14 @@ import { useState } from 'react'
 export function SharedStrategyPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>('info')
 	const { strategyKey } = useStrategyKey()
-	const { strategyId, strategyName, strategyWhenCreated, strategyFrequency, strategyNotFound, readStrategyIsPending } = useStrategy(strategyKey)
+	const {
+		strategyId,
+		strategyName,
+		strategyWhenCreated,
+		strategyFrequency,
+		strategyNotFound,
+		readStrategyIsPending,
+	} = useStrategy(strategyKey)
 	const { strategyFlow } = useStrategyFlow(strategyKey)
 	return (
 		<Page
@@ -26,7 +33,10 @@ export function SharedStrategyPage() {
 				</>
 			}
 		>
-			<StrategyPageContainer strategyKey={strategyKey} strategyNotFound={strategyNotFound}>
+			<StrategyPageContainer
+				strategyKey={strategyKey}
+				strategyNotFound={strategyNotFound}
+			>
 				<Tabs
 					activeTabId={activeTabId}
 					setActiveTabId={setActiveTabId}
@@ -42,7 +52,7 @@ export function SharedStrategyPage() {
 									strategyName={strategyName}
 									strategyWhenCreated={strategyWhenCreated}
 								/>
-							)
+							),
 						},
 						{
 							tabId: 'backtesting',
@@ -55,8 +65,8 @@ export function SharedStrategyPage() {
 									strategyName={strategyName}
 									whenUpdatedFlowView={0}
 								/>
-							)
-						}
+							),
+						},
 					]}
 				/>
 			</StrategyPageContainer>

@@ -30,7 +30,7 @@ export function binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols(
 				quoteAsset,
 				quoteAssetPrecision,
 				status,
-				symbol
+				symbol,
 			}) => ({
 				baseAsset,
 				baseAssetPrecision,
@@ -49,7 +49,7 @@ export const dflowBinanceSymbolSeparator = '/'
 
 export function getDflowBinanceNodeSymbolKind({
 	baseAsset,
-	quoteAsset
+	quoteAsset,
 }: Pick<BinanceSymbolInfo, 'baseAsset' | 'quoteAsset'>) {
 	return [baseAsset, quoteAsset].join(dflowBinanceSymbolSeparator)
 }

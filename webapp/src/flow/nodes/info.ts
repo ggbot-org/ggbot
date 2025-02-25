@@ -8,9 +8,9 @@ export class FlowViewNodeInfo extends FlowViewNode {
 			border: '0',
 			'font-size': '16px',
 			outline: 'none',
-			padding: '4px 17px'
+			padding: '4px 17px',
 		},
-		'textarea::selection': { 'background-color': 'transparent' }
+		'textarea::selection': { 'background-color': 'transparent' },
 	}
 
 	static minNumCols = 5

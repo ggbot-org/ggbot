@@ -6,12 +6,12 @@ import { TimeHTMLAttributes } from 'react'
 type DateTimeFormat = 'day' | 'time'
 
 export function DateTime({
-	format, value
-}: Omit<
-	TimeHTMLAttributes<HTMLTimeElement>, 'dateTime'
-> & Partial<{ value: Day }> & {
-	format: DateTimeFormat
-}) {
+	format,
+	value,
+}: Omit<TimeHTMLAttributes<HTMLTimeElement>, 'dateTime'> &
+	Partial<{ value: Day }> & {
+		format: DateTimeFormat
+	}) {
 	if (!value) return null
 
 	let formatOptions: DayFormat | TimeFormat | undefined

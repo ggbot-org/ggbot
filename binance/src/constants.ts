@@ -14,7 +14,7 @@ export const binanceKlineIntervals = [
 	'1d',
 	'3d',
 	'1w',
-	'1M'
+	'1M',
 ] as const
 export const binanceKlineMaxLimit = 1000
 
@@ -69,7 +69,7 @@ export const binanceSymbolStatuses = [
 	// "PRE_TRADING",
 	'TRADING',
 	// "POST_TRADING", "END_OF_DAY", "HALT", "AUCTION_MATCH",
-	'BREAK'
+	'BREAK',
 ] as const
 
 export const binanceTimeInForces = [
@@ -80,4 +80,3 @@ export const binanceTimeInForces = [
 	'GTC',
 	// "IOC", "FOK",
 ] as const
-

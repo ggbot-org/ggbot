@@ -1,7 +1,13 @@
 import { Classname } from '_/classnames'
 import { Control, Field, InputField, SelectField } from '_/components/library'
 import { useIntl } from '_/i18n/hooks'
-import { Frequency, FrequencyInterval, isFrequencyInterval, isNaturalNumber, NaturalNumber } from '@workspace/models'
+import {
+	Frequency,
+	FrequencyInterval,
+	isFrequencyInterval,
+	isNaturalNumber,
+	NaturalNumber,
+} from '@workspace/models'
 import { ChangeEventHandler, useCallback } from 'react'
 
 export type FrequencyInputProps = Partial<{ disabled: boolean }> & {
@@ -22,7 +28,7 @@ export function FrequencyInput({
 	disabled,
 	disabledIntervalOptions = [],
 	frequency: { interval, every },
-	setFrequency
+	setFrequency,
 }: FrequencyInputProps) {
 	const { formatMessage } = useIntl()
 
@@ -30,30 +36,35 @@ export function FrequencyInput({
 		{
 			value: '1d',
 			disabled: disabledIntervalOptions.includes('1d'),
-			label: formatMessage({ id: 'FrequencyInput.day' })
+			label: formatMessage({ id: 'FrequencyInput.day' }),
 		},
 		{
 			value: '1h',
 			disabled: disabledIntervalOptions.includes('1h'),
-			label: formatMessage({ id: 'FrequencyInput.hour' })
+			label: formatMessage({ id: 'FrequencyInput.hour' }),
 		},
 		{
 			disabled: disabledIntervalOptions.includes('1m'),
 			value: '1m',
-			label: formatMessage({ id: 'FrequencyInput.minute' })
-		}
+			label: formatMessage({ id: 'FrequencyInput.minute' }),
+		},
 	]
 
-	const onChangeFrequencyEvery = useCallback<ChangeEventHandler<HTMLInputElement>>(
+	const onChangeFrequencyEvery = useCallback<
+		ChangeEventHandler<HTMLInputElement>
+	>(
 		(event) => {
 			const value = event.target.value
 			const every = value === '' ? value : Number(value)
-			if (isNaturalNumber(every) || every === '') setFrequency({ interval, every })
+			if (isNaturalNumber(every) || every === '')
+				setFrequency({ interval, every })
 		},
 		[interval, setFrequency]
 	)
 
-	const onChangeFrequencyInterval = useCallback<ChangeEventHandler<HTMLSelectElement>>(
+	const onChangeFrequencyInterval = useCallback<
+		ChangeEventHandler<HTMLSelectElement>
+	>(
 		(event) => {
 			const value = event.target.value
 			if (isFrequencyInterval(value)) setFrequency({ every, interval: value })
@@ -77,7 +88,9 @@ export function FrequencyInput({
 			</Control>
 			<Control>
 				<SelectField
-					color={disabledIntervalOptions.includes(interval) ? 'danger' : undefined}
+					color={
+						disabledIntervalOptions.includes(interval) ? 'danger' : undefined
+					}
 					disabled={disabled}
 					label={formatMessage({ id: 'FrequencyInput.interval' })}
 					onChange={onChangeFrequencyInterval}

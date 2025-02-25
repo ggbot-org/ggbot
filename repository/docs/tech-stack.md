@@ -1,33 +1,33 @@
 # ggbot2 Tech stack
 
--   [Git](#git)
--   [Markdown](#markdown)
--   [AWS Command Line Interface](#aws-command-line-interface)
--   Amazon Web Services
-    -   [AWS Certificate Manager](#aws-certificate-manager)
-    -   [AWS CloudFront](#aws-cloudfront)
-    -   [AWS EC2](#aws-ec2)
-    -   [AWS IAM](#aws-iam)
-    -   [AWS S3](#aws-s3)
--   [direnv](#direnv)
--   [Google Search Console](#google-search-console)
--   [Node.js](#nodejs)
--   [npm workspaces](#npm-workspaces)
--   [Volta](#volta)
--   [React](#react) (aliased by [Preact](#preact))
--   [Stripe](#stripe)
--   npm packages
-    -   [@types/node](#typesnode)
-    -   [@typescript-eslint/eslint-plugin](#typescript-eslinteslint-plugin)
-    -   [@typescript-eslint/parser](#typescript-eslintparser)
-    -   [aws-sdk](#aws-sdk)
-    -   [eslint](#eslint)
-    -   [eslint-plugin-import](#eslint-plugin-import)
-    -   [eslint-plugin-react](#eslint-plugin-react)
-    -   [eslint-plugin-react-hooks](#eslint-plugin-react-hooks)
-    -   [dflow](#dflow)
-    -   [flow-view](#flow-view)
-    -   [typescript](#typescript)
+- [Git](#git)
+- [Markdown](#markdown)
+- [AWS Command Line Interface](#aws-command-line-interface)
+- Amazon Web Services
+  - [AWS Certificate Manager](#aws-certificate-manager)
+  - [AWS CloudFront](#aws-cloudfront)
+  - [AWS EC2](#aws-ec2)
+  - [AWS IAM](#aws-iam)
+  - [AWS S3](#aws-s3)
+- [direnv](#direnv)
+- [Google Search Console](#google-search-console)
+- [Node.js](#nodejs)
+- [npm workspaces](#npm-workspaces)
+- [Volta](#volta)
+- [React](#react) (aliased by [Preact](#preact))
+- [Stripe](#stripe)
+- npm packages
+  - [@types/node](#typesnode)
+  - [@typescript-eslint/eslint-plugin](#typescript-eslinteslint-plugin)
+  - [@typescript-eslint/parser](#typescript-eslintparser)
+  - [aws-sdk](#aws-sdk)
+  - [eslint](#eslint)
+  - [eslint-plugin-import](#eslint-plugin-import)
+  - [eslint-plugin-react](#eslint-plugin-react)
+  - [eslint-plugin-react-hooks](#eslint-plugin-react-hooks)
+  - [dflow](#dflow)
+  - [flow-view](#flow-view)
+  - [typescript](#typescript)
 
 ## Git
 
@@ -51,8 +51,8 @@ Easiest way to install it on MacOS is to use [awscli Homebrew Formula](https://f
 brew install awscli
 ```
 
--   [AWS CLI Homepage](https://aws.amazon.com/cli/)
--   [Get started with the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
+- [AWS CLI Homepage](https://aws.amazon.com/cli/)
+- [Get started with the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
 ## Amazon Web Services
 

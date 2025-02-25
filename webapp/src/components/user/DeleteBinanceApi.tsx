@@ -1,9 +1,20 @@
-import { Button, Buttons, Content, MainColor, Message, Modal } from '_/components/library'
+import {
+	Button,
+	Buttons,
+	Content,
+	MainColor,
+	Message,
+	Modal,
+} from '_/components/library'
 import { useDeleteBinanceApiConfig } from '_/hooks/user/api'
 import { FormattedMessage } from '_/i18n/components'
 import { useEffect, useState } from 'react'
 
-export function DeleteBinanceApi({ refetchApiKey }: { refetchApiKey: () => void }) {
+export function DeleteBinanceApi({
+	refetchApiKey,
+}: {
+	refetchApiKey: () => void
+}) {
 	const color: MainColor = 'warning'
 
 	const DELETE = useDeleteBinanceApiConfig()

@@ -10,7 +10,10 @@ type IDBObjectStoreProvider = {
 export class CacheObjectStore implements IDBObjectStoreProvider {
 	storeName: string
 
-	constructor(storeBasename: string, databaseVersion: IDBInstance['databaseVersion']) {
+	constructor(
+		storeBasename: string,
+		databaseVersion: IDBInstance['databaseVersion']
+	) {
 		this.storeName = `${storeBasename}-v${databaseVersion}`
 	}
 
@@ -29,18 +32,26 @@ export class CacheObjectStore implements IDBObjectStoreProvider {
 		})
 	}
 
-	read<Data extends SerializableData>(db: IDBDatabase, key: string): Promise<Data | undefined> {
+	read<Data extends SerializableData>(
+		db: IDBDatabase,
+		key: string
+	): Promise<Data | undefined> {
 		return new Promise((resolve, reject) => {
 			const { storeName } = this
 			const transaction = db.transaction(storeName, 'readonly')
 			const objectStore = transaction.objectStore(storeName)
-			const request: IDBRequest<{ data: Data } | undefined> = objectStore.get(key)
+			const request: IDBRequest<{ data: Data } | undefined> =
+				objectStore.get(key)
 			request.onerror = () => reject(undefined)
 			request.onsuccess = () => resolve(request.result?.data)
 		})
 	}
 
-	write<Data extends SerializableData>(db: IDBDatabase, key: string, data: Data): Promise<void> {
+	write<Data extends SerializableData>(
+		db: IDBDatabase,
+		key: string,
+		data: Data
+	): Promise<void> {
 		return new Promise((resolve, reject) => {
 			const { storeName } = this
 			const transaction = db.transaction(storeName, 'readwrite')

@@ -1,8 +1,13 @@
 import { DflowNode } from 'dflow'
 
-import { inputValues1, inputValues2, outputLastValue, outputValues } from '../commonIO.js'
+import {
+	inputValues1,
+	inputValues2,
+	outputLastValue,
+	outputValues,
+} from '../commonIO.js'
 
-export function crossOver (values1: number[], values2: number[]): number[] {
+export function crossOver(values1: number[], values2: number[]): number[] {
 	const result: number[] = []
 	const size = values1.length
 	for (let index = 1; index < size; index++) {

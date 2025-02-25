@@ -1,4 +1,9 @@
-import { DocumentProviderLevel1, PublicAction, PublicActionInput as Input, PublicActionOutput as Output } from '@workspace/api'
+import {
+	DocumentProviderLevel1,
+	PublicAction,
+	PublicActionInput as Input,
+	PublicActionOutput as Output,
+} from '@workspace/api'
 
 import { pathname } from './locators.js'
 
@@ -10,10 +15,14 @@ export class PublicDatabase implements PublicAction {
 	}
 
 	ReadStrategy(arg: Input['ReadStrategy']) {
-		return this.documentProvider.getItem<Output['ReadStrategy']>(pathname.strategy(arg))
+		return this.documentProvider.getItem<Output['ReadStrategy']>(
+			pathname.strategy(arg)
+		)
 	}
 
 	ReadStrategyFlow(arg: Input['ReadStrategyFlow']) {
-		return this.documentProvider.getItem<Output['ReadStrategyFlow']>(pathname.strategyFlow(arg))
+		return this.documentProvider.getItem<Output['ReadStrategyFlow']>(
+			pathname.strategyFlow(arg)
+		)
 	}
 }

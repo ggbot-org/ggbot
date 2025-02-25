@@ -1,7 +1,20 @@
 import { Classname } from '_/classnames'
-import { Button, Buttons, Checkbox, Column, Columns, Div, Message, OneColumn, Span } from '_/components/library'
+import {
+	Button,
+	Buttons,
+	Checkbox,
+	Column,
+	Columns,
+	Div,
+	Message,
+	OneColumn,
+	Span,
+} from '_/components/library'
 import { Toolbar, ToolbarProps } from '_/components/Toolbar'
-import { SchedulingsStatusBadges, SchedulingsStatusBadgesProps } from '_/components/user/SchedulingsStatusBadges'
+import {
+	SchedulingsStatusBadges,
+	SchedulingsStatusBadgesProps,
+} from '_/components/user/SchedulingsStatusBadges'
 import { useAccountStrategies } from '_/hooks/user/useAccountStrategies'
 import { FormattedMessage } from '_/i18n/components'
 import { GOTO } from '_/routing/navigation'
@@ -12,18 +25,24 @@ import { AccountStrategy, schedulingsAreInactive } from '@workspace/models'
 import { useEffect, useMemo, useState } from 'react'
 
 function StrategyItem({
-	isLoading, name, schedulings, ...strategyKey
+	isLoading,
+	name,
+	schedulings,
+	...strategyKey
 }: Omit<AccountStrategy, 'schedulings'> &
 	SchedulingsStatusBadgesProps &
 	Partial<{ isLoading: boolean }>) {
 	return (
 		<Column bulma={['is-half-tablet', 'is-one-third-desktop']}>
 			<Div
-				bulma={['box', { 'is-clickable': !isLoading, 'skeleton-block': isLoading }]}
+				bulma={[
+					'box',
+					{ 'is-clickable': !isLoading, 'skeleton-block': isLoading },
+				]}
 				onClick={() => GOTO(webapp.user.strategy(strategyKey))}
 				tabIndex={0}
 			>
-				<Div bulma={['is-flex', 'is-justify-content-space-between']} >
+				<Div bulma={['is-flex', 'is-justify-content-space-between']}>
 					<Span bulma="is-unselectable">{name}</Span>
 					<SchedulingsStatusBadges schedulings={schedulings} />
 				</Div>
@@ -32,7 +51,11 @@ function StrategyItem({
 	)
 }
 
-function StrategiesToolbar({ hideInactive, setHideInactive, isInvisible }: {
+function StrategiesToolbar({
+	hideInactive,
+	setHideInactive,
+	isInvisible,
+}: {
 	hideInactive: boolean | undefined
 	setHideInactive: (value: boolean) => void
 } & ToolbarProps) {
@@ -52,22 +75,28 @@ function StrategiesToolbar({ hideInactive, setHideInactive, isInvisible }: {
 	)
 }
 
-export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void }) {
+export function Strategies({
+	goCreateStrategy,
+}: {
+	goCreateStrategy: () => void
+}) {
 	const { accountStrategies, readStrategiesIsPending } = useAccountStrategies()
 
 	const [hideInactive, setHideInactive] = useState<boolean>(
 		localWebStorage.hideInactiveStrategies.get() ?? false
 	)
 
-	const [estimatedNumItems, setEstimatedNumItems] = useState<number | undefined>(
-		sessionWebStorage.estimatedNumStrategies.get() ?? 1
-	)
+	const [estimatedNumItems, setEstimatedNumItems] = useState<
+		number | undefined
+	>(sessionWebStorage.estimatedNumStrategies.get() ?? 1)
 
 	const { items, numItems } = useMemo(() => {
 		const items: AccountStrategy[] = []
 		let numItems: number | undefined
 		if (accountStrategies) {
-			const allAreInactive = accountStrategies.every(({ schedulings }) => schedulingsAreInactive(schedulings))
+			const allAreInactive = accountStrategies.every(({ schedulings }) =>
+				schedulingsAreInactive(schedulings)
+			)
 			for (const item of accountStrategies) {
 				const isInactive = schedulingsAreInactive(item.schedulings)
 				if (hideInactive && isInactive && !allAreInactive) continue
@@ -85,48 +114,52 @@ export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void 
 		setEstimatedNumItems(estimatedNumItems)
 	}, [numItems])
 
-	if (readStrategiesIsPending) return (
-		<>
-			<StrategiesToolbar
-				isInvisible
-				hideInactive={hideInactive}
-				setHideInactive={setHideInactive}
-			/>
-			<Columns isMultiline>
-				{[...Array(estimatedNumItems)].map((_, index) => String(index)).map((key) => (
-					<StrategyItem
-						key={key}
-						isLoading
-						name=""
-						schedulings={undefined}
-						strategyId=""
-						strategyKind="none"
-					/>
-				))}
-			</Columns>
-		</>
-	)
+	if (readStrategiesIsPending)
+		return (
+			<>
+				<StrategiesToolbar
+					isInvisible
+					hideInactive={hideInactive}
+					setHideInactive={setHideInactive}
+				/>
+				<Columns isMultiline>
+					{[...Array(estimatedNumItems)]
+						.map((_, index) => String(index))
+						.map((key) => (
+							<StrategyItem
+								key={key}
+								isLoading
+								name=""
+								schedulings={undefined}
+								strategyId=""
+								strategyKind="none"
+							/>
+						))}
+				</Columns>
+			</>
+		)
 
-	if (accountStrategies?.length === 0) return (
-		<OneColumn>
-			<form
-				className={'box' satisfies Classname}
-				onSubmit={(event) => {
-					event.preventDefault()
-					goCreateStrategy()
-				}}
-			>
-				<Message color="info">
-					<FormattedMessage id="Strategies.noStrategy" />
-				</Message>
-				<Buttons>
-					<Button>
-						<FormattedMessage id="Tabs.newStrategy" />
-					</Button>
-				</Buttons>
-			</form>
-		</OneColumn>
-	)
+	if (accountStrategies?.length === 0)
+		return (
+			<OneColumn>
+				<form
+					className={'box' satisfies Classname}
+					onSubmit={(event) => {
+						event.preventDefault()
+						goCreateStrategy()
+					}}
+				>
+					<Message color="info">
+						<FormattedMessage id="Strategies.noStrategy" />
+					</Message>
+					<Buttons>
+						<Button>
+							<FormattedMessage id="Tabs.newStrategy" />
+						</Button>
+					</Buttons>
+				</form>
+			</OneColumn>
+		)
 
 	return (
 		<>

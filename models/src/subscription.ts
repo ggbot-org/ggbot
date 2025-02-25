@@ -11,13 +11,18 @@ const numDaysBeforeSubscriptionEnd = 30
  */
 export const numDaysSubscriptionExpirationTolerance = 7
 
-export function shouldPurchaseSubscription(subscription: Subscription): boolean {
-	return getDay(subscription.end).minus(numDaysBeforeSubscriptionEnd).days < today()
+export function shouldPurchaseSubscription(
+	subscription: Subscription
+): boolean {
+	return (
+		getDay(subscription.end).minus(numDaysBeforeSubscriptionEnd).days < today()
+	)
 }
 
 const subscriptionPlans = ['basic', 'pro'] as const
 export type SubscriptionPlan = (typeof subscriptionPlans)[number]
-export const isSubscriptionPlan = isLiteralType<SubscriptionPlan>(subscriptionPlans)
+export const isSubscriptionPlan =
+	isLiteralType<SubscriptionPlan>(subscriptionPlans)
 
 export type SubscriptionStatus = 'active' | 'expired'
 
@@ -33,8 +38,13 @@ export const isSubscription = objectTypeGuard<Subscription>(
  * Get subscription status, consireding expiration date and num days of
  * tolerance.
  */
-export function statusOfSubscription({ end }: Pick<Subscription, 'end'>): SubscriptionStatus {
-	return getDay(end).plus(numDaysSubscriptionExpirationTolerance).days >= today() ? 'active' : 'expired'
+export function statusOfSubscription({
+	end,
+}: Pick<Subscription, 'end'>): SubscriptionStatus {
+	return getDay(end).plus(numDaysSubscriptionExpirationTolerance).days >=
+		today()
+		? 'active'
+		: 'expired'
 }
 
 /**

@@ -4,7 +4,8 @@ export type BinanceApiPrivateEndpoint =
 	| '/api/v3/order/test'
 	| '/sapi/v1/account/apiRestrictions'
 
-export type BinanceApiEndpoint = BinanceApiPrivateEndpoint
+export type BinanceApiEndpoint =
+	| BinanceApiPrivateEndpoint
 	| '/api/v3/avgPrice'
 	| '/api/v3/exchangeInfo'
 	| '/api/v3/klines'

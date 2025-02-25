@@ -11,13 +11,17 @@ export function SimpleTable() {
 		<Table>
 			<thead>
 				<tr>
-					{list(numColumns).map((key) => (<th key={key}>{`field ${key}`}</th>))}
+					{list(numColumns).map((key) => (
+						<th key={key}>{`field ${key}`}</th>
+					))}
 				</tr>
 			</thead>
 			<tbody>
 				{list(numRows).map((row) => (
 					<tr key={row}>
-						{list(numColumns).map((col) => (<td key={col}>{`cell ${row}-${col}`}</td>))}
+						{list(numColumns).map((col) => (
+							<td key={col}>{`cell ${row}-${col}`}</td>
+						))}
 					</tr>
 				))}
 			</tbody>

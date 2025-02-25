@@ -8,7 +8,8 @@ const PROJECT_SHORT_NAME = ENV.PROJECT_SHORT_NAME()
 
 export function oneTimePasswordEmailMessage(
 	language: Language,
-	{ oneTimePassword: { code } }: { oneTimePassword: OneTimePassword }): EmailMessageContent {
+	{ oneTimePassword: { code } }: { oneTimePassword: OneTimePassword }
+): EmailMessageContent {
 	const html: Record<Language, string> = {
 		en: emailBody(`
           <tr>
@@ -22,7 +23,7 @@ export function oneTimePasswordEmailMessage(
               <h2>${code}</h2>
             </td>
           </tr>
-        `)
+        `),
 	}
 
 	const text: Record<Language, string> = {
@@ -30,16 +31,16 @@ export function oneTimePasswordEmailMessage(
 Copy and paste this ${PROJECT_SHORT_NAME} "one time password" to get access to your account:
 
 ${code}
-`
+`,
 	}
 
 	const subject: Record<Language, string> = {
-		en: `${PROJECT_SHORT_NAME} · one time password · ${code}`
+		en: `${PROJECT_SHORT_NAME} · one time password · ${code}`,
 	}
 
 	return {
 		html: html[language],
 		text: text[language],
-		subject: subject[language]
+		subject: subject[language],
 	}
 }

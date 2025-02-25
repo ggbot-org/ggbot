@@ -27,7 +27,7 @@ export function initializeFlowView(
 	flowView.addNodeDefinitions({
 		nodes: Object.keys(nodesCatalog)
 			.map((kind) => ({ name: kind }))
-			.sort()
+			.sort(),
 	})
 
 	return flowView

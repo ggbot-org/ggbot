@@ -1,7 +1,17 @@
-import { ActionInput, ApiActionOutput, isApiActionOutputData, isApiActionOutputError } from './action.js'
+import {
+	ActionInput,
+	ApiActionOutput,
+	isApiActionOutputData,
+	isApiActionOutputError,
+} from './action.js'
 import { apiActionMethod } from './api.js'
 import { GenericError, TimeoutError } from './errors.js'
-import { BadRequestError, GatewayTimeoutError, InternalServerError, UnauthorizedError } from './http/errors.js'
+import {
+	BadRequestError,
+	GatewayTimeoutError,
+	InternalServerError,
+	UnauthorizedError,
+} from './http/errors.js'
 
 export class ClientActionHeaders extends Headers {
 	constructor() {
@@ -39,7 +49,7 @@ export async function clientAction<ActionType extends string>(
 		body: JSON.stringify({ type, data }),
 		headers,
 		method: apiActionMethod,
-		signal: controller.signal
+		signal: controller.signal,
 	})
 
 	if (controller.signal.aborted) throw new TimeoutError()
@@ -58,8 +68,9 @@ export async function clientAction<ActionType extends string>(
 			BadRequestError,
 			InternalServerError,
 			GatewayTimeoutError,
-			UnauthorizedError
-		]) if (error === ErrorClass.statusCode) throw new ErrorClass()
+			UnauthorizedError,
+		])
+			if (error === ErrorClass.statusCode) throw new ErrorClass()
 
 		throw error
 	}

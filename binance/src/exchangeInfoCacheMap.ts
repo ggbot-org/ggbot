@@ -5,7 +5,9 @@ import { BinanceExchangeInfo } from './types.js'
 
 const cache = new CacheMap<BinanceExchangeInfo>(86_400_000) // 1 day
 
-export class BinanceExchangeInfoCacheMap implements BinanceExchangeInfoCacheProvider {
+export class BinanceExchangeInfoCacheMap
+	implements BinanceExchangeInfoCacheProvider
+{
 	getExchangeInfo(): Promise<BinanceExchangeInfo | undefined> {
 		return Promise.resolve(cache.get('exchangeInfo'))
 	}

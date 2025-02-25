@@ -1,5 +1,9 @@
 import { workerScriptPath } from '_/workers'
-import { BacktestingMessageInData, BacktestingMessageOutData, BacktestingSession } from '@workspace/backtesting'
+import {
+	BacktestingMessageInData,
+	BacktestingMessageOutData,
+	BacktestingSession,
+} from '@workspace/backtesting'
 import { everyOneHour, Frequency } from '@workspace/models'
 import { Day, DayInterval, getDay, yesterday } from 'minimal-time-helpers'
 import { Dispatch, useEffect, useReducer } from 'react'
@@ -8,16 +12,12 @@ type Action =
 	| BacktestingMessageInData
 	| BacktestingMessageOutData
 	| {
-		type: 'INITALIZED'
-	}
+			type: 'INITALIZED'
+	  }
 
 type State = Pick<
 	BacktestingSession,
-	| 'afterStepBehaviour'
-	| 'currentTimestamp'
-	| 'memory'
-	| 'orders'
-	| 'stepIndex'
+	'afterStepBehaviour' | 'currentTimestamp' | 'memory' | 'orders' | 'stepIndex'
 > & {
 	dayInterval: DayInterval
 	frequency: Frequency
@@ -36,7 +36,7 @@ function defaultDayInterval(): State['dayInterval'] {
 	const maxDay = yesterday()
 	return {
 		start: getDay(maxDay).minus(7).days,
-		end: maxDay
+		end: maxDay,
 	}
 }
 
@@ -56,7 +56,7 @@ const partialInitialState: Pick<
 	isRunning: false,
 	memory: {},
 	orders: [],
-	stepIndex: 0
+	stepIndex: 0,
 }
 
 export function useBacktesting(): {
@@ -69,7 +69,7 @@ export function useBacktesting(): {
 				backtesting.postMessage(action)
 				return {
 					...state,
-					...partialInitialState
+					...partialInitialState,
 				}
 			}
 
@@ -83,7 +83,7 @@ export function useBacktesting(): {
 				backtesting.postMessage(action)
 				return {
 					...state,
-					afterStepBehaviour
+					afterStepBehaviour,
 				}
 			}
 
@@ -92,7 +92,7 @@ export function useBacktesting(): {
 				backtesting.postMessage(action)
 				return {
 					...state,
-					dayInterval
+					dayInterval,
 				}
 			}
 
@@ -101,7 +101,7 @@ export function useBacktesting(): {
 				backtesting.postMessage(action)
 				return {
 					...state,
-					frequency
+					frequency,
 				}
 			}
 
@@ -112,7 +112,7 @@ export function useBacktesting(): {
 					isDone: status === 'done',
 					isPaused: status === 'paused',
 					isRunning: status === 'running',
-					...(status === 'initial' ? partialInitialState : {})
+					...(status === 'initial' ? partialInitialState : {}),
 				}
 			}
 
@@ -120,7 +120,7 @@ export function useBacktesting(): {
 				const { memory } = action
 				return {
 					...state,
-					memory
+					memory,
 				}
 			}
 
@@ -130,7 +130,7 @@ export function useBacktesting(): {
 					...state,
 					currentTimestamp,
 					numSteps,
-					stepIndex
+					stepIndex,
 				}
 			}
 
@@ -138,7 +138,7 @@ export function useBacktesting(): {
 				const { orders } = action
 				return {
 					...state,
-					orders: state.orders.concat(orders)
+					orders: state.orders.concat(orders),
 				}
 			}
 
@@ -151,15 +151,15 @@ export function useBacktesting(): {
 			afterStepBehaviour: BacktestingSession.defaultAfterStepBehaviour,
 			maxDay: yesterday(),
 			numSteps: 0,
-			...partialInitialState
+			...partialInitialState,
 		}
 	)
 
 	// Dispatch action on every backtesting message received.
 	useEffect(() => {
-		backtesting.onmessage = (
-			{ data: action }: MessageEvent<BacktestingMessageOutData>
-		) => {
+		backtesting.onmessage = ({
+			data: action,
+		}: MessageEvent<BacktestingMessageOutData>) => {
 			dispatch(action)
 		}
 		backtesting.addEventListener('error', (error) => console.error(error))

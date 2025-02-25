@@ -8,7 +8,12 @@ import { webapp } from '_/routing/webapp'
 import { StrategyFlow, StrategyKey } from '@workspace/models'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-export function FlowEditor({ setFlowView, strategyKey, strategyName, strategyFlow }: {
+export function FlowEditor({
+	setFlowView,
+	strategyKey,
+	strategyName,
+	strategyFlow,
+}: {
 	setFlowView: (arg: UseFlowViewOutput) => void
 	strategyKey: StrategyKey | undefined
 	strategyName: string
@@ -20,7 +25,11 @@ export function FlowEditor({ setFlowView, strategyKey, strategyName, strategyFlo
 	// Ref values (the `current` property) may not be accessed during render. (https://react.dev/reference/react/useRef)  react-compiler/react-compiler
 	const flowViewContainerRef = useRef<HTMLDivElement | null>(null)
 
-	const { whenUpdatedFlowView, flowViewGraph } = useFlowView(flowViewContainerRef.current, initialFlowViewGraph, strategyKey?.strategyKind)
+	const { whenUpdatedFlowView, flowViewGraph } = useFlowView(
+		flowViewContainerRef.current,
+		initialFlowViewGraph,
+		strategyKey?.strategyKind
+	)
 
 	const [canSave, setCanSave] = useState(false)
 
@@ -33,7 +42,7 @@ export function FlowEditor({ setFlowView, strategyKey, strategyName, strategyFlo
 		if (!flowViewGraph) return
 		WRITE.request({
 			...strategyKey,
-			view: flowViewGraph
+			view: flowViewGraph,
 		})
 	}, [WRITE, canSave, flowViewGraph, strategyKey])
 

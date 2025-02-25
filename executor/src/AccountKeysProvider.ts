@@ -24,7 +24,9 @@ export class AccountKeysProvider {
 	async getAccountKeys(): Promise<AccountKey[]> {
 		const cached = cache.get(key)
 		if (cached) return cached
-		const { accountKeys: data } = await this.database.ListAccountKeys({ token: undefined })
+		const { accountKeys: data } = await this.database.ListAccountKeys({
+			token: undefined,
+		})
 		cache.set(key, data)
 		return data
 	}

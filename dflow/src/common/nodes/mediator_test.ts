@@ -2,17 +2,19 @@ import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
 import { DflowCommonContext as Context } from '../context.js'
-import { addMediation,
+import {
+	addMediation,
 	AddMediationInput,
 	AddMediationOutput,
 	exitMediation,
 	ExitMediationInput,
-	MediatorMemory } from './mediator.js'
+	MediatorMemory,
+} from './mediator.js'
 
 test('addMediation', () => {
 	type TestData = Array<{
-		input: AddMediationInput;
-		output: AddMediationOutput;
+		input: AddMediationInput
+		output: AddMediationOutput
 	}>
 	const testData: TestData = [
 		// First iteration.
@@ -116,8 +118,8 @@ test('addMediation', () => {
 
 test('exitMediation', () => {
 	type TestData = Array<{
-		input: ExitMediationInput;
-		output: ReturnType<typeof exitMediation>;
+		input: ExitMediationInput
+		output: ReturnType<typeof exitMediation>
 	}>
 	const testData: TestData = [
 		// First iteration.

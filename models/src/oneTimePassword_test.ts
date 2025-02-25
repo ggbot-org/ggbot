@@ -1,7 +1,10 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { generateOneTimePassword, isOneTimePassword } from './oneTimePassword.js'
+import {
+	generateOneTimePassword,
+	isOneTimePassword,
+} from './oneTimePassword.js'
 import { createdNow } from './time.js'
 
 test('isOneTimePassword', () => {

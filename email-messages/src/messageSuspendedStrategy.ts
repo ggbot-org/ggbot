@@ -11,7 +11,10 @@ export function suspendedStrategyEmailMessage(
 	language: Language,
 	{ strategyId, strategyKind }: StrategyKey
 ): EmailMessageContent {
-	const linkToStrategyHref = webapp.user.strategy({ strategyId, strategyKind }).href
+	const linkToStrategyHref = webapp.user.strategy({
+		strategyId,
+		strategyKind,
+	}).href
 
 	const html: Record<Language, string> = {
 		en: emailBody(`
@@ -46,7 +49,7 @@ export function suspendedStrategyEmailMessage(
               This is the <a href="${linkToStrategyHref}">link to your strategy</a>.
             </td>
           </tr>
-        `)
+        `),
 	}
 
 	const text: Record<Language, string> = {
@@ -59,16 +62,16 @@ Your ${PROJECT_SHORT_NAME} strategy has been suspended.
 Please check your funds or any other error.
 
 This is the link to your strategy: ${linkToStrategyHref}
-`
+`,
 	}
 
 	const subject: Record<Language, string> = {
-		en: `${PROJECT_SHORT_NAME} · suspended strategy · ${strategyId}`
+		en: `${PROJECT_SHORT_NAME} · suspended strategy · ${strategyId}`,
 	}
 
 	return {
 		html: html[language],
 		text: text[language],
-		subject: subject[language]
+		subject: subject[language],
 	}
 }

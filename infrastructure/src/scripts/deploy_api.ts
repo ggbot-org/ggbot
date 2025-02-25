@@ -25,7 +25,9 @@ const apiLamda = instantiateApiLambda(workspacePathname)
 
 const lambdaZipFilename = await prepareApi(workspacePathname)
 
-console.info(`Deploy ${workspacePathname} Lambda function with zip file ${lambdaZipFilename}`)
+console.info(
+	`Deploy ${workspacePathname} Lambda function with zip file ${lambdaZipFilename}`
+)
 
 const ZipFile = await readFile(lambdaZipFilename)
 

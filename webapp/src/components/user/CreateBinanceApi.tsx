@@ -1,5 +1,12 @@
 import { Classname } from '_/classnames'
-import { Button, Control, Field, InputField, InputFieldProps, Title } from '_/components/library'
+import {
+	Button,
+	Control,
+	Field,
+	InputField,
+	InputFieldProps,
+	Title,
+} from '_/components/library'
 import { useCreateBinanceApiConfig } from '_/hooks/user/api'
 import { FormattedMessage } from '_/i18n/components'
 import { useEffect } from 'react'
@@ -31,7 +38,11 @@ function ApiSecret(props: Omit<InputFieldProps, 'label' | 'name'>) {
 	)
 }
 
-export function CreateBinanceApi({ refetchApiKey }: { refetchApiKey: () => void }) {
+export function CreateBinanceApi({
+	refetchApiKey,
+}: {
+	refetchApiKey: () => void
+}) {
 	const CREATE = useCreateBinanceApiConfig()
 	const isLoading = CREATE.isPending
 	const readOnly = CREATE.isPending

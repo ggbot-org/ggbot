@@ -5,8 +5,12 @@ import { StrategyFlowGraphEdge, StrategyFlowGraphNode } from '@workspace/models'
 import { now } from 'minimal-time-helpers'
 
 import { DflowCommonContext } from '../context.js'
-import { DflowCommonExecutor, getDflowExecutionOutputData } from '../executor.js'
-import { ComputeStopPriceArg,
+import {
+	DflowCommonExecutor,
+	getDflowExecutionOutputData,
+} from '../executor.js'
+import {
+	ComputeStopPriceArg,
 	computeStopPriceDown,
 	computeStopPriceUp,
 	trailingStop,
@@ -14,20 +18,22 @@ import { ComputeStopPriceArg,
 	TrailingStopInput,
 	trailingStopMemoryKeys,
 	TrailingStopOutput,
-	TrailingStopUp } from './trailingStop.js'
+	TrailingStopUp,
+} from './trailingStop.js'
 
 type ExecuteTrailingStopInput = {
-	enterTrailing: unknown;
-	resetTrailing?: unknown;
-	memoryLabel: string;
-	initialStopPrice?: number | undefined;
+	enterTrailing: unknown
+	resetTrailing?: unknown
+	memoryLabel: string
+	initialStopPrice?: number | undefined
 } & Pick<TrailingStopInput, 'price' | 'percentageDelta'> &
 	Pick<DflowCommonContext, 'memory'>
-type ExecuteTrailingStopOutput = Partial<TrailingStopOutput> & Pick<DflowCommonContext, 'memory' | 'memoryChanged'>
+type ExecuteTrailingStopOutput = Partial<TrailingStopOutput> &
+	Pick<DflowCommonContext, 'memory' | 'memoryChanged'>
 
 type TrailingStopTestData = {
-	input: ExecuteTrailingStopInput;
-	output: ExecuteTrailingStopOutput;
+	input: ExecuteTrailingStopInput
+	output: ExecuteTrailingStopOutput
 }
 
 const invalidPercentageDeltaValues = [0, 1]
@@ -51,7 +57,7 @@ async function executeTrailingStop(
 		initialStopPrice,
 		resetTrailing,
 		memory: memoryInput,
-	}: ExecuteTrailingStopInput,
+	}: ExecuteTrailingStopInput
 ): Promise<ExecuteTrailingStopOutput> {
 	const nodeId = 'testId'
 	const hasInitialStopPrice = typeof initialStopPrice === 'number'
@@ -81,20 +87,29 @@ async function executeTrailingStop(
 		{
 			id: nodeId,
 			text: nodeKind,
-			ins: [{ id: 'i1' }, { id: 'i2' }, { id: 'i3' }, { id: 'i4' }, { id: 'i5' }, { id: 'i6' }],
+			ins: [
+				{ id: 'i1' },
+				{ id: 'i2' },
+				{ id: 'i3' },
+				{ id: 'i4' },
+				{ id: 'i5' },
+				{ id: 'i6' },
+			],
 		},
 	]
 
-	if (hasInitialStopPrice) nodes.push({
-		id: 'initialStopPrice',
-		text: JSON.stringify(initialStopPrice),
-		outs: [{ id: 'o' }],
-	})
-	if (hasResetTrailing) nodes.push({
-		id: 'resetTrailing',
-		text: JSON.stringify(resetTrailing),
-		outs: [{ id: 'o' }],
-	})
+	if (hasInitialStopPrice)
+		nodes.push({
+			id: 'initialStopPrice',
+			text: JSON.stringify(initialStopPrice),
+			outs: [{ id: 'o' }],
+		})
+	if (hasResetTrailing)
+		nodes.push({
+			id: 'resetTrailing',
+			text: JSON.stringify(resetTrailing),
+			outs: [{ id: 'o' }],
+		})
 
 	const edges: StrategyFlowGraphEdge[] = [
 		{
@@ -115,16 +130,18 @@ async function executeTrailingStop(
 		},
 	]
 
-	if (hasInitialStopPrice) edges.push({
-		id: 'e5',
-		from: ['initialStopPrice', 'o'],
-		to: [nodeId, 'i5'],
-	})
-	if (hasResetTrailing) edges.push({
-		id: 'e6',
-		from: ['resetTrailing', 'o'],
-		to: [nodeId, 'i6'],
-	})
+	if (hasInitialStopPrice)
+		edges.push({
+			id: 'e5',
+			from: ['initialStopPrice', 'o'],
+			to: [nodeId, 'i5'],
+		})
+	if (hasResetTrailing)
+		edges.push({
+			id: 'e6',
+			from: ['resetTrailing', 'o'],
+			to: [nodeId, 'i6'],
+		})
 
 	const executor = new DflowCommonExecutor({ nodes, edges })
 	const {
@@ -143,7 +160,8 @@ async function executeTrailingStop(
 }
 
 test('TrailingStopUp', async () => {
-	const { entryPriceMemoryKey, stopPriceMemoryKey } = trailingStopMemoryKeys(memoryLabel)
+	const { entryPriceMemoryKey, stopPriceMemoryKey } =
+		trailingStopMemoryKeys(memoryLabel)
 
 	const testData: TrailingStopTestData[] = [
 		// If percentageDelta is not valid, algorithm does not run.
@@ -334,15 +352,23 @@ test('TrailingStopUp', async () => {
 	]
 
 	for (const { input, output } of testData) {
-		const { exitTrailing, memory, memoryChanged } = await executeTrailingStop(TrailingStopUp.kind, input)
+		const { exitTrailing, memory, memoryChanged } = await executeTrailingStop(
+			TrailingStopUp.kind,
+			input
+		)
 		assert.equal(exitTrailing, output.exitTrailing, exitTrailingAssertionError)
-		assert.equal(memoryChanged, output.memoryChanged, memoryChangedAssertionError)
+		assert.equal(
+			memoryChanged,
+			output.memoryChanged,
+			memoryChangedAssertionError
+		)
 		assert.deepEqual(memory, output.memory, memoryAssertionError)
 	}
 })
 
 test('TrailingStopDown', async () => {
-	const { entryPriceMemoryKey, stopPriceMemoryKey } = trailingStopMemoryKeys(memoryLabel)
+	const { entryPriceMemoryKey, stopPriceMemoryKey } =
+		trailingStopMemoryKeys(memoryLabel)
 
 	const testData: TrailingStopTestData[] = [
 		// If percentageDelta is not valid, algorithm does not run.
@@ -533,17 +559,24 @@ test('TrailingStopDown', async () => {
 	]
 
 	for (const { input, output } of testData) {
-		const { exitTrailing, memory, memoryChanged } = await executeTrailingStop(TrailingStopDown.kind, input)
+		const { exitTrailing, memory, memoryChanged } = await executeTrailingStop(
+			TrailingStopDown.kind,
+			input
+		)
 		assert.equal(exitTrailing, output.exitTrailing, exitTrailingAssertionError)
-		assert.equal(memoryChanged, output.memoryChanged, memoryChangedAssertionError)
+		assert.equal(
+			memoryChanged,
+			output.memoryChanged,
+			memoryChangedAssertionError
+		)
 		assert.deepEqual(memory, output.memory, memoryAssertionError)
 	}
 })
 
 test('trailingStop', () => {
 	type TestData = Array<{
-		input: TrailingStopInput;
-		output: TrailingStopOutput;
+		input: TrailingStopInput
+		output: TrailingStopOutput
 	}>
 	const testData: TestData = [
 		// If `direction` is "UP" and `price` is below `stopPrice`, then `exitTrailing` is true.
@@ -613,8 +646,8 @@ test('trailingStop', () => {
 
 test('computeStopPriceDown', () => {
 	type TestData = Array<{
-		input: ComputeStopPriceArg;
-		output: number;
+		input: ComputeStopPriceArg
+		output: number
 	}>
 	const testData: TestData = [
 		{
@@ -630,8 +663,8 @@ test('computeStopPriceDown', () => {
 
 test('computeStopPriceUp', () => {
 	type TestData = Array<{
-		input: ComputeStopPriceArg;
-		output: number;
+		input: ComputeStopPriceArg
+		output: number
 	}>
 	const testData: TestData = [
 		{

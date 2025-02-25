@@ -1,7 +1,13 @@
 import { isNonEmptyString } from '@workspace/models'
 import { DflowNode } from 'dflow'
 
-import { inputDefaultParameter, inputInterval, inputKey, outputInterval, outputSymbol } from '../../common/nodes/commonIO.js'
+import {
+	inputDefaultParameter,
+	inputInterval,
+	inputKey,
+	outputInterval,
+	outputSymbol,
+} from '../../common/nodes/commonIO.js'
 import { DflowBinanceContext as Context } from '../context.js'
 
 export class SymbolParameter extends DflowNode {
@@ -12,7 +18,8 @@ export class SymbolParameter extends DflowNode {
 		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (!isNonEmptyString(key) || !isNonEmptyString(defaultValue)) return this.clearOutputs()
+		if (!isNonEmptyString(key) || !isNonEmptyString(defaultValue))
+			return this.clearOutputs()
 		let value = defaultValue
 		const inputValue = params[key]
 		if (isNonEmptyString(inputValue)) value = inputValue
@@ -28,7 +35,8 @@ export class IntervalParameter extends DflowNode {
 		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (!isNonEmptyString(key) || !isNonEmptyString(defaultValue)) return this.clearOutputs()
+		if (!isNonEmptyString(key) || !isNonEmptyString(defaultValue))
+			return this.clearOutputs()
 		let value = defaultValue
 		const inputValue = params[key]
 		if (isNonEmptyString(inputValue)) value = inputValue

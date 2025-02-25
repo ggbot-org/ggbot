@@ -8,8 +8,8 @@ import { invalidIdentifierStrings } from './strings_test.js'
 
 test('isStrategyMemory', () => {
 	type TestData = Array<{
-		input: MaybeObject<StrategyMemory>;
-		output: boolean;
+		input: MaybeObject<StrategyMemory>
+		output: boolean
 	}>
 	const testData: TestData = [
 		{

@@ -13,7 +13,9 @@ export class StrategyFlowProvider {
 		this.database = database
 	}
 
-	async readStrategyFlow(strategyKey: StrategyKey): Promise<StrategyFlow | null> {
+	async readStrategyFlow(
+		strategyKey: StrategyKey
+	): Promise<StrategyFlow | null> {
 		const { strategyId } = strategyKey
 		const cached = cache.get(strategyId)
 		if (cached) return cached

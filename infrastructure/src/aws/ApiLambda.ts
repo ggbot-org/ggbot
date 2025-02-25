@@ -13,7 +13,10 @@ export class ApiLambda extends LambdaFunction {
 		/** @remarks The API workspacePathname starts with `api-` prefix. */
 		workspacePathname: string
 	) {
-		super(region, `${ApiLambda.apiNamePrefix()}${ENV.DEPLOY_STAGE()}-${workspacePathname}`)
+		super(
+			region,
+			`${ApiLambda.apiNamePrefix()}${ENV.DEPLOY_STAGE()}-${workspacePathname}`
+		)
 	}
 
 	static apiNamePrefix() {
@@ -33,8 +36,10 @@ export class ApiLambda extends LambdaFunction {
 	}
 
 	async createLogGroup() {
-		const logGroup = new LogGroup(this.region, `/aws/lambda/${this.functionName}`)
+		const logGroup = new LogGroup(
+			this.region,
+			`/aws/lambda/${this.functionName}`
+		)
 		await logGroup.create()
 	}
 }
-

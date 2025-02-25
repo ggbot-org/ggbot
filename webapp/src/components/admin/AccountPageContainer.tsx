@@ -1,4 +1,10 @@
-import { Column, Columns, Content, Message, OneColumn } from '_/components/library'
+import {
+	Column,
+	Columns,
+	Content,
+	Message,
+	OneColumn,
+} from '_/components/library'
 import { AccountId } from '_/components/readonlyFields'
 import { useReadAccountInfo } from '_/hooks/admin/api'
 import { useAccountKey } from '_/hooks/admin/useAccountKey'
@@ -6,7 +12,11 @@ import { FormattedMessage } from '_/i18n/components'
 import { AccountKey } from '@workspace/models'
 import { PropsWithChildren, useEffect } from 'react'
 
-function AccountNotFound({ accountKey: { accountId } }: { accountKey: AccountKey }) {
+function AccountNotFound({
+	accountKey: { accountId },
+}: {
+	accountKey: AccountKey
+}) {
 	return (
 		<Message
 			color="warning"
@@ -40,19 +50,21 @@ export function AccountPageContainer({ children }: PropsWithChildren) {
 		if (canRun) request(accountKey)
 	}, [canRun, request, accountKey])
 
-	if (!accountKey) return (
-		<OneColumn>
-			<InvalidAccountKey />
-		</OneColumn>
-	)
+	if (!accountKey)
+		return (
+			<OneColumn>
+				<InvalidAccountKey />
+			</OneColumn>
+		)
 
 	if (account === undefined) return null
 
-	if (account === null) return (
-		<OneColumn>
-			<AccountNotFound accountKey={accountKey} />
-		</OneColumn>
-	)
+	if (account === null)
+		return (
+			<OneColumn>
+				<AccountNotFound accountKey={accountKey} />
+			</OneColumn>
+		)
 
 	return children
 }

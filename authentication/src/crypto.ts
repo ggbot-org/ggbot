@@ -16,7 +16,7 @@ async function deriveKey(
 			name: 'PBKDF2',
 			salt,
 			iterations: 250000,
-			hash: 'SHA-256'
+			hash: 'SHA-256',
 		},
 		passwordBasedKey,
 		{ name: 'AES-GCM', length: 256 },
@@ -41,7 +41,8 @@ export async function decrypt(
 	password: string
 ): Promise<string> {
 	// Convert base64 string to Uint8Array.
-	const inputVector = Uint8Array.from(atob(encryptedData), (value) => value.charCodeAt(0)
+	const inputVector = Uint8Array.from(atob(encryptedData), (value) =>
+		value.charCodeAt(0)
 	)
 	const saltVector = inputVector.slice(0, saltVectorLength)
 	const initializationVector = inputVector.slice(
@@ -56,7 +57,7 @@ export async function decrypt(
 	const decryptedContent = await webcrypto.subtle.decrypt(
 		{
 			name: 'AES-GCM',
-			iv: initializationVector
+			iv: initializationVector,
 		},
 		aesKey,
 		encryptedVector
@@ -75,7 +76,7 @@ export async function encrypt(data: string, password: string): Promise<string> {
 	const encryptedDataVector = await webcrypto.subtle.encrypt(
 		{
 			name: 'AES-GCM',
-			iv: initializationVector
+			iv: initializationVector,
 		},
 		aesKey,
 		encoder.encode(data)
@@ -94,9 +95,6 @@ export async function encrypt(data: string, password: string): Promise<string> {
 	)
 	// Convert Uint8Array to base64 encoded string.
 	return btoa(
-		outputVector.reduce(
-			(data, byte) => data + String.fromCharCode(byte),
-			''
-		)
+		outputVector.reduce((data, byte) => data + String.fromCharCode(byte), '')
 	)
 }

@@ -1,7 +1,15 @@
 import { isLiteralType, objectTypeGuard } from 'minimal-type-guard-helpers'
 
 import { binanceKlineIntervals } from './constants.js'
-import { BinanceDecimal, BinanceErrorPayload, BinanceFill, BinanceKline, BinanceKlineInterval, BinanceSymbolFilterLotSize, BinanceSymbolFilterMinNotional } from './types.js'
+import {
+	BinanceDecimal,
+	BinanceErrorPayload,
+	BinanceFill,
+	BinanceKline,
+	BinanceKlineInterval,
+	BinanceSymbolFilterLotSize,
+	BinanceSymbolFilterMinNotional,
+} from './types.js'
 
 function isBinanceDecimal(arg: unknown): arg is BinanceDecimal {
 	return typeof arg === 'string' && !isNaN(Number(arg))
@@ -12,7 +20,8 @@ export const isBinanceErrorPayload = objectTypeGuard<BinanceErrorPayload>(
 )
 
 export const isBinanceFill = objectTypeGuard<BinanceFill>(
-	({ price, qty, commission, commissionAsset }) => isBinanceDecimal(price) &&
+	({ price, qty, commission, commissionAsset }) =>
+		isBinanceDecimal(price) &&
 		isBinanceDecimal(qty) &&
 		isBinanceDecimal(commission) &&
 		typeof commissionAsset === 'string'
@@ -32,7 +41,7 @@ export function isBinanceKline(arg: unknown): arg is BinanceKline {
 		numTrades,
 		takerBaseVolume,
 		takerQuoteVolume,
-		_unusedField
+		_unusedField,
 	] = arg as unknown[]
 
 	return (
@@ -50,18 +59,24 @@ export function isBinanceKline(arg: unknown): arg is BinanceKline {
 	)
 }
 
-export const isBinanceSymbolFilterLotSize = objectTypeGuard<BinanceSymbolFilterLotSize>(
-	({ filterType, minQty, maxQty, stepSize }) => filterType === 'LOT_SIZE' &&
-		isBinanceDecimal(minQty) &&
-		isBinanceDecimal(maxQty) &&
-		isBinanceDecimal(stepSize)
-)
+export const isBinanceSymbolFilterLotSize =
+	objectTypeGuard<BinanceSymbolFilterLotSize>(
+		({ filterType, minQty, maxQty, stepSize }) =>
+			filterType === 'LOT_SIZE' &&
+			isBinanceDecimal(minQty) &&
+			isBinanceDecimal(maxQty) &&
+			isBinanceDecimal(stepSize)
+	)
 
-export const isBinanceSymbolFilterMinNotional = objectTypeGuard<BinanceSymbolFilterMinNotional>(
-	({ filterType, minNotional, applyToMarket, avgPriceMins }) => filterType === 'MIN_NOTIONAL' &&
-		isBinanceDecimal(minNotional) &&
-		typeof applyToMarket === 'boolean' &&
-		typeof avgPriceMins === 'number'
-)
+export const isBinanceSymbolFilterMinNotional =
+	objectTypeGuard<BinanceSymbolFilterMinNotional>(
+		({ filterType, minNotional, applyToMarket, avgPriceMins }) =>
+			filterType === 'MIN_NOTIONAL' &&
+			isBinanceDecimal(minNotional) &&
+			typeof applyToMarket === 'boolean' &&
+			typeof avgPriceMins === 'number'
+	)
 
-export const isBinanceKlineInterval = isLiteralType<BinanceKlineInterval>(binanceKlineIntervals)
+export const isBinanceKlineInterval = isLiteralType<BinanceKlineInterval>(
+	binanceKlineIntervals
+)

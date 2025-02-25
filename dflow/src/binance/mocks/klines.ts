@@ -12,5 +12,5 @@ export const kline: BinanceKline = [
 	308, // Number of trades
 	'1756.87402397', // Taker buy base asset volume
 	'28.46694368', // Taker buy quote asset volume
-	'0' // Unused field, ignore.
+	'0', // Unused field, ignore.
 ]

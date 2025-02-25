@@ -13,8 +13,8 @@ export function DashboardPage() {
 				tabs={[
 					{
 						tabId: 'accounts',
-						content: <Accounts />
-					}
+						content: <Accounts />,
+					},
 				]}
 			/>
 		</PageContainer>

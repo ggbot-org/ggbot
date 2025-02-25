@@ -1,5 +1,10 @@
 import { AuthenticationContext } from '_/contexts/Authentication'
-import { shouldPurchaseSubscription, statusOfSubscription, SubscriptionPlan, SubscriptionStatus } from '@workspace/models'
+import {
+	shouldPurchaseSubscription,
+	statusOfSubscription,
+	SubscriptionPlan,
+	SubscriptionStatus,
+} from '@workspace/models'
 import { dayToTime, Time } from 'minimal-time-helpers'
 import { useContext } from 'react'
 
@@ -15,10 +20,11 @@ type UseSubscriptionOutput = Partial<{
 export function useSubscription(): UseSubscriptionOutput {
 	const { subscription } = useContext(AuthenticationContext)
 	if (subscription === undefined) return {}
-	if (subscription === null) return {
-		canPurchaseSubscription: true,
-		hasActiveSubscription: false
-	}
+	if (subscription === null)
+		return {
+			canPurchaseSubscription: true,
+			hasActiveSubscription: false,
+		}
 	const subscriptionStatus = statusOfSubscription(subscription)
 	return {
 		canPurchaseSubscription: shouldPurchaseSubscription(subscription),
@@ -26,6 +32,6 @@ export function useSubscription(): UseSubscriptionOutput {
 		subscriptionEnd: dayToTime(subscription.end),
 		subscriptionStatus,
 		subscriptionPlan: subscription.plan,
-		isPro: subscription.plan === 'pro'
+		isPro: subscription.plan === 'pro',
 	}
 }

@@ -7,7 +7,7 @@ export class If extends DflowNode {
 	static inputs = [
 		input([], { name: 'condition' }),
 		input([], { name: 'then' }),
-		input([], { name: 'else' })
+		input([], { name: 'else' }),
 	]
 	static outputs = [output()]
 	run() {

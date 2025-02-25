@@ -1,5 +1,12 @@
 import { Classname } from '_/classnames'
-import { Button, Buttons, InputFieldName, Message, Modal, Title } from '_/components/library'
+import {
+	Button,
+	Buttons,
+	InputFieldName,
+	Message,
+	Modal,
+	Title,
+} from '_/components/library'
 import { useRenameStrategy } from '_/hooks/user/api'
 import { FormattedMessage } from '_/i18n/components'
 import { isName, StrategyKey } from '@workspace/models'
@@ -11,7 +18,9 @@ type FormField = {
 type FormFieldName = keyof FormField
 
 export function RenameStrategy({
-	strategyKey, strategyName, renameStrategy
+	strategyKey,
+	strategyName,
+	renameStrategy,
 }: {
 	strategyKey: StrategyKey | undefined
 	strategyName: string
@@ -78,7 +87,7 @@ export function RenameStrategy({
 					/>
 					<Buttons>
 						<Button
-							color={canRename ? error ? 'warning' : 'primary' : undefined}
+							color={canRename ? (error ? 'warning' : 'primary') : undefined}
 							isLoading={isPending}
 						>
 							<FormattedMessage id="Button.save" />

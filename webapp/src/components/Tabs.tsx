@@ -1,5 +1,10 @@
 import { Classname } from '_/classnames'
-import { TabContent, TabContentProps, TabSelector, TabSelectors } from '_/components/library'
+import {
+	TabContent,
+	TabContentProps,
+	TabSelector,
+	TabSelectors,
+} from '_/components/library'
 import { FormattedMessage } from '_/i18n/components'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 

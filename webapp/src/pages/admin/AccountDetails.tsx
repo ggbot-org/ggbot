@@ -15,8 +15,8 @@ export function AccountDetailsPage() {
 					tabs={[
 						{
 							tabId: 'account',
-							content: <Account />
-						}
+							content: <Account />,
+						},
 					]}
 				/>
 			</AccountPageContainer>

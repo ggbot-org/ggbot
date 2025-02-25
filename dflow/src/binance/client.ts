@@ -1,11 +1,21 @@
-import { BinanceExchangeInfo, BinanceKline, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType, BinanceSymbolInfo, BinanceTickerPrice } from '@workspace/binance'
+import {
+	BinanceExchangeInfo,
+	BinanceKline,
+	BinanceKlineOptionalParameters,
+	BinanceNewOrderOptions,
+	BinanceOrder,
+	BinanceOrderSide,
+	BinanceOrderType,
+	BinanceSymbolInfo,
+	BinanceTickerPrice,
+} from '@workspace/binance'
 
 import { DflowBinanceKlineInterval } from './klineIntervals.js'
 
 /** Binance API used by dflow binance nodes. */
 export interface DflowBinanceClient
 	extends DflowBinanceClientPublic,
-	DflowBinanceClientPrivate {}
+		DflowBinanceClientPrivate {}
 
 /** Binance Public API used by dflow binance nodes. */
 interface DflowBinanceClientPublic {
@@ -34,16 +44,31 @@ export class DflowBinanceClientDummy implements DflowBinanceClient {
 		return Promise.resolve({ serverTime: 0, symbols: [] })
 	}
 
-	klines(_symbol: string, _interval: DflowBinanceKlineInterval, _optionalParameters: BinanceKlineOptionalParameters): Promise<BinanceKline[]> {
+	klines(
+		_symbol: string,
+		_interval: DflowBinanceKlineInterval,
+		_optionalParameters: BinanceKlineOptionalParameters
+	): Promise<BinanceKline[]> {
 		return Promise.resolve([])
 	}
 
-	newOrder(symbol: string, side: BinanceOrderSide, type: Extract<BinanceOrderType, 'MARKET'>, _orderOptions: BinanceNewOrderOptions): Promise<BinanceOrder> {
+	newOrder(
+		symbol: string,
+		side: BinanceOrderSide,
+		type: Extract<BinanceOrderType, 'MARKET'>,
+		_orderOptions: BinanceNewOrderOptions
+	): Promise<BinanceOrder> {
 		return Promise.resolve({
 			clientOrderId: '',
 			executedQty: '0',
 			fills: [
-				{ commission: '0', commissionAsset: 'BNB', price: '0', qty: '0', tradeId: -1 }
+				{
+					commission: '0',
+					commissionAsset: 'BNB',
+					price: '0',
+					qty: '0',
+					tradeId: -1,
+				},
 			],
 			orderId: -1,
 			price: '0',
@@ -52,7 +77,7 @@ export class DflowBinanceClientDummy implements DflowBinanceClient {
 			symbol,
 			timeInForce: 'GTC',
 			transactTime: 0,
-			type
+			type,
 		})
 	}
 

@@ -1,4 +1,11 @@
-import { dateToDay, Day, DayInterval, dayToDate, getDate, isDay } from 'minimal-time-helpers'
+import {
+	dateToDay,
+	Day,
+	DayInterval,
+	dayToDate,
+	getDate,
+	isDay,
+} from 'minimal-time-helpers'
 import { objectTypeGuard } from 'minimal-type-guard-helpers'
 
 import { AccountKey } from './account.js'
@@ -23,39 +30,73 @@ export const purchaseMaxNumMonths = 11
 /** Minimum number of purchase months. */
 export const purchaseMinNumMonths = 1
 
-export type SubscriptionPurchase = Item & CreationTime & DayInterval & {
-	plan: SubscriptionPlan
-	paymentProvider: PaymentProvider
-}
+export type SubscriptionPurchase = Item &
+	CreationTime &
+	DayInterval & {
+		plan: SubscriptionPlan
+		paymentProvider: PaymentProvider
+	}
 
-export type SubscriptionPurchaseKey = AccountKey & DayKey & ItemKey<'purchaseId', {
-	purchaseId: SubscriptionPurchase['id']
-}>
+export type SubscriptionPurchaseKey = AccountKey &
+	DayKey &
+	ItemKey<
+		'purchaseId',
+		{
+			purchaseId: SubscriptionPurchase['id']
+		}
+	>
 
-export const isSubscriptionPurchaseKey = objectTypeGuard<SubscriptionPurchaseKey>(
-	({ day, accountId, purchaseId }) => isItemId(accountId) && isDay(day) && isItemId(purchaseId)
-)
+export const isSubscriptionPurchaseKey =
+	objectTypeGuard<SubscriptionPurchaseKey>(
+		({ day, accountId, purchaseId }) =>
+			isItemId(accountId) && isDay(day) && isItemId(purchaseId)
+	)
 
 export function newMonthlySubscriptionPurchase({
-	plan, paymentProvider, startDay, numMonths
+	plan,
+	paymentProvider,
+	startDay,
+	numMonths,
 }: Pick<NewItem<SubscriptionPurchase>, 'plan' | 'paymentProvider'> & {
 	startDay: Day
 	numMonths: NaturalNumber
 }): SubscriptionPurchase {
 	const startDate = dayToDate(startDay)
 	const endDate = getDate(startDate).plus(numMonths).months
-	return { id: newId(), paymentProvider, plan, start: startDay, end: dateToDay(endDate), ...createdNow() }
+	return {
+		id: newId(),
+		paymentProvider,
+		plan,
+		start: startDay,
+		end: dateToDay(endDate),
+		...createdNow(),
+	}
 }
 
 export function newYearlySubscriptionPurchase({
-	plan, paymentProvider, startDay
-}: Pick<NewItem<SubscriptionPurchase>, 'plan' | 'paymentProvider'> & { startDay: Day }): SubscriptionPurchase {
+	plan,
+	paymentProvider,
+	startDay,
+}: Pick<NewItem<SubscriptionPurchase>, 'plan' | 'paymentProvider'> & {
+	startDay: Day
+}): SubscriptionPurchase {
 	const startDate = dayToDate(startDay)
 	const endDate = getDate(startDate).plusOne.year
-	return { id: newId(), paymentProvider, plan, start: startDay, end: dateToDay(endDate), ...createdNow() }
+	return {
+		id: newId(),
+		paymentProvider,
+		plan,
+		start: startDay,
+		end: dateToDay(endDate),
+		...createdNow(),
+	}
 }
 
-export function isYearlyPurchase({ numMonths }: { numMonths: unknown }): boolean | undefined {
+export function isYearlyPurchase({
+	numMonths,
+}: {
+	numMonths: unknown
+}): boolean | undefined {
 	if (typeof numMonths !== 'number') return
 	return numMonths === purchaseMaxNumMonths
 }

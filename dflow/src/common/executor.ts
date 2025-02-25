@@ -5,7 +5,10 @@ import { DflowCommonContext } from './context.js'
 import { DflowCommonHost } from './host.js'
 import { nodesCatalog } from './nodesCatalog.js'
 
-export type DflowCommonExecutorContext = Omit<DflowCommonContext, 'defaults' | 'memoryChanged'>
+export type DflowCommonExecutorContext = Omit<
+	DflowCommonContext,
+	'defaults' | 'memoryChanged'
+>
 
 type DflowExecutorOutput = Pick<
 	DflowCommonContext,
@@ -18,10 +21,15 @@ type DflowExecutorOutput = Pick<
 
 export type DflowExecutor<RunContext extends DflowCommonExecutorContext> = {
 	nodesCatalog: DflowNodesCatalog
-	run(context: RunContext, graph: StrategyFlowGraph): Promise<DflowExecutorOutput>
+	run(
+		context: RunContext,
+		graph: StrategyFlowGraph
+	): Promise<DflowExecutorOutput>
 }
 
-export class DflowCommonExecutor implements DflowExecutor<DflowCommonExecutorContext> {
+export class DflowCommonExecutor
+	implements DflowExecutor<DflowCommonExecutorContext>
+{
 	graph: StrategyFlowGraph
 	nodesCatalog: DflowNodesCatalog
 	constructor(graph: StrategyFlowGraph) {

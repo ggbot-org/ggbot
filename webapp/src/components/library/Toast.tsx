@@ -15,9 +15,11 @@ export function Toast({ close, color, message }: ToastProps) {
 	// Close notification after a while.
 	useEffect(() => {
 		if (timeoutId) return
-		setTimeoutId(window.setTimeout(() => {
-			close()
-		}, timeout))
+		setTimeoutId(
+			window.setTimeout(() => {
+				close()
+			}, timeout)
+		)
 		return () => {
 			window.clearTimeout(timeoutId)
 		}

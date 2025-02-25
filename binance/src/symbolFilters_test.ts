@@ -2,7 +2,10 @@ import { strict as assert } from 'node:assert'
 import { describe, test } from 'node:test'
 
 import { lotSizeIsValid, minNotionalIsValid } from './symbolFilters.js'
-import { BinanceSymbolFilterLotSize, BinanceSymbolFilterMinNotional } from './types.js'
+import {
+	BinanceSymbolFilterLotSize,
+	BinanceSymbolFilterMinNotional,
+} from './types.js'
 
 describe('lotSizeIsValid', () => {
 	test('applies LOT_SIZE symbol filter', () => {
@@ -10,7 +13,7 @@ describe('lotSizeIsValid', () => {
 			filterType: 'LOT_SIZE',
 			minQty: '0.00010000',
 			maxQty: '100000.00000000',
-			stepSize: '0.00010000'
+			stepSize: '0.00010000',
 		}
 
 		const validValues = ['1', '0.1']
@@ -22,12 +25,12 @@ describe('lotSizeIsValid', () => {
 		}> = [
 			...validValues.map((value) => ({
 				input: { filter, value },
-				output: true
+				output: true,
 			})),
 			...invalidValues.map((value) => ({
 				input: { filter, value },
-				output: false
-			}))
+				output: false,
+			})),
 		]
 
 		testData.forEach(({ input: { filter, value }, output }) => {
@@ -42,7 +45,7 @@ describe('minNotionalIsValid', () => {
 			filterType: 'MIN_NOTIONAL',
 			minNotional: '0.00010000',
 			applyToMarket: true,
-			avgPriceMins: 5
+			avgPriceMins: 5,
 		}
 
 		const validValues = ['1', '0.1']
@@ -54,12 +57,12 @@ describe('minNotionalIsValid', () => {
 		}> = [
 			...validValues.map((value) => ({
 				input: { filter, value },
-				output: true
+				output: true,
 			})),
 			...invalidValues.map((value) => ({
 				input: { filter, value },
-				output: false
-			}))
+				output: false,
+			})),
 		]
 
 		testData.forEach(({ input: { filter, value }, output }) => {

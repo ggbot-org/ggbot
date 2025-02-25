@@ -1,4 +1,9 @@
-import { isStrategyKey, Strategy, StrategyFlow, StrategyKey } from '@workspace/models'
+import {
+	isStrategyKey,
+	Strategy,
+	StrategyFlow,
+	StrategyKey,
+} from '@workspace/models'
 
 import { ActionTypes } from './action.js'
 
@@ -11,7 +16,7 @@ export type PublicActionType = keyof PublicAction
 
 export const publicActions: ActionTypes<PublicActionType> = [
 	'ReadStrategy',
-	'ReadStrategyFlow'
+	'ReadStrategyFlow',
 ] as const
 
 export type PublicActionInput = {
@@ -26,5 +31,5 @@ export type PublicActionOutput = {
 
 export const isPublicActionInput = {
 	ReadStrategy: isStrategyKey,
-	ReadStrategyFlow: isStrategyKey
+	ReadStrategyFlow: isStrategyKey,
 }

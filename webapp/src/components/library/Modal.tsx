@@ -1,7 +1,16 @@
 import { PropsWithChildren, useCallback, useEffect } from 'react'
-import { Modal as _Modal, ModalBackground, ModalClose, ModalContent } from 'trunx'
+import {
+	Modal as _Modal,
+	ModalBackground,
+	ModalClose,
+	ModalContent,
+} from 'trunx'
 
-export function Modal({ children, isActive, setIsActive }: PropsWithChildren<
+export function Modal({
+	children,
+	isActive,
+	setIsActive,
+}: PropsWithChildren<
 	Partial<{
 		isActive: boolean
 		/**

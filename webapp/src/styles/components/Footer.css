@@ -5,7 +5,8 @@
 	--footer-background-color-l: 94%;
 	--footer-background-color-l2: 90%;
 	--footer-background-color: hsl(
-		var(--footer-background-color-h) var(--footer-background-color-s) var(--footer-background-color-l)
+		var(--footer-background-color-h) var(--footer-background-color-s)
+			var(--footer-background-color-l)
 	);
 }
 
@@ -15,7 +16,8 @@
 		--footer-background-color-l: 17%;
 		--footer-background-color-l2: 24%;
 		--footer-background-color: hsl(
-			var(--footer-background-color-h) var(--footer-background-color-s) var(--footer-background-color-l)
+			var(--footer-background-color-h) var(--footer-background-color-s)
+				var(--footer-background-color-l)
 		);
 	}
 }
@@ -30,8 +32,16 @@
 	background: linear-gradient(
 		180deg,
 		var(--bulma-body-background-color) 0%,
-		hsl(var(--footer-background-color-h) var(--footer-background-color-s) var(--footer-background-color-l2)) 50%,
-		hsl(var(--footer-background-color-h) var(--footer-background-color-s) var(--footer-background-color-l)) 100%
+		hsl(
+				var(--footer-background-color-h) var(--footer-background-color-s)
+					var(--footer-background-color-l2)
+			)
+			50%,
+		hsl(
+				var(--footer-background-color-h) var(--footer-background-color-s)
+					var(--footer-background-color-l)
+			)
+			100%
 	);
 }
 

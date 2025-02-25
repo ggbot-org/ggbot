@@ -1,4 +1,13 @@
-import { binanceKlineIntervals, binanceOrderRespTypes, binanceOrderSides, binanceOrderStatuses, binanceOrderTypes, binancePermissions, binanceSymbolStatuses, binanceTimeInForces } from './constants.js'
+import {
+	binanceKlineIntervals,
+	binanceOrderRespTypes,
+	binanceOrderSides,
+	binanceOrderStatuses,
+	binanceOrderTypes,
+	binancePermissions,
+	binanceSymbolStatuses,
+	binanceTimeInForces,
+} from './constants.js'
 
 export type BinanceAccountInformation = {
 	accountType: string
@@ -124,7 +133,7 @@ export type BinanceKline = [
 	numTrades: number,
 	takerBaseVolume: BinanceDecimal,
 	takerQuoteVolume: BinanceDecimal,
-	_unused_field: string
+	_unused_field: string,
 ]
 
 export type BinanceKlineInterval = (typeof binanceKlineIntervals)[number]
@@ -146,7 +155,7 @@ export type BinanceNewOrderOptions = Partial<{
 	/**
 	 * Used with STOP_LOSS, STOP_LOSS_LIMIT, TAKE_PROFIT, and TAKE_PROFIT_LIMIT
 	 * orders.
-	*/
+	 */
 	stopPrice: number
 	/**
 	 * Used with LIMIT, STOP_LOSS_LIMIT, and TAKE_PROFIT_LIMIT to create an

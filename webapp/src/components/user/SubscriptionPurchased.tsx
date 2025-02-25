@@ -12,7 +12,10 @@ export function SubscriptionPurchased() {
 				<FormattedMessage id="SubscriptionPurchased.message" />
 			</p>
 			<p>
-				<FormattedMessage id="SubscriptionPurchased.support" values={{ href: telegram.support }} />
+				<FormattedMessage
+					id="SubscriptionPurchased.support"
+					values={{ href: telegram.support }}
+				/>
 			</p>
 		</Message>
 	)

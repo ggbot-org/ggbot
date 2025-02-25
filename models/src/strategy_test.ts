@@ -12,8 +12,8 @@ import { createdNow } from './time.js'
 
 test('isStrategy', () => {
 	type TestData = Array<{
-		input: Partial<MaybeObject<Strategy>>;
-		output: boolean;
+		input: Partial<MaybeObject<Strategy>>
+		output: boolean
 	}>
 
 	const accountId = nullId

@@ -3,7 +3,7 @@ import { SubscriptionPlan } from './subscription.js'
 const quotaTypes = [
 	'MAX_OPERATIONS_HISTORY_DAYS',
 	'MAX_STRATEGIES_PER_ACCOUNT',
-	'MAX_SCHEDULINGS_PER_ACCOUNT'
+	'MAX_SCHEDULINGS_PER_ACCOUNT',
 ] as const
 export type QuotaType = (typeof quotaTypes)[number]
 export const quotaType: Record<string, QuotaType> = Object.fromEntries(
@@ -29,5 +29,5 @@ export const quota: Record<
 		if (plan === 'basic') return 10
 		if (plan === 'pro') return 30
 		return 0
-	}
+	},
 }

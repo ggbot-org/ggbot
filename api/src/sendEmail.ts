@@ -1,4 +1,9 @@
-import { EmailAddress, Language, OneTimePassword, StrategyKey } from '@workspace/models'
+import {
+	EmailAddress,
+	Language,
+	OneTimePassword,
+	StrategyKey,
+} from '@workspace/models'
 
 import { Action } from './action.js'
 
@@ -8,7 +13,10 @@ type SendEmailCommonArgs = {
 }
 
 export type SendEmailAction = {
-	SendOneTimePassword: Action<SendEmailCommonArgs & { oneTimePassword: OneTimePassword }, void>
+	SendOneTimePassword: Action<
+		SendEmailCommonArgs & { oneTimePassword: OneTimePassword },
+		void
+	>
 	SuspendedStrategy: Action<SendEmailCommonArgs & StrategyKey, void>
 }
 

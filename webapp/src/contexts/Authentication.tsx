@@ -10,7 +10,15 @@ import { sessionWebStorage } from '_/storages/session'
 import { BadGatewayError, UnauthorizedError } from '@workspace/api'
 import { AccountInfo, EmailAddress, Subscription } from '@workspace/models'
 import { Time } from 'minimal-time-helpers'
-import { createContext, PropsWithChildren, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+import {
+	createContext,
+	PropsWithChildren,
+	useCallback,
+	useEffect,
+	useMemo,
+	useReducer,
+	useState,
+} from 'react'
 
 type State = {
 	email: EmailAddress | undefined
@@ -23,13 +31,13 @@ type Action =
 	| { type: 'EXIT' }
 	| { type: 'SET_EMAIL'; data: Pick<State, 'email'> }
 	| {
-		type: 'SET_EXIT_CONFIRMATION_IS_ACTIVE'
-		data: Pick<State, 'exitConfirmationIsActive'>
-	}
+			type: 'SET_EXIT_CONFIRMATION_IS_ACTIVE'
+			data: Pick<State, 'exitConfirmationIsActive'>
+	  }
 	| {
-		type: 'SET_TOKEN'
-		data: NonNullable<Pick<State, 'token'>>
-	}
+			type: 'SET_TOKEN'
+			data: NonNullable<Pick<State, 'token'>>
+	  }
 	| { type: 'RESET_TOKEN' }
 
 type ContextValue = {
@@ -47,52 +55,67 @@ export const AuthenticationContext = createContext<ContextValue>({
 	accountEmail: '',
 	accountIsAdmin: undefined,
 	accountWhenCreated: undefined,
-	exit: () => { /* do nothing */ },
+	exit: () => {
+		/* do nothing */
+	},
 	subscription: undefined,
-	showAuthExit: () => { /* do nothing */ }
+	showAuthExit: () => {
+		/* do nothing */
+	},
 })
 
 AuthenticationContext.displayName = 'AuthenticationContext'
 
 export function AuthenticationProvider({ children }: PropsWithChildren) {
-	const [{ email, exitConfirmationIsActive, token }, dispatch] = useReducer<State, [any]>((state, action: Action) => {
-		if (action.type === 'EXIT') return {
+	const [{ email, exitConfirmationIsActive, token }, dispatch] = useReducer<
+		State,
+		[any]
+	>(
+		(state, action: Action) => {
+			if (action.type === 'EXIT')
+				return {
+					email: undefined,
+					exitConfirmationIsActive: false,
+					token: undefined,
+				}
+
+			if (action.type === 'RESET_TOKEN')
+				return {
+					...state,
+					// Need to reset `email` together with `token`.
+					email: undefined,
+					token: undefined,
+				}
+
+			if (action.type === 'SET_EMAIL')
+				return { ...state, email: action.data.email }
+
+			if (action.type === 'SET_EXIT_CONFIRMATION_IS_ACTIVE')
+				return {
+					...state,
+					exitConfirmationIsActive: action.data.exitConfirmationIsActive,
+				}
+
+			if (action.type === 'SET_TOKEN')
+				return {
+					...state,
+					// Need also to reset `email` whenever `token` changes.
+					email: undefined,
+					token: action.data.token,
+				}
+
+			return state
+		},
+		{
 			email: undefined,
 			exitConfirmationIsActive: false,
-			token: undefined
+			token: localWebStorage.authToken.get(),
 		}
+	)
 
-		if (action.type === 'RESET_TOKEN') return {
-			...state,
-			// Need to reset `email` together with `token`.
-			email: undefined,
-			token: undefined
-		}
-
-		if (action.type === 'SET_EMAIL') return { ...state, email: action.data.email }
-
-		if (action.type === 'SET_EXIT_CONFIRMATION_IS_ACTIVE') return {
-			...state,
-			exitConfirmationIsActive:
-						action.data.exitConfirmationIsActive
-		}
-
-		if (action.type === 'SET_TOKEN') return {
-			...state,
-			// Need also to reset `email` whenever `token` changes.
-			email: undefined,
-			token: action.data.token
-		}
-
-		return state
-	},
-	{
-		email: undefined,
-		exitConfirmationIsActive: false,
-		token: localWebStorage.authToken.get()
-	})
-
-	const [storedAccountInfo, setStoredAccountInfo] = useState<AccountInfo | undefined>(sessionWebStorage.accountInfo.get())
+	const [storedAccountInfo, setStoredAccountInfo] = useState<
+		AccountInfo | undefined
+	>(sessionWebStorage.accountInfo.get())
 
 	const READ = useReadAccountInfo()
 	const accountInfo = READ.data
@@ -120,7 +143,10 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 	}, [])
 
 	const showAuthExit = useCallback<ContextValue['showAuthExit']>(() => {
-		dispatch({ type: 'SET_EXIT_CONFIRMATION_IS_ACTIVE', data: { exitConfirmationIsActive: true } })
+		dispatch({
+			type: 'SET_EXIT_CONFIRMATION_IS_ACTIVE',
+			data: { exitConfirmationIsActive: true },
+		})
 	}, [])
 
 	const onLocalStorageChange = useCallback(() => {
@@ -140,7 +166,7 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 			accountWhenCreated: storedAccountInfo?.whenCreated,
 			exit,
 			subscription: storedAccountInfo?.subscription,
-			showAuthExit
+			showAuthExit,
 		}),
 		[exit, showAuthExit, storedAccountInfo]
 	)
@@ -198,7 +224,11 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 			<Page header={<Navigation />}>
 				<OneColumn>
 					{email ? (
-						<AuthVerify email={email} resetEmail={resetEmail} setToken={setToken} />
+						<AuthVerify
+							email={email}
+							resetEmail={resetEmail}
+							setToken={setToken}
+						/>
 					) : (
 						<AuthEnter setEmail={setEmail} />
 					)}
@@ -216,7 +246,10 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 				exit={exit}
 				isActive={exitConfirmationIsActive}
 				setIsActive={(exitConfirmationIsActive) => {
-					dispatch({ type: 'SET_EXIT_CONFIRMATION_IS_ACTIVE', data: { exitConfirmationIsActive } })
+					dispatch({
+						type: 'SET_EXIT_CONFIRMATION_IS_ACTIVE',
+						data: { exitConfirmationIsActive },
+					})
 				}}
 			/>
 		</AuthenticationContext.Provider>

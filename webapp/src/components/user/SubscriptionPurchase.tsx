@@ -1,13 +1,32 @@
 import { Classname } from '_/classnames'
-import { Button, Buttons, Column, Columns, InputField, InputFieldProps, Message, Title } from '_/components/library'
-import { SubscriptionEnd, SubscriptionTotalPrice } from '_/components/readonlyFields'
+import {
+	Button,
+	Buttons,
+	Column,
+	Columns,
+	InputField,
+	InputFieldProps,
+	Message,
+	Title,
+} from '_/components/library'
+import {
+	SubscriptionEnd,
+	SubscriptionTotalPrice,
+} from '_/components/readonlyFields'
 import { AuthenticationContext } from '_/contexts/Authentication'
 import { useCreateCheckoutSession } from '_/hooks/user/api'
 import { useSubscription } from '_/hooks/user/useSubscription'
 import { FormattedMessage } from '_/i18n/components'
 import { useIntl } from '_/i18n/hooks'
 import { GOTO } from '_/routing/navigation'
-import { isNaturalNumber, isYearlyPurchase, purchaseDefaultNumMonths as defaultNumMonths, purchaseMaxNumMonths as maxNumMonths, purchaseMinNumMonths as minNumMonths, SubscriptionPlan } from '@workspace/models'
+import {
+	isNaturalNumber,
+	isYearlyPurchase,
+	purchaseDefaultNumMonths as defaultNumMonths,
+	purchaseMaxNumMonths as maxNumMonths,
+	purchaseMinNumMonths as minNumMonths,
+	SubscriptionPlan,
+} from '@workspace/models'
 import { getTime, now, Time } from 'minimal-time-helpers'
 import { useContext, useEffect, useState } from 'react'
 
@@ -17,7 +36,10 @@ type FormField = {
 type FormFieldName = keyof FormField
 
 function SubscriptionNumMonths({
-	isYearlyPurchase, setValue, value, ...props
+	isYearlyPurchase,
+	setValue,
+	value,
+	...props
 }: Omit<
 	InputFieldProps,
 	'label' | 'min' | 'max' | 'onChange' | 'step' | 'type'
@@ -55,9 +77,12 @@ export function SubscriptionPurchase() {
 
 	const { accountEmail } = useContext(AuthenticationContext)
 
-	const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } = useSubscription()
+	const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
+		useSubscription()
 
-	const [numMonths, setNumMonths] = useState<number | undefined>(defaultNumMonths)
+	const [numMonths, setNumMonths] = useState<number | undefined>(
+		defaultNumMonths
+	)
 
 	const subscriptionPlan: SubscriptionPlan = 'basic'
 	const monthlyPrice = Number(STRIPE_PLAN_BASIC_MONTHLY_PRICE)
@@ -69,7 +94,9 @@ export function SubscriptionPurchase() {
 	let newSubscriptionEnd: Time | undefined
 	if (isNaturalNumber(numMonths)) {
 		const start = subscriptionEnd ? getTime(subscriptionEnd).plusOne.day : now()
-		newSubscriptionEnd = getTime(start).plus(numMonths >= maxNumMonths - 1 ? maxNumMonths : numMonths).months
+		newSubscriptionEnd = getTime(start).plus(
+			numMonths >= maxNumMonths - 1 ? maxNumMonths : numMonths
+		).months
 	}
 
 	const isYearly = isYearlyPurchase({ numMonths })
@@ -83,7 +110,8 @@ export function SubscriptionPurchase() {
 		if (CREATE_CHECKOUT.isDone) CREATE_CHECKOUT.reset()
 	}, [CREATE_CHECKOUT])
 
-	if (canPurchaseSubscription === undefined || !canPurchaseSubscription) return null
+	if (canPurchaseSubscription === undefined || !canPurchaseSubscription)
+		return null
 
 	return (
 		<Columns>
@@ -107,23 +135,25 @@ export function SubscriptionPurchase() {
 
 						if (typeof numMonths !== 'number') return
 
-						CREATE_CHECKOUT.request({ email: accountEmail, numMonths, plan: subscriptionPlan })
+						CREATE_CHECKOUT.request({
+							email: accountEmail,
+							numMonths,
+							plan: subscriptionPlan,
+						})
 					}}
 				>
 					<Title>
 						<FormattedMessage id="SubscriptionPurchase.title" />
 					</Title>
 					<Title is={5}>
-						{(isYearly ? (
+						{isYearly ? (
 							<FormattedMessage id="SubscriptionPurchase.yearlyItemName" />
-						) : (
-							numMonths ? (
-								<FormattedMessage
-									id="SubscriptionPurchase.monthlyItemName"
-									values={{ numMonths }}
-								/>
-							) : null
-						))}
+						) : numMonths ? (
+							<FormattedMessage
+								id="SubscriptionPurchase.monthlyItemName"
+								values={{ numMonths }}
+							/>
+						) : null}
 					</Title>
 					{hasActiveSubscription ? (
 						<Message color="danger">
@@ -139,10 +169,18 @@ export function SubscriptionPurchase() {
 					<Message>
 						<FormattedMessage
 							id="SubscriptionPurchase.oneMonthPrice"
-							values={{ price: formatNumber(monthlyPrice, { style: 'currency', currency }) }}
+							values={{
+								price: formatNumber(monthlyPrice, {
+									style: 'currency',
+									currency,
+								}),
+							}}
 						/>
 						<br />
-						<FormattedMessage id="SubscriptionPurchase.hint" values={{ numMonths: maxNumMonths }} />
+						<FormattedMessage
+							id="SubscriptionPurchase.hint"
+							values={{ numMonths: maxNumMonths }}
+						/>
 					</Message>
 					<Columns isMobile>
 						<Column bulma="is-narrow">

@@ -6,7 +6,11 @@ import { useReadStrategyOrders } from '_/hooks/user/api'
 import { useStrategiesDayInterval } from '_/hooks/user/useStrategiesDayInterval'
 import { StrategyKey } from '@workspace/models'
 
-export function StrategyProfits({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
+export function StrategyProfits({
+	strategyKey,
+}: {
+	strategyKey: StrategyKey | undefined
+}) {
 	const { min, max, start, setStart, end, setEnd } = useStrategiesDayInterval()
 
 	const dayInterval = { start, end }

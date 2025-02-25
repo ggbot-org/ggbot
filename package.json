@@ -67,7 +67,6 @@
   },
   "devDependencies": {
     "@eslint/json": "0.5.0",
-    "@stylistic/eslint-plugin": "3.1.0",
     "esbuild": "0.24.0",
     "eslint": "9.20.0",
     "eslint-plugin-react": "7.37.4",
@@ -79,7 +78,7 @@
     "markdownlint-rule-github-internal-links": "0.1.0",
     "markdownlint-rule-relative-links": "3.0.0",
     "pre-commit": "1.2.2",
-    "prettier": "3.4.2",
+    "prettier": "3.5.2",
     "read-file-utf8": "3.0.0",
     "stylelint": "16.14.1",
     "stylelint-config-standard-scss": "14.0.0",
@@ -91,6 +90,7 @@
       "prettier --write"
     ],
     "**/*.{ts,tsx}": [
+      "prettier --write",
       "eslint --fix"
     ],
     "**/*.{css,scss}": [
@@ -104,9 +104,6 @@
     "check_types",
     "test"
   ],
-  "prettier": {
-    "printWidth": 120
-  },
   "workspaces": [
     "api",
     "api-admin",

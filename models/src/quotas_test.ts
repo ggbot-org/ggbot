@@ -8,8 +8,8 @@ type Plan = 'basic' | 'pro' | null | undefined
 describe('quota', () => {
 	test('MAX_SCHEDULINGS_PER_ACCOUNT', () => {
 		type TestData = Array<{
-			input: Plan;
-			output: number;
+			input: Plan
+			output: number
 		}>
 		const testData: TestData = [
 			{ input: undefined, output: 0 },
@@ -24,8 +24,8 @@ describe('quota', () => {
 
 	test('MAX_STRATEGIES_PER_ACCOUNT', () => {
 		type TestData = Array<{
-			input: Plan;
-			output: number;
+			input: Plan
+			output: number
 		}>
 		const testData: TestData = [
 			{ input: undefined, output: 2 },

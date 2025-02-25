@@ -1,5 +1,12 @@
 import { Toast, ToastContainer, ToastProps } from '_/components/library'
-import { createContext, PropsWithChildren, ReactNode, useCallback, useMemo, useReducer } from 'react'
+import {
+	createContext,
+	PropsWithChildren,
+	ReactNode,
+	useCallback,
+	useMemo,
+	useReducer,
+} from 'react'
 
 type ContextValue = {
 	toast: Record<ToastProps['color'], (message: ToastProps['message']) => void>
@@ -7,10 +14,16 @@ type ContextValue = {
 
 export const ToastContext = createContext<ContextValue>({
 	toast: {
-		info: () => { /* do nothing */ },
-		danger: () => { /* do nothing */ },
-		warning: () => { /* do nothing */ }
-	}
+		info: () => {
+			/* do nothing */
+		},
+		danger: () => {
+			/* do nothing */
+		},
+		warning: () => {
+			/* do nothing */
+		},
+	},
 })
 
 ToastContext.displayName = 'ToastContext'
@@ -29,31 +42,32 @@ export function ToastProvider({ children }: PropsWithChildren) {
 		(notifications, action: Action) => {
 			// Add new notification at the beginning of the stack.
 			// They are displayed on bottom, so new notifications will be on top.
-			if (action.type === 'ADD_NOTIFICATION') return [action.notification, ...notifications]
+			if (action.type === 'ADD_NOTIFICATION')
+				return [action.notification, ...notifications]
 
-			if (action.type === 'REMOVE_NOTIFICATION') return notifications.filter(({ id }) => id !== action.id)
+			if (action.type === 'REMOVE_NOTIFICATION')
+				return notifications.filter(({ id }) => id !== action.id)
 
 			return notifications
-		}, [])
+		},
+		[]
+	)
 
 	const close = useCallback<(id: Notification['id']) => () => void>(
 		(id) => () => {
 			dispatch({ type: 'REMOVE_NOTIFICATION', id })
 		},
-	[]
+		[]
 	)
 
 	const contextValue = useMemo<ContextValue>(() => {
-		function notify({
-			color,
-			message
-		}: Pick<ToastProps, 'color' | 'message'>) {
+		function notify({ color, message }: Pick<ToastProps, 'color' | 'message'>) {
 			dispatch({
 				type: 'ADD_NOTIFICATION',
 				notification: {
 					id: Date.now(),
-					toast: { color, message }
-				}
+					toast: { color, message },
+				},
 			})
 		}
 		return {
@@ -66,8 +80,8 @@ export function ToastProvider({ children }: PropsWithChildren) {
 				},
 				warning(message: ReactNode) {
 					notify({ color: 'warning', message })
-				}
-			}
+				},
+			},
 		}
 	}, [])
 
@@ -76,12 +90,7 @@ export function ToastProvider({ children }: PropsWithChildren) {
 			{children}
 			<ToastContainer>
 				{notifications.map(({ id, toast: { message, color } }) => (
-					<Toast
-						key={id}
-						close={close(id)}
-						color={color}
-						message={message}
-					/>
+					<Toast key={id} close={close(id)} color={color} message={message} />
 				))}
 			</ToastContainer>
 		</ToastContext.Provider>

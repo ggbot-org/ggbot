@@ -15,7 +15,7 @@ export class WebappBaseURL extends URL {
 export const webappDirname = {
 	admin: 'admin',
 	design: 'design',
-	user: 'user'
+	user: 'user',
 } as const
 
 export const webappPagePathname = {
@@ -30,13 +30,13 @@ export const webappPagePathname = {
 		editStrategy: `${webappDirname.user}/edit-strategy.html`,
 		dashboard: `${webappDirname.user}/dashboard.html`,
 		settings: `${webappDirname.user}/settings.html`,
-		strategy: `${webappDirname.user}/strategy.html`
+		strategy: `${webappDirname.user}/strategy.html`,
 	},
 	admin: {
 		accountDetails: `${webappDirname.admin}/account-details.html`,
-		dashboard: `${webappDirname.admin}/dashboard.html`
+		dashboard: `${webappDirname.admin}/dashboard.html`,
 	},
-	design: { showcase: `${webappDirname.design}/showcase.html` }
+	design: { showcase: `${webappDirname.design}/showcase.html` },
 } as const
 
 function appendAccountKeyToURLSearchParams(
@@ -102,12 +102,13 @@ export class WebappURLs {
 		return {
 			accountDetails(accountKey: AccountKey) {
 				return appendAccountKeyToURLSearchParams(
-					accountKey, new URL(webappPagePathname.admin.accountDetails, baseURL)
+					accountKey,
+					new URL(webappPagePathname.admin.accountDetails, baseURL)
 				)
 			},
 			get dashboard() {
 				return new URL(webappPagePathname.admin.dashboard, baseURL)
-			}
+			},
 		}
 	}
 
@@ -116,7 +117,7 @@ export class WebappURLs {
 		return {
 			get showcase() {
 				return new URL(webappPagePathname.design.showcase, baseURL)
-			}
+			},
 		}
 	}
 
@@ -128,12 +129,14 @@ export class WebappURLs {
 			},
 			copyStrategy(strategyKey: StrategyKey) {
 				return appendStrategyKeyToURLSearchParams(
-					strategyKey, new URL(webappPagePathname.user.copyStrategy, baseURL)
+					strategyKey,
+					new URL(webappPagePathname.user.copyStrategy, baseURL)
 				)
 			},
 			editStrategy(strategyKey: StrategyKey) {
 				return appendStrategyKeyToURLSearchParams(
-					strategyKey, new URL(webappPagePathname.user.editStrategy, baseURL)
+					strategyKey,
+					new URL(webappPagePathname.user.editStrategy, baseURL)
 				)
 			},
 			get settings() {
@@ -141,9 +144,10 @@ export class WebappURLs {
 			},
 			strategy(strategyKey: StrategyKey) {
 				return appendStrategyKeyToURLSearchParams(
-					strategyKey, new URL(webappPagePathname.user.strategy, baseURL)
+					strategyKey,
+					new URL(webappPagePathname.user.strategy, baseURL)
 				)
-			}
+			},
 		}
 	}
 

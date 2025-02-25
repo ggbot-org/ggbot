@@ -34,7 +34,7 @@ export class Push extends DflowNode {
 	static kind = 'push'
 	static inputs = [
 		input('array', { name: 'array', optional: true }),
-		inputElement
+		inputElement,
 	]
 	static outputs = [outputElement, outputRest]
 	run() {

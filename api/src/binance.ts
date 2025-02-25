@@ -1,5 +1,14 @@
-import { BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType } from '@workspace/binance'
-import { AccountKey, BinanceApiConfig, BinanceApiKeyPermissionCriteria } from '@workspace/models'
+import {
+	BinanceNewOrderOptions,
+	BinanceOrder,
+	BinanceOrderSide,
+	BinanceOrderType,
+} from '@workspace/binance'
+import {
+	AccountKey,
+	BinanceApiConfig,
+	BinanceApiKeyPermissionCriteria,
+} from '@workspace/models'
 import { objectTypeGuard } from 'minimal-type-guard-helpers'
 
 import { Action, ActionTypes } from './action.js'
@@ -11,14 +20,16 @@ type BinanceClientAction = {
 		type: Extract<BinanceOrderType, 'MARKET'>
 		orderOptions: BinanceNewOrderOptions
 	}) => Promise<BinanceOrder>
-	ReadBinanceAccountApiRestrictions: (arg: void) => Promise<BinanceApiKeyPermissionCriteria>
+	ReadBinanceAccountApiRestrictions: (
+		arg: void
+	) => Promise<BinanceApiKeyPermissionCriteria>
 }
 
 export type BinanceClientActionType = keyof BinanceClientAction
 
 export const binanceClientActions: ActionTypes<BinanceClientActionType> = [
 	'CreateBinanceOrder',
-	'ReadBinanceAccountApiRestrictions'
+	'ReadBinanceAccountApiRestrictions',
 ] as const
 
 export type BinanceClientInput = {
@@ -29,8 +40,12 @@ export type BinanceClientInput = {
 }
 
 export type BinanceClientOutput = {
-	CreateBinanceOrder: Awaited<ReturnType<BinanceClientAction['CreateBinanceOrder']>>
-	ReadBinanceAccountApiRestrictions: Awaited<ReturnType<BinanceClientAction['ReadBinanceAccountApiRestrictions']>>
+	CreateBinanceOrder: Awaited<
+		ReturnType<BinanceClientAction['CreateBinanceOrder']>
+	>
+	ReadBinanceAccountApiRestrictions: Awaited<
+		ReturnType<BinanceClientAction['ReadBinanceAccountApiRestrictions']>
+	>
 }
 
 export type BinanceDatabaseAction = {
@@ -44,13 +59,12 @@ export type BinanceDatabaseActionOutput = {
 }
 
 export const isBinanceClientActionInput = {
-	CreateBinanceOrder: objectTypeGuard<
-		BinanceClientInput['CreateBinanceOrder']
-	>(
-		({ symbol, side, type, orderOptions }) => typeof symbol === 'string' &&
+	CreateBinanceOrder: objectTypeGuard<BinanceClientInput['CreateBinanceOrder']>(
+		({ symbol, side, type, orderOptions }) =>
+			typeof symbol === 'string' &&
 			typeof side === 'string' &&
 			typeof type === 'string' &&
 			orderOptions !== null &&
 			typeof orderOptions === 'object'
-	)
+	),
 }

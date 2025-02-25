@@ -1,31 +1,29 @@
 import { WebStorageProvider } from './providers.js'
 
-export function cachedBoolean (
-	storage: WebStorageProvider,
-	key: string
-) {
-	return ({
+export function cachedBoolean(storage: WebStorageProvider, key: string) {
+	return {
 		get: () => {
 			const value = storage.getItem(key)
 			if (typeof value !== 'string') return undefined
 			if (value === 'true') return true
 			return false
 		},
-		set: (value: boolean | undefined) => storage.setItem(key, String(Boolean(value))),
-		delete: () => storage.removeItem(key)
-	})
+		set: (value: boolean | undefined) =>
+			storage.setItem(key, String(Boolean(value))),
+		delete: () => storage.removeItem(key),
+	}
 }
 
 export function cachedString(storage: WebStorageProvider, key: string) {
-	return ({
+	return {
 		get: () => storage.getItem(key) ?? '',
 		set: (value: string) => storage.setItem(key, value),
-		delete: () => storage.removeItem(key)
-	})
+		delete: () => storage.removeItem(key),
+	}
 }
 
 export function cachedNumber(storage: WebStorageProvider, key: string) {
-	return ({
+	return {
 		get: () => {
 			const value = storage.getItem(key)
 			if (value === null) return undefined
@@ -34,12 +32,12 @@ export function cachedNumber(storage: WebStorageProvider, key: string) {
 			else storage.removeItem(key)
 		},
 		set: (value: number) => storage.setItem(key, String(value)),
-		delete: () => storage.removeItem(key)
-	})
+		delete: () => storage.removeItem(key),
+	}
 }
 
 export function cachedObject<Data>(storage: WebStorageProvider, key: string) {
-	return ({
+	return {
 		get: () => {
 			const value = storage.getItem(key)
 			if (typeof value !== 'string') return undefined
@@ -51,6 +49,6 @@ export function cachedObject<Data>(storage: WebStorageProvider, key: string) {
 			}
 		},
 		set: (value: Data) => storage.setItem(key, JSON.stringify(value)),
-		delete: () => storage.removeItem(key)
-	})
+		delete: () => storage.removeItem(key),
+	}
 }

@@ -1,6 +1,25 @@
-import { ActionInput, BadGatewayError, BinanceClientActionType, clientAction, ClientActionHeaders, isApiActionOutputData, isApiActionOutputError } from '@workspace/api'
+import {
+	ActionInput,
+	BadGatewayError,
+	BinanceClientActionType,
+	clientAction,
+	ClientActionHeaders,
+	isApiActionOutputData,
+	isApiActionOutputError,
+} from '@workspace/api'
 import { signSession } from '@workspace/authentication'
-import { BinanceConnector, BinanceExchange, BinanceKlineInterval, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType, ErrorBinanceHTTP, isErrorBinanceHTTPInfo } from '@workspace/binance'
+import {
+	BinanceConnector,
+	BinanceExchange,
+	BinanceKlineInterval,
+	BinanceKlineOptionalParameters,
+	BinanceNewOrderOptions,
+	BinanceOrder,
+	BinanceOrderSide,
+	BinanceOrderType,
+	ErrorBinanceHTTP,
+	isErrorBinanceHTTPInfo,
+} from '@workspace/binance'
 import { DflowBinanceClient } from '@workspace/dflow'
 import { ENV } from '@workspace/env'
 import { BinanceProxyURLs } from '@workspace/locators'
@@ -38,15 +57,23 @@ export class Binance implements DflowBinanceClient {
 		return headers
 	}
 
-	async binanceClientAction<Output extends SerializableData>({ type, data: inputData }: ActionInput<BinanceClientActionType>) {
+	async binanceClientAction<Output extends SerializableData>({
+		type,
+		data: inputData,
+	}: ActionInput<BinanceClientActionType>) {
 		const headers = await this.getBinanceClientActionHeaders()
 
-		const output = await clientAction(this.binanceProxy.action, headers, { type, data: inputData })
+		const output = await clientAction(this.binanceProxy.action, headers, {
+			type,
+			data: inputData,
+		})
 
 		if (isApiActionOutputData(output)) return output.data as Output
 
 		if (isApiActionOutputError(output)) {
-			const { error: { info } } = output
+			const {
+				error: { info },
+			} = output
 			if (isErrorBinanceHTTPInfo(info)) throw new ErrorBinanceHTTP(info)
 		}
 
@@ -62,14 +89,23 @@ export class Binance implements DflowBinanceClient {
 		return this.publicClient.exchangeInfo()
 	}
 
-	klines(symbol: string, interval: BinanceKlineInterval, optionalParameters: BinanceKlineOptionalParameters) {
+	klines(
+		symbol: string,
+		interval: BinanceKlineInterval,
+		optionalParameters: BinanceKlineOptionalParameters
+	) {
 		return this.publicClient.klines(symbol, interval, optionalParameters)
 	}
 
-	async newOrder(symbol: string, side: BinanceOrderSide, type: Extract<BinanceOrderType, 'MARKET'>, orderOptions: BinanceNewOrderOptions) {
+	async newOrder(
+		symbol: string,
+		side: BinanceOrderSide,
+		type: Extract<BinanceOrderType, 'MARKET'>,
+		orderOptions: BinanceNewOrderOptions
+	) {
 		return this.binanceClientAction<BinanceOrder>({
 			type: 'CreateBinanceOrder',
-			data: { symbol, side, type, orderOptions }
+			data: { symbol, side, type, orderOptions },
 		})
 	}
 

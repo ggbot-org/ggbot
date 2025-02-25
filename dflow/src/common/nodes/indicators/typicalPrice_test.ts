@@ -5,15 +5,15 @@ import { typicalPrice } from './typicalPrice.js'
 
 type TypicalPrice = typeof typicalPrice
 type TypicalPriceInput = {
-	high: Parameters<TypicalPrice>[0];
-	low: Parameters<TypicalPrice>[1];
-	close: Parameters<TypicalPrice>[2];
+	high: Parameters<TypicalPrice>[0]
+	low: Parameters<TypicalPrice>[1]
+	close: Parameters<TypicalPrice>[2]
 }
 
 test('Typical Price', () => {
 	type TestData = Array<{
-		input: TypicalPriceInput;
-		output: ReturnType<TypicalPrice>;
+		input: TypicalPriceInput
+		output: ReturnType<TypicalPrice>
 	}>
 	const testData: TestData = [
 		{ input: { high: 0, low: 0, close: 0 }, output: 0 },

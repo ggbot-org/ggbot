@@ -1,5 +1,15 @@
-import { Button, Buttons, Content, MainColor, Message, Modal } from '_/components/library'
-import { StrategyRecord, StrategyRecordProps } from '_/components/StrategyRecord'
+import {
+	Button,
+	Buttons,
+	Content,
+	MainColor,
+	Message,
+	Modal,
+} from '_/components/library'
+import {
+	StrategyRecord,
+	StrategyRecordProps,
+} from '_/components/StrategyRecord'
 import { useDeleteStrategy } from '_/hooks/user/api'
 import { FormattedMessage } from '_/i18n/components'
 import { StrategyKey } from '@workspace/models'
@@ -12,7 +22,9 @@ export function DeleteStrategy({
 	const DELETE = useDeleteStrategy()
 
 	const [modalIsActive, setModalIsActive] = useState(false)
-	const [color, setColor] = useState<Extract<MainColor, 'warning'> | undefined>()
+	const [color, setColor] = useState<
+		Extract<MainColor, 'warning'> | undefined
+	>()
 
 	return (
 		<>
@@ -27,7 +39,10 @@ export function DeleteStrategy({
 				<FormattedMessage id="DeleteStrategy.button" />
 			</Button>
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
-				<Message color="warning" header={<FormattedMessage id="DeleteStrategy.title" />} >
+				<Message
+					color="warning"
+					header={<FormattedMessage id="DeleteStrategy.title" />}
+				>
 					<Content>
 						<p>
 							<FormattedMessage id="DeleteStrategy.message" />

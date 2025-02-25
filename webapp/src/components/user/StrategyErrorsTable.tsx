@@ -17,18 +17,21 @@ export function StrategyErrorsTable({ errors }: StrategyErrorsTableProps) {
 	const { formatDate } = useIntl()
 
 	const rows: Row[] = []
-	if (errors) for (const { whenCreated, error } of errors) rows.push({
-		whenCreated: formatDate(whenCreated, timeFormat),
-		error: JSON.stringify(error)
-	})
+	if (errors)
+		for (const { whenCreated, error } of errors)
+			rows.push({
+				whenCreated: formatDate(whenCreated, timeFormat),
+				error: JSON.stringify(error),
+			})
 
 	if (!errors) return null
 
-	if (errors.length === 0) return (
-		<Message>
-			<FormattedMessage id="StrategyErrors.noError" />
-		</Message>
-	)
+	if (errors.length === 0)
+		return (
+			<Message>
+				<FormattedMessage id="StrategyErrors.noError" />
+			</Message>
+		)
 
 	return (
 		<Table>

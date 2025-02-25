@@ -6,7 +6,9 @@ export class ApiURLs {
 	baseURL: URL
 
 	constructor(deployStage: DeployStage, dnsDomain: string) {
-		this.baseURL = new URL(`https://${new FQDN(deployStage, dnsDomain).apiDomain}`)
+		this.baseURL = new URL(
+			`https://${new FQDN(deployStage, dnsDomain).apiDomain}`
+		)
 	}
 
 	get auth() {

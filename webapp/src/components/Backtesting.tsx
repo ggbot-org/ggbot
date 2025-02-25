@@ -1,8 +1,25 @@
 import { Classname } from '_/classnames'
 import { BacktestingActions } from '_/components/BacktestingActions'
-import { BacktestingProgress, BacktestingProgressProps } from '_/components/BacktestingProgress'
-import { FrequencyInput, FrequencyInputProps } from '_/components/FrequencyInput'
-import { Checkbox, Column, Columns, Control, DayInterval, DayIntervalProps, Div, Field, OneColumn, Title } from '_/components/library'
+import {
+	BacktestingProgress,
+	BacktestingProgressProps,
+} from '_/components/BacktestingProgress'
+import {
+	FrequencyInput,
+	FrequencyInputProps,
+} from '_/components/FrequencyInput'
+import {
+	Checkbox,
+	Column,
+	Columns,
+	Control,
+	DayInterval,
+	DayIntervalProps,
+	Div,
+	Field,
+	OneColumn,
+	Title,
+} from '_/components/library'
 import { Memory } from '_/components/Memory'
 import { ProfitSummary } from '_/components/ProfitSummary'
 import { StrategyOrdersTable } from '_/components/StrategyOrdersTable'
@@ -14,10 +31,21 @@ import { FormattedMessage } from '_/i18n/components'
 import { useIntl } from '_/i18n/hooks'
 import { Frequency, isFrequency, StrategyKey } from '@workspace/models'
 import { Time } from 'minimal-time-helpers'
-import { ChangeEventHandler, InputHTMLAttributes, useCallback, useContext, useEffect, useState } from 'react'
+import {
+	ChangeEventHandler,
+	InputHTMLAttributes,
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
+} from 'react'
 
 export function Backtesting({
-	flowViewGraph, strategyKey, strategyName, strategyFrequency, whenUpdatedFlowView
+	flowViewGraph,
+	strategyKey,
+	strategyName,
+	strategyFrequency,
+	whenUpdatedFlowView,
 }: UseFlowViewOutput & {
 	strategyFrequency: Frequency | undefined
 	strategyKey: StrategyKey | undefined
@@ -32,43 +60,95 @@ export function Backtesting({
 	const {
 		dispatch,
 		state: {
-			afterStepBehaviour, currentTimestamp, dayInterval, frequency, isDone, isPaused, isRunning, maxDay, memory, numSteps, orders, stepIndex
-		}
+			afterStepBehaviour,
+			currentTimestamp,
+			dayInterval,
+			frequency,
+			isDone,
+			isPaused,
+			isRunning,
+			maxDay,
+			memory,
+			numSteps,
+			orders,
+			stepIndex,
+		},
 	} = useBacktesting()
 
 	let disabled = false
 	if (isRunning || isPaused) disabled = true
 	if (!hasFlow) disabled = true
 
-	const [frequencyArg, setFrequencyArg] = useState<FrequencyInputProps['frequency']>(frequency)
+	const [frequencyArg, setFrequencyArg] =
+		useState<FrequencyInputProps['frequency']>(frequency)
 
-	const [lastWhenUpdatedFlowView, setLastWhenUpdatedFlowView] = useState<Time>(0)
+	const [lastWhenUpdatedFlowView, setLastWhenUpdatedFlowView] =
+		useState<Time>(0)
 
-	const onChangePauseOnMemoryChange = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
-		const { checked } = event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-		dispatch({ type: 'SET_AFTER_STEP_BEHAVIOUR', afterStepBehaviour: { ...afterStepBehaviour, pauseOnMemoryChange: Boolean(checked) } })
-	}, [afterStepBehaviour, dispatch])
+	const onChangePauseOnMemoryChange = useCallback<
+		ChangeEventHandler<HTMLInputElement>
+	>(
+		(event) => {
+			const { checked } =
+				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+			dispatch({
+				type: 'SET_AFTER_STEP_BEHAVIOUR',
+				afterStepBehaviour: {
+					...afterStepBehaviour,
+					pauseOnMemoryChange: Boolean(checked),
+				},
+			})
+		},
+		[afterStepBehaviour, dispatch]
+	)
 
-	const onChangePauseOnNewOrder = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
-		const { checked } = event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-		if (checked === undefined) return
-		dispatch({ type: 'SET_AFTER_STEP_BEHAVIOUR', afterStepBehaviour: { ...afterStepBehaviour, pauseOnNewOrder: checked } })
-	}, [afterStepBehaviour, dispatch])
+	const onChangePauseOnNewOrder = useCallback<
+		ChangeEventHandler<HTMLInputElement>
+	>(
+		(event) => {
+			const { checked } =
+				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+			if (checked === undefined) return
+			dispatch({
+				type: 'SET_AFTER_STEP_BEHAVIOUR',
+				afterStepBehaviour: { ...afterStepBehaviour, pauseOnNewOrder: checked },
+			})
+		},
+		[afterStepBehaviour, dispatch]
+	)
 
-	const setFrequency = useCallback<FrequencyInputProps['setFrequency']>((frequency) => {
-		setFrequencyArg(frequency)
-		if (isFrequency(frequency)) dispatch({ type: 'SET_FREQUENCY', frequency })
-	}, [dispatch])
+	const setFrequency = useCallback<FrequencyInputProps['setFrequency']>(
+		(frequency) => {
+			setFrequencyArg(frequency)
+			if (isFrequency(frequency)) dispatch({ type: 'SET_FREQUENCY', frequency })
+		},
+		[dispatch]
+	)
 
-	const setEnd = useCallback<DayIntervalProps['end']['setDay']>((day) => {
-		dispatch({ type: 'SET_DAY_INTERVAL', dayInterval: { start: dayInterval.start, end: day } })
-	}, [dispatch, dayInterval])
+	const setEnd = useCallback<DayIntervalProps['end']['setDay']>(
+		(day) => {
+			dispatch({
+				type: 'SET_DAY_INTERVAL',
+				dayInterval: { start: dayInterval.start, end: day },
+			})
+		},
+		[dispatch, dayInterval]
+	)
 
-	const setStart = useCallback<DayIntervalProps['start']['setDay']>((day) => {
-		dispatch({ type: 'SET_DAY_INTERVAL', dayInterval: { start: day, end: dayInterval.end } })
-	}, [dispatch, dayInterval])
+	const setStart = useCallback<DayIntervalProps['start']['setDay']>(
+		(day) => {
+			dispatch({
+				type: 'SET_DAY_INTERVAL',
+				dayInterval: { start: day, end: dayInterval.end },
+			})
+		},
+		[dispatch, dayInterval]
+	)
 
-	const progress: BacktestingProgressProps['progress'] = { value: stepIndex, max: numSteps }
+	const progress: BacktestingProgressProps['progress'] = {
+		value: stepIndex,
+		max: numSteps,
+	}
 
 	const onClickStop = useCallback(() => {
 		dispatch({ type: 'STOP' })
@@ -77,8 +157,22 @@ export function Backtesting({
 	const onClickStart = useCallback(() => {
 		if (!flowViewGraph) return
 		if (!strategyKey || !strategyName) return
-		dispatch({ type: 'START', dayInterval, flow: flowViewGraph, frequency, strategyName, strategyKey })
-	}, [dayInterval, dispatch, flowViewGraph, frequency, strategyKey, strategyName])
+		dispatch({
+			type: 'START',
+			dayInterval,
+			flow: flowViewGraph,
+			frequency,
+			strategyName,
+			strategyKey,
+		})
+	}, [
+		dayInterval,
+		dispatch,
+		flowViewGraph,
+		frequency,
+		strategyKey,
+		strategyName,
+	])
 
 	const onClickPause = useCallback(() => {
 		dispatch({ type: 'PAUSE' })
@@ -99,14 +193,19 @@ export function Backtesting({
 	}, [formatMessage, isDone, toast])
 
 	useEffect(() => {
-		if (isPaused && (afterStepBehaviour.pauseOnMemoryChange || afterStepBehaviour.pauseOnNewOrder)) {
+		if (
+			isPaused &&
+			(afterStepBehaviour.pauseOnMemoryChange ||
+				afterStepBehaviour.pauseOnNewOrder)
+		) {
 			toast.warning(formatMessage({ id: 'Backtesting.paused' }))
 		}
 	}, [afterStepBehaviour, formatMessage, isPaused, toast])
 
 	// Stop backtesting if flow changed.
 	useEffect(() => {
-		if (whenUpdatedFlowView && isRunning) setLastWhenUpdatedFlowView(whenUpdatedFlowView)
+		if (whenUpdatedFlowView && isRunning)
+			setLastWhenUpdatedFlowView(whenUpdatedFlowView)
 	}, [whenUpdatedFlowView, isRunning])
 	useEffect(() => {
 		if (!lastWhenUpdatedFlowView) return
@@ -135,7 +234,9 @@ export function Backtesting({
 							setFrequency={setFrequency}
 						/>
 						<BacktestingProgress
-							currentTimestamp={(isRunning || isPaused) ? currentTimestamp : undefined}
+							currentTimestamp={
+								isRunning || isPaused ? currentTimestamp : undefined
+							}
 							progress={progress}
 						/>
 						<Field>

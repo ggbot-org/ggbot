@@ -1,5 +1,7 @@
 .calendar {
-	background-color: hsl(var(--bulma-scheme-h) var(--bulma-scheme-s) var(--bulma-scheme-main-l));
+	background-color: hsl(
+		var(--bulma-scheme-h) var(--bulma-scheme-s) var(--bulma-scheme-main-l)
+	);
 	border-radius: var(--bulma-radius);
 	border: 1px solid;
 	border-color: var(--bulma-grey-lighter);

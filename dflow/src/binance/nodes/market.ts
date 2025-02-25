@@ -1,7 +1,16 @@
 import { binanceKlineMaxLimit } from '@workspace/binance'
 import { Dflow, DflowNode } from 'dflow'
 
-import { inputInterval, inputSymbol, outputClose, outputHigh, outputLow, outputOpen, outputPrice, outputVolume } from '../../common/nodes/commonIO.js'
+import {
+	inputInterval,
+	inputSymbol,
+	outputClose,
+	outputHigh,
+	outputLow,
+	outputOpen,
+	outputPrice,
+	outputVolume,
+} from '../../common/nodes/commonIO.js'
 import { DflowBinanceContext as Context } from '../context.js'
 import { isDflowBinanceKlineInterval } from '../klineIntervals.js'
 
@@ -12,17 +21,21 @@ export class Candles extends DflowNode {
 	static inputs = [
 		inputSymbol,
 		inputInterval,
-		input('number', { name: 'count' })
+		input('number', { name: 'count' }),
 	]
 	static outputs = [
 		outputOpen,
 		outputHigh,
 		outputLow,
 		outputClose,
-		outputVolume
+		outputVolume,
 	]
 	async run() {
-		const { binance, defaults, time: currentTime } = this.host.context as Context
+		const {
+			binance,
+			defaults,
+			time: currentTime,
+		} = this.host.context as Context
 		const symbol = this.input(0).data ?? defaults.symbol
 		const interval = this.input(1).data as string
 		const count = this.input(2).data as number
@@ -30,11 +43,12 @@ export class Candles extends DflowNode {
 			typeof symbol !== 'string' ||
 			!isDflowBinanceKlineInterval(interval) ||
 			typeof count !== 'number'
-		) return this.clearOutputs()
+		)
+			return this.clearOutputs()
 		const limit = Math.min(count, binanceKlineMaxLimit)
 		const klines = await binance.klines(symbol, interval, {
 			endTime: currentTime,
-			limit
+			limit,
 		})
 		const { open, high, low, close, volume } = klines.reduce<{
 			open: number[]
@@ -48,7 +62,7 @@ export class Candles extends DflowNode {
 				high: [...high, Number(kline[2])],
 				low: [...low, Number(kline[3])],
 				close: [...close, Number(kline[4])],
-				volume: [...volume, Number(kline[5])]
+				volume: [...volume, Number(kline[5])],
 			}),
 			{ open: [], high: [], low: [], close: [], volume: [] }
 		)

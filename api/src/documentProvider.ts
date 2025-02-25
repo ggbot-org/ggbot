@@ -24,5 +24,7 @@ export type DocumentProviderListItemsOutput = {
 
 /** Provides documents listing. */
 export type DocumentProviderLevel3 = DocumentProviderLevel2 & {
-	listItems(arg: DocumentProviderListItemsInput): Promise<DocumentProviderListItemsOutput>
+	listItems(
+		arg: DocumentProviderListItemsInput
+	): Promise<DocumentProviderListItemsOutput>
 }

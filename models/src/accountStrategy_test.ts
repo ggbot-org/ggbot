@@ -11,9 +11,9 @@ const { insertAccountStrategy } = accountStrategiesModifier
 
 type InsertAccountStrategy = typeof insertAccountStrategy
 type InsertAccountStrategyInput = {
-	previousAccountStrategies: Parameters<InsertAccountStrategy>[0];
-	accountStrategy: Parameters<InsertAccountStrategy>[1];
-	subscriptionPlan: Parameters<InsertAccountStrategy>[2];
+	previousAccountStrategies: Parameters<InsertAccountStrategy>[0]
+	accountStrategy: Parameters<InsertAccountStrategy>[1]
+	subscriptionPlan: Parameters<InsertAccountStrategy>[2]
 }
 
 const accountStrategy1: AccountStrategy = {
@@ -64,8 +64,8 @@ describe('accountStrategiesModifier', () => {
 	describe('insertAccountStrategy', () => {
 		test('inserts a new item', () => {
 			type TestData = Array<{
-				input: InsertAccountStrategyInput;
-				output: ReturnType<InsertAccountStrategy>;
+				input: InsertAccountStrategyInput
+				output: ReturnType<InsertAccountStrategy>
 			}>
 			const testData: TestData = [
 				{
@@ -83,9 +83,9 @@ describe('accountStrategiesModifier', () => {
 					insertAccountStrategy(
 						input.previousAccountStrategies,
 						input.accountStrategy,
-						input.subscriptionPlan,
+						input.subscriptionPlan
 					),
-					output,
+					output
 				)
 			}
 		})
@@ -93,12 +93,16 @@ describe('accountStrategiesModifier', () => {
 		test('throws ErrorExceededQuota with MAX_STRATEGIES_PER_ACCOUNT', () => {
 			assert.throws(
 				() => {
-					insertAccountStrategy([accountStrategy1, accountStrategy2], accountStrategy3, undefined)
+					insertAccountStrategy(
+						[accountStrategy1, accountStrategy2],
+						accountStrategy3,
+						undefined
+					)
 				},
 				{
 					name: 'Error',
 					message: ErrorExceededQuota.message('MAX_STRATEGIES_PER_ACCOUNT'),
-				},
+				}
 			)
 		})
 
@@ -110,32 +114,38 @@ describe('accountStrategiesModifier', () => {
 				{
 					name: 'Error',
 					message: ErrorExceededQuota.message('MAX_SCHEDULINGS_PER_ACCOUNT'),
-				},
+				}
 			)
 		})
 	})
 
 	test('deleteAccountStrategy', () => {
 		type TestData = Array<{
-			input: Parameters<typeof accountStrategiesModifier.deleteAccountStrategy>;
-			output: ReturnType<typeof accountStrategiesModifier.deleteAccountStrategy>;
+			input: Parameters<typeof accountStrategiesModifier.deleteAccountStrategy>
+			output: ReturnType<typeof accountStrategiesModifier.deleteAccountStrategy>
 		}>
 		const testData: TestData = [
 			{
-				input: [[accountStrategy1, accountStrategy4Active], accountStrategy4Active.strategyId],
+				input: [
+					[accountStrategy1, accountStrategy4Active],
+					accountStrategy4Active.strategyId,
+				],
 				output: [accountStrategy1],
 			},
 		]
 
 		for (const { input, output } of testData) {
-			assert.deepEqual(accountStrategiesModifier.deleteAccountStrategy(...input), output)
+			assert.deepEqual(
+				accountStrategiesModifier.deleteAccountStrategy(...input),
+				output
+			)
 		}
 	})
 
 	test('suspendScheduling', () => {
 		type TestData = Array<{
-			input: Parameters<typeof accountStrategiesModifier.suspendScheduling>;
-			output: ReturnType<typeof accountStrategiesModifier.suspendScheduling>;
+			input: Parameters<typeof accountStrategiesModifier.suspendScheduling>
+			output: ReturnType<typeof accountStrategiesModifier.suspendScheduling>
 		}>
 		const testData: TestData = [
 			{
@@ -149,14 +159,21 @@ describe('accountStrategiesModifier', () => {
 		]
 
 		for (const { input, output } of testData) {
-			assert.deepEqual(accountStrategiesModifier.suspendScheduling(...input), output)
+			assert.deepEqual(
+				accountStrategiesModifier.suspendScheduling(...input),
+				output
+			)
 		}
 	})
 
 	test('suspendStrategySchedulings', () => {
 		type TestData = Array<{
-			input: Parameters<typeof accountStrategiesModifier.suspendStrategySchedulings>;
-			output: ReturnType<typeof accountStrategiesModifier.suspendStrategySchedulings>;
+			input: Parameters<
+				typeof accountStrategiesModifier.suspendStrategySchedulings
+			>
+			output: ReturnType<
+				typeof accountStrategiesModifier.suspendStrategySchedulings
+			>
 		}>
 		const testData: TestData = [
 			{
@@ -164,20 +181,28 @@ describe('accountStrategiesModifier', () => {
 				output: [accountStrategy1],
 			},
 			{
-				input: [[accountStrategy1, accountStrategy4Active], accountStrategy4Active.strategyId],
+				input: [
+					[accountStrategy1, accountStrategy4Active],
+					accountStrategy4Active.strategyId,
+				],
 				output: [accountStrategy1, accountStrategy4Suspended],
 			},
 		]
 
 		for (const { input, output } of testData) {
-			assert.deepEqual(accountStrategiesModifier.suspendStrategySchedulings(...input), output)
+			assert.deepEqual(
+				accountStrategiesModifier.suspendStrategySchedulings(...input),
+				output
+			)
 		}
 	})
 
 	test('updateSchedulingMemory', () => {
 		type TestData = Array<{
-			input: Parameters<typeof accountStrategiesModifier.updateSchedulingMemory>;
-			output: ReturnType<typeof accountStrategiesModifier.updateSchedulingMemory>;
+			input: Parameters<typeof accountStrategiesModifier.updateSchedulingMemory>
+			output: ReturnType<
+				typeof accountStrategiesModifier.updateSchedulingMemory
+			>
 		}>
 		const testData: TestData = [
 			{
@@ -202,7 +227,10 @@ describe('accountStrategiesModifier', () => {
 		]
 
 		for (const { input, output } of testData) {
-			assert.deepEqual(accountStrategiesModifier.updateSchedulingMemory(...input), output)
+			assert.deepEqual(
+				accountStrategiesModifier.updateSchedulingMemory(...input),
+				output
+			)
 		}
 	})
 })

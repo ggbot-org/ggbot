@@ -1,6 +1,15 @@
 import { CacheMap } from '@workspace/cache'
 import { ExecutorDatabase } from '@workspace/database'
-import { AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategyKey, AccountStrategySchedulingKey, isAccount, isAccountStrategy, StrategyMemory } from '@workspace/models'
+import {
+	AccountKey,
+	accountStrategiesModifier,
+	AccountStrategy,
+	AccountStrategyKey,
+	AccountStrategySchedulingKey,
+	isAccount,
+	isAccountStrategy,
+	StrategyMemory,
+} from '@workspace/models'
 
 import { ONE_HOUR } from './durations.js'
 
@@ -13,12 +22,15 @@ export class AccountStrategiesProvider {
 		this.database = database
 	}
 
-	async getAccountStrategies({ accountId }: AccountKey): Promise<AccountStrategy[]> {
+	async getAccountStrategies({
+		accountId,
+	}: AccountKey): Promise<AccountStrategy[]> {
 		const accountStrategies: AccountStrategy[] = []
 		const cached = cache.get(accountId)
 		if (cached) return cached
 		const data = await this.database.ReadAccountStrategies({ accountId })
-		for (const item of data) if (isAccountStrategy(item)) accountStrategies.push(item)
+		for (const item of data)
+			if (isAccountStrategy(item)) accountStrategies.push(item)
 		cache.set(accountId, accountStrategies)
 		return accountStrategies
 	}
@@ -29,17 +41,27 @@ export class AccountStrategiesProvider {
 		// TODO enable emails
 		// strategyKind: StrategyKind
 	) {
-		console.warn(`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`)
+		console.warn(
+			`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`
+		)
 
 		// Update cache locally.
 		const items = cache.get(accountId)
 		if (items) {
-			const data = accountStrategiesModifier.suspendScheduling(items, strategyId, schedulingId)
+			const data = accountStrategiesModifier.suspendScheduling(
+				items,
+				strategyId,
+				schedulingId
+			)
 			cache.set(accountId, data)
 		}
 
 		// Update database remotely.
-		await this.database.SuspendAccountStrategyScheduling({ accountId, strategyId, schedulingId })
+		await this.database.SuspendAccountStrategyScheduling({
+			accountId,
+			strategyId,
+			schedulingId,
+		})
 
 		// Send email notification.
 		const account = await this.database.ReadAccount({ accountId })
@@ -55,29 +77,53 @@ export class AccountStrategiesProvider {
 		// })
 	}
 
-	async suspendAccountStrategySchedulings({ accountId, strategyId }: Pick<AccountStrategyKey, 'accountId' | 'strategyId'>) {
-		console.warn(`Suspend strategy accountId=${accountId} strategyId=${strategyId}`)
+	async suspendAccountStrategySchedulings({
+		accountId,
+		strategyId,
+	}: Pick<AccountStrategyKey, 'accountId' | 'strategyId'>) {
+		console.warn(
+			`Suspend strategy accountId=${accountId} strategyId=${strategyId}`
+		)
 
 		// Update cache locally.
 		const items = cache.get(accountId)
 		if (items) {
-			const data = accountStrategiesModifier.suspendStrategySchedulings(items, strategyId)
+			const data = accountStrategiesModifier.suspendStrategySchedulings(
+				items,
+				strategyId
+			)
 			cache.set(accountId, data)
 		}
 
 		// Update database remotely.
-		await this.database.SuspendAccountStrategySchedulings({ accountId, strategyId })
+		await this.database.SuspendAccountStrategySchedulings({
+			accountId,
+			strategyId,
+		})
 	}
 
-	async updateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey, memory: StrategyMemory) {
+	async updateAccountStrategySchedulingMemory(
+		{ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey,
+		memory: StrategyMemory
+	) {
 		// Update cache locally.
 		const items = cache.get(accountId)
 		if (items) {
-			const data = accountStrategiesModifier.updateSchedulingMemory(items, strategyId, schedulingId, memory)
+			const data = accountStrategiesModifier.updateSchedulingMemory(
+				items,
+				strategyId,
+				schedulingId,
+				memory
+			)
 			cache.set(accountId, data)
 		}
 
 		// Update database remotely.
-		await this.database.UpdateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId, memory })
+		await this.database.UpdateAccountStrategySchedulingMemory({
+			accountId,
+			strategyId,
+			schedulingId,
+			memory,
+		})
 	}
 }

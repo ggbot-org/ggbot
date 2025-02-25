@@ -1,4 +1,15 @@
-import { Button, Buttons, Checkbox, Column, Columns, Content, InputField, MainColor, Message, Modal } from '_/components/library'
+import {
+	Button,
+	Buttons,
+	Checkbox,
+	Column,
+	Columns,
+	Content,
+	InputField,
+	MainColor,
+	Message,
+	Modal,
+} from '_/components/library'
 import { AuthenticationContext } from '_/contexts/Authentication'
 import { useDeleteAccount } from '_/hooks/user/api'
 import { FormattedMessage } from '_/i18n/components'
@@ -47,9 +58,13 @@ export function DeleteAccount() {
 							<Column bulma="is-half">
 								<InputField
 									color={color}
-									help={<FormattedMessage id="DeleteAccount.accountIdInputHelp" />}
+									help={
+										<FormattedMessage id="DeleteAccount.accountIdInputHelp" />
+									}
 									label={<FormattedMessage id="AccountId.label" />}
-									onChange={(event) => setAccountIdConfirmation(event.target.value)}
+									onChange={(event) =>
+										setAccountIdConfirmation(event.target.value)
+									}
 									value={accountIdConfirmation}
 								/>
 							</Column>
@@ -74,7 +89,7 @@ export function DeleteAccount() {
 						>
 							<FormattedMessage id="DeleteAccount.confirmation" />
 						</Button>
-						<Button onClick={() => setModalIsActive(false)} >
+						<Button onClick={() => setModalIsActive(false)}>
 							<FormattedMessage id="DeleteAccount.dismiss" />
 						</Button>
 					</Buttons>

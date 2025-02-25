@@ -4,12 +4,16 @@ import { AccountKey, isAccountKey } from './account.js'
 import { ItemKey } from './item.js'
 import { isName } from './name.js'
 import { isStrategyKey, Strategy, StrategyKey } from './strategy.js'
-import { isStrategySchedulings, StrategyScheduling } from './strategyScheduling.js'
+import {
+	isStrategySchedulings,
+	StrategyScheduling,
+} from './strategyScheduling.js'
 
 export type AccountStrategyKey = AccountKey & StrategyKey
 
 export const isAccountStrategyKey = objectTypeGuard<AccountStrategyKey>(
-	({ accountId, ...strategyKey }) => isAccountKey({ accountId }) && isStrategyKey(strategyKey)
+	({ accountId, ...strategyKey }) =>
+		isAccountKey({ accountId }) && isStrategyKey(strategyKey)
 )
 
 export type AccountStrategy = StrategyKey &
@@ -18,16 +22,24 @@ export type AccountStrategy = StrategyKey &
 	}
 
 export const isAccountStrategy = objectTypeGuard<AccountStrategy>(
-	({ name, schedulings, ...strategyKey }) => isStrategyKey(strategyKey) &&
+	({ name, schedulings, ...strategyKey }) =>
+		isStrategyKey(strategyKey) &&
 		isName(name) &&
 		isStrategySchedulings(schedulings)
 )
 
-export function newAccountStrategy({ name, ...strategyKey }: Pick<
-	AccountStrategy, 'strategyId' | 'strategyKind' | 'name'
+export function newAccountStrategy({
+	name,
+	...strategyKey
+}: Pick<
+	AccountStrategy,
+	'strategyId' | 'strategyKind' | 'name'
 >): AccountStrategy {
 	return { ...strategyKey, name, schedulings: [] }
 }
 
-export type AccountStrategySchedulingKey = Pick<AccountStrategyKey, 'accountId' | 'strategyId'> &
+export type AccountStrategySchedulingKey = Pick<
+	AccountStrategyKey,
+	'accountId' | 'strategyId'
+> &
 	ItemKey<'schedulingId', { schedulingId: StrategyScheduling['id'] }>

@@ -6,8 +6,8 @@
 
 To setup infrastructure start with the following readings:
 
--   [AWS bootstrap](./infrastructure/docs/aws-bootstrap.md)
--   [Stripe bootstrap](./infrastructure/docs/stripe-bootstrap.md)
+- [AWS bootstrap](./infrastructure/docs/aws-bootstrap.md)
+- [Stripe bootstrap](./infrastructure/docs/stripe-bootstrap.md)
 
 ## Development
 

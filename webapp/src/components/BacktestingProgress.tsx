@@ -6,20 +6,30 @@ import { timeFormat } from '_/i18n/formats'
 import { useIntl } from '_/i18n/hooks'
 
 export type BacktestingProgressProps = Pick<
-	UseBacktestingState, 'currentTimestamp'
-> & Partial<{
-	progress: {
-		max: number
-		value: number
-	}
-}>
+	UseBacktestingState,
+	'currentTimestamp'
+> &
+	Partial<{
+		progress: {
+			max: number
+			value: number
+		}
+	}>
 
-export function BacktestingProgress({ progress, currentTimestamp }: BacktestingProgressProps) {
+export function BacktestingProgress({
+	progress,
+	currentTimestamp,
+}: BacktestingProgressProps) {
 	const { formatDate } = useIntl()
 	return (
 		<Div bulma={['my-2', 'mx-1']}>
 			<div className={'backtesting-progress__info' satisfies Classname}>
-				{progress ? (<FormattedMessage id="BacktestingProgress.intervals" values={progress} />) : null}
+				{progress ? (
+					<FormattedMessage
+						id="BacktestingProgress.intervals"
+						values={progress}
+					/>
+				) : null}
 			</div>
 			<div className={'backtesting-progress__info' satisfies Classname}>
 				{currentTimestamp ? (
@@ -30,9 +40,8 @@ export function BacktestingProgress({ progress, currentTimestamp }: BacktestingP
 				) : null}
 			</div>
 			<div className={'backtesting-progress__info' satisfies Classname}>
-				{progress ? (<Progress size="small" {...progress} />) : null}
+				{progress ? <Progress size="small" {...progress} /> : null}
 			</div>
 		</Div>
 	)
 }
-

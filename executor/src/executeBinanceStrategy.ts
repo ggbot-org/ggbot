@@ -1,7 +1,22 @@
-import { BinanceExchangeInfoCacheMap, BinanceKlinesCacheMap } from '@workspace/binance'
+import {
+	BinanceExchangeInfoCacheMap,
+	BinanceKlinesCacheMap,
+} from '@workspace/binance'
 import { ExecutorDatabase } from '@workspace/database'
-import { DflowBinanceExecutor, DflowCommonContext, getDflowBinanceNodesCatalog } from '@workspace/dflow'
-import { AccountStrategyKey, BalanceEvent, createdNow, isStrategyFlowGraph, newOrder, StrategyFlow, StrategyScheduling } from '@workspace/models'
+import {
+	DflowBinanceExecutor,
+	DflowCommonContext,
+	getDflowBinanceNodesCatalog,
+} from '@workspace/dflow'
+import {
+	AccountStrategyKey,
+	BalanceEvent,
+	createdNow,
+	isStrategyFlowGraph,
+	newOrder,
+	StrategyFlow,
+	StrategyScheduling,
+} from '@workspace/models'
 import { now, today, truncateTime } from 'minimal-time-helpers'
 
 import { Binance } from './binance.js'
@@ -10,7 +25,7 @@ import { FOUR_WEEKS } from './durations.js'
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 const klinesCache = new BinanceKlinesCacheMap(FOUR_WEEKS)
 
-export async function executeBinanceStrategy (
+export async function executeBinanceStrategy(
 	{ accountId, ...strategyKey }: AccountStrategyKey,
 	scheduling: StrategyScheduling,
 	strategyFlow: StrategyFlow,
@@ -35,32 +50,58 @@ export async function executeBinanceStrategy (
 	// TODO should use the StrategyFlowGraph
 	// it may be on another file or in { graph } or parsed from view
 	const { view } = strategyFlow
-	if (!isStrategyFlowGraph(view)) return {
-		memoryChanged: false,
-		memory: {}
-	}
+	if (!isStrategyFlowGraph(view))
+		return {
+			memoryChanged: false,
+			memory: {},
+		}
 
 	const executor = new DflowBinanceExecutor()
 	executor.nodesCatalog = nodesCatalog
 
-	const { balance, memory: memoryOutput, memoryChanged, orders } = await executor.run({ binance, params, memory: memoryInput, time }, view)
+	const {
+		balance,
+		memory: memoryOutput,
+		memoryChanged,
+		orders,
+	} = await executor.run({ binance, params, memory: memoryInput, time }, view)
 
 	const day = today()
 
 	if (orders.length > 0) {
 		const strategyOrders = orders.map((info) => newOrder(info))
 
-		await executorDatabase.AppendStrategyDailyOrders({ accountId, day, items: strategyOrders, ...strategyKey })
+		await executorDatabase.AppendStrategyDailyOrders({
+			accountId,
+			day,
+			items: strategyOrders,
+			...strategyKey,
+		})
 
-		const accountOrders = strategyOrders.map((order) => ({ order, ...strategyKey }))
+		const accountOrders = strategyOrders.map((order) => ({
+			order,
+			...strategyKey,
+		}))
 
-		await executorDatabase.AppendAccountDailyOrders({ accountId, day, items: accountOrders })
+		await executorDatabase.AppendAccountDailyOrders({
+			accountId,
+			day,
+			items: accountOrders,
+		})
 	}
 
 	if (balance.length > 0) {
-		const balanceEvent: BalanceEvent = { balance, ...strategyKey, ...createdNow() }
+		const balanceEvent: BalanceEvent = {
+			balance,
+			...strategyKey,
+			...createdNow(),
+		}
 
-		await executorDatabase.AppendAccountBalanceEvent({ accountId, day, item: balanceEvent })
+		await executorDatabase.AppendAccountBalanceEvent({
+			accountId,
+			day,
+			item: balanceEvent,
+		})
 	}
 
 	return { memoryChanged, memory: memoryOutput }

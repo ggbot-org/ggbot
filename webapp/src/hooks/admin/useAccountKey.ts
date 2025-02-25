@@ -2,6 +2,6 @@ import { accountKeyParamsFromURL } from '_/routing/paramFromURL'
 
 export function useAccountKey() {
 	return {
-		accountKey: accountKeyParamsFromURL(new URL(location.href))
+		accountKey: accountKeyParamsFromURL(new URL(location.href)),
 	}
 }

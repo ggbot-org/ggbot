@@ -51,11 +51,11 @@ A resource must have both `OPTIONS` and its handled methods, for instance all in
 
 These are the current API endpoints and their corresponding methods:
 
- - POST,OPTIONS /auth
- - POST,OPTIONS /admin
- - POST,OPTIONS /public
- - POST,OPTIONS /stripe/action
- - POST /stripe/webhook
+- POST,OPTIONS /auth
+- POST,OPTIONS /admin
+- POST,OPTIONS /public
+- POST,OPTIONS /stripe/action
+- POST /stripe/webhook
 
 The `/stripe/webhook` does not have an `OPTIONS` method since it is called server to server.
 

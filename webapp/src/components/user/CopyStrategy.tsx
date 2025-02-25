@@ -1,6 +1,17 @@
 import { Classname } from '_/classnames'
-import { Button, Buttons, Div, InputFieldName, Message, OneColumn, Title } from '_/components/library'
-import { StrategyRecord, StrategyRecordProps } from '_/components/StrategyRecord'
+import {
+	Button,
+	Buttons,
+	Div,
+	InputFieldName,
+	Message,
+	OneColumn,
+	Title,
+} from '_/components/library'
+import {
+	StrategyRecord,
+	StrategyRecordProps,
+} from '_/components/StrategyRecord'
 import { StrategiesErrorExceededQuota } from '_/components/user/StrategiesErrorExceededQuota'
 import { useCopyStrategy } from '_/hooks/user/api'
 import { FormattedMessage } from '_/i18n/components'
@@ -14,7 +25,10 @@ type FormField = {
 type FormFieldName = keyof FormField
 
 export function CopyStrategy({
-	strategyKey, strategyName, strategyId, strategyWhenCreated
+	strategyKey,
+	strategyName,
+	strategyId,
+	strategyWhenCreated,
 }: StrategyRecordProps & { strategyKey: StrategyKey | undefined }) {
 	const [error, setError] = useState<ApiActionError | undefined>()
 	const [canCreate, setCanCreate] = useState(false)
@@ -40,7 +54,11 @@ export function CopyStrategy({
 					<Message>
 						<FormattedMessage id="CopyStrategy.strategyInfo" />
 					</Message>
-					<StrategyRecord strategyId={strategyId} strategyName={strategyName} strategyWhenCreated={strategyWhenCreated} />
+					<StrategyRecord
+						strategyId={strategyId}
+						strategyName={strategyName}
+						strategyWhenCreated={strategyWhenCreated}
+					/>
 				</Div>
 			</OneColumn>
 			<OneColumn>

@@ -1,21 +1,31 @@
 import { Dflow, DflowNode } from 'dflow'
 
-import { add, defaultPrecision, div, MaybeNumber, mul, sub } from '../arithmetic.js'
+import {
+	add,
+	defaultPrecision,
+	div,
+	MaybeNumber,
+	mul,
+	sub,
+} from '../arithmetic.js'
 import { inputPeriod, inputValues } from '../commonIO.js'
-import { exponentialMovingAverage, simpleMovingAverage } from './movingAverages.js'
+import {
+	exponentialMovingAverage,
+	simpleMovingAverage,
+} from './movingAverages.js'
 
 const { input, output } = Dflow
 
 const bollingerInputs = [
 	inputValues,
 	inputPeriod,
-	input('number', { name: 'amplitude', optional: true })
+	input('number', { name: 'amplitude', optional: true }),
 ]
 
 const bollingerOutputs = [
 	output('array', { name: 'lower' }),
 	output('array', { name: 'middle' }),
-	output('array', { name: 'upper' })
+	output('array', { name: 'upper' }),
 ]
 
 // Compute the variance with double precision.
@@ -26,7 +36,9 @@ const precision = defaultPrecision * 2
  * @see {@link https://en.wikipedia.org/wiki/Bollinger_Bands}
  */
 export function bollinger(
-	values: number[], period: number, amplitude = 2
+	values: number[],
+	period: number,
+	amplitude = 2
 ): [lower: MaybeNumber[], middle: MaybeNumber[], upper: MaybeNumber[]] {
 	const size = values.length
 	if (size < period) return [[], [], []]
@@ -39,8 +51,14 @@ export function bollinger(
 			.slice(index - period, index)
 			.reduce<number>((sum, decimal, index, array) => {
 				const distance = sub(decimal, average)
-				const result = add(sum, mul(distance, distance, precision), precision) as number
-				return index === array.length - 1 ? (div(result, period, precision) as number) : result
+				const result = add(
+					sum,
+					mul(distance, distance, precision),
+					precision
+				) as number
+				return index === array.length - 1
+					? (div(result, period, precision) as number)
+					: result
 			}, 0)
 		if (variance === undefined) {
 			lower.push(undefined)
@@ -73,7 +91,9 @@ export class Bollinger extends DflowNode {
  * Compute a variant of bollinger bands using Exponential Moving Average.
  */
 function bollingerEMA(
-	values: number[], period: number, amplitude = 2
+	values: number[],
+	period: number,
+	amplitude = 2
 ): [lower: MaybeNumber[], middle: MaybeNumber[], upper: MaybeNumber[]] {
 	const size = values.length
 	if (size < period) return [[], [], []]
@@ -86,8 +106,14 @@ function bollingerEMA(
 			.slice(index - period, index)
 			.reduce<number>((sum, decimal, index, array) => {
 				const distance = sub(decimal, average)
-				const result = add(sum, mul(distance, distance, precision), precision) as number
-				return index === array.length - 1 ? (div(result, period, precision) as number) : result
+				const result = add(
+					sum,
+					mul(distance, distance, precision),
+					precision
+				) as number
+				return index === array.length - 1
+					? (div(result, period, precision) as number)
+					: result
 			}, 0)
 		if (variance === undefined) {
 			lower.push(undefined)

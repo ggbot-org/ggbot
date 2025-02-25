@@ -12,7 +12,8 @@ type ErrorBinanceHTTPInfo = {
 }
 
 export const isErrorBinanceHTTPInfo = objectTypeGuard<ErrorBinanceHTTPInfo>(
-	({ payload, pathname, searchParams, status, statusText }) => isBinanceErrorPayload(payload) &&
+	({ payload, pathname, searchParams, status, statusText }) =>
+		isBinanceErrorPayload(payload) &&
 		typeof pathname === 'string' &&
 		typeof searchParams === 'string' &&
 		typeof status === 'number' &&
@@ -28,7 +29,13 @@ export class ErrorBinanceHTTP extends Error {
 		this.info = info
 	}
 
-	static message({ status, statusText, pathname, payload, searchParams }: ErrorBinanceHTTPInfo) {
+	static message({
+		status,
+		statusText,
+		pathname,
+		payload,
+		searchParams,
+	}: ErrorBinanceHTTPInfo) {
 		return `Server responded with status=${status} payload=${JSON.stringify(payload)} statusText=${statusText} pathname=${pathname} searchParams=${searchParams}`
 	}
 
@@ -38,7 +45,7 @@ export class ErrorBinanceHTTP extends Error {
 	} {
 		return {
 			name: ErrorBinanceHTTP.errorName,
-			info: this.info
+			info: this.info,
 		}
 	}
 }
@@ -46,7 +53,10 @@ export class ErrorBinanceHTTP extends Error {
 export class ErrorBinanceSymbolFilter extends Error {
 	static errorName = 'ErrorBinanceSymbolFilter'
 	filterType: BinanceSymbolFilter['filterType']
-	constructor({ filterType, detail }: Pick<ErrorBinanceSymbolFilter, 'filterType'> & { detail: string }) {
+	constructor({
+		filterType,
+		detail,
+	}: Pick<ErrorBinanceSymbolFilter, 'filterType'> & { detail: string }) {
 		super(ErrorBinanceSymbolFilter.message(filterType, detail))
 		this.filterType = filterType
 	}

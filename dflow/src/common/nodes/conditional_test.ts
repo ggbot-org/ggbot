@@ -3,7 +3,10 @@ import { test } from 'node:test'
 
 import { now } from 'minimal-time-helpers'
 
-import { DflowCommonExecutor, getDflowExecutionOutputData } from '../executor.js'
+import {
+	DflowCommonExecutor,
+	getDflowExecutionOutputData,
+} from '../executor.js'
 
 test('if', async () => {
 	const nodeId = 'if'
@@ -36,6 +39,10 @@ test('if', async () => {
 			{ id: 'e3', from: ['i3', 'o3'], to: [nodeId, 'else'] },
 		],
 	})
-	const { execution } = await executor.run({ params: {}, memory: {}, time: now() })
+	const { execution } = await executor.run({
+		params: {},
+		memory: {},
+		time: now(),
+	})
 	assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 2)
 })

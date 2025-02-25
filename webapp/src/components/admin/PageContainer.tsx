@@ -7,12 +7,13 @@ import { PropsWithChildren } from 'react'
 export function PageContainer({ children }: PropsWithChildren) {
 	return (
 		<AuthenticationProvider>
-			<Page header={
-				<>
-					<NoNetwork />
-					<Navigation />
-				</>
-			}
+			<Page
+				header={
+					<>
+						<NoNetwork />
+						<Navigation />
+					</>
+				}
 			>
 				{children}
 			</Page>

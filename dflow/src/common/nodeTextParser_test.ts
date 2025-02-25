@@ -5,8 +5,8 @@ import { parsePercentage } from './nodeTextParser.js'
 
 test('parsePercentage', () => {
 	type TestData = Array<{
-		input: string;
-		output: number;
+		input: string
+		output: number
 	}>
 	const testData: TestData = [
 		{ input: '1%', output: 0.01 },

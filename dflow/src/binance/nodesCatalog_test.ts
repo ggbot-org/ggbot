@@ -39,7 +39,7 @@ describe('getDflowBinanceDynamicNodesCatalog', () => {
 				'BNB/ETH',
 				'BTC/BUSD',
 				'ETH/BTC',
-				'ETH/BUSD'
+				'ETH/BUSD',
 			].sort()
 		)
 	})
@@ -59,40 +59,40 @@ describe('getDflowBinanceDynamicNodesCatalog', () => {
 					filterType: 'PRICE_FILTER',
 					minPrice: '0.01000000',
 					maxPrice: '1000000.00000000',
-					tickSize: '0.01000000'
+					tickSize: '0.01000000',
 				},
 				{
 					filterType: 'LOT_SIZE',
 					minQty: '0.00001000',
 					maxQty: '9000.00000000',
-					stepSize: '0.00001000'
+					stepSize: '0.00001000',
 				},
 				{
 					filterType: 'ICEBERG_PARTS',
-					limit: 10
+					limit: 10,
 				},
 				{
 					filterType: 'MARKET_LOT_SIZE',
 					minQty: '0.00000000',
 					maxQty: '147.07085284',
-					stepSize: '0.00000000'
+					stepSize: '0.00000000',
 				},
 				{
 					filterType: 'TRAILING_DELTA',
 					minTrailingAboveDelta: 10,
 					maxTrailingAboveDelta: 2000,
 					minTrailingBelowDelta: 10,
-					maxTrailingBelowDelta: 2000
+					maxTrailingBelowDelta: 2000,
 				},
 				{
 					filterType: 'MAX_NUM_ORDERS',
-					maxNumOrders: 200
+					maxNumOrders: 200,
 				},
 				{
 					filterType: 'MAX_NUM_ALGO_ORDERS',
-					maxNumAlgoOrders: 5
-				}
-			]
+					maxNumAlgoOrders: 5,
+				},
+			],
 		}
 
 		const invalidSymbols: DflowBinanceSymbolInfo[] = [
@@ -106,7 +106,7 @@ describe('getDflowBinanceDynamicNodesCatalog', () => {
 				quoteAssetPrecision: 8,
 				baseCommissionPrecision: 8,
 				isSpotTradingAllowed: true,
-				filters: []
+				filters: [],
 			},
 			{
 				symbol: 'XXBBUSD',
@@ -118,7 +118,7 @@ describe('getDflowBinanceDynamicNodesCatalog', () => {
 				baseCommissionPrecision: 8,
 				// isSpotTradingAllowed is not true
 				isSpotTradingAllowed: false,
-				filters: []
+				filters: [],
 			},
 		]
 

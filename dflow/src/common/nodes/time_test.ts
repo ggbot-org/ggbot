@@ -3,13 +3,16 @@ import { describe, test } from 'node:test'
 
 import { dayToTime } from 'minimal-time-helpers'
 
-import { DflowCommonExecutor, getDflowExecutionOutputData } from '../executor.js'
+import {
+	DflowCommonExecutor,
+	getDflowExecutionOutputData,
+} from '../executor.js'
 import { coerceToTimeUnit } from './time.js'
 
 test('coerceToTimeUnit', () => {
 	type TestData = Array<{
-		input: string;
-		output: ReturnType<typeof coerceToTimeUnit>;
+		input: string
+		output: ReturnType<typeof coerceToTimeUnit>
 	}>
 	const testData: TestData = [
 		{ input: 'not a TimeUnit', output: undefined },
@@ -36,7 +39,11 @@ describe('today', () => {
 			nodes: [{ id: nodeId, text: 'today' }],
 			edges: [],
 		})
-		const { execution } = await executor.run({ params: {}, memory: {}, time: dayToTime(day) })
+		const { execution } = await executor.run({
+			params: {},
+			memory: {},
+			time: dayToTime(day),
+		})
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), day)
 	})
 })

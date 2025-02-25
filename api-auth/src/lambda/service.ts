@@ -1,4 +1,11 @@
-import { ApiService, AuthClientActionOutput as Output, AuthClientActionType, BadRequestError, DocumentProviderLevel2, isAuthClientActionInput as isInput } from '@workspace/api'
+import {
+	ApiService,
+	AuthClientActionOutput as Output,
+	AuthClientActionType,
+	BadRequestError,
+	DocumentProviderLevel2,
+	isAuthClientActionInput as isInput,
+} from '@workspace/api'
 import { signSession } from '@workspace/authentication'
 import { AuthDatabase } from '@workspace/database'
 import { SendEmailProvider } from '@workspace/email-messages'
@@ -18,7 +25,11 @@ export class Service implements ApiService<AuthClientActionType> {
 		if (!isInput.Enter(arg)) throw new BadRequestError()
 		const { email } = arg
 		const oneTimePassword = await this.dataProvider.CreateOneTimePassword(email)
-		await this.sendEmailProvider.SendOneTimePassword({ language: 'en', email, oneTimePassword })
+		await this.sendEmailProvider.SendOneTimePassword({
+			language: 'en',
+			email,
+			oneTimePassword,
+		})
 		return { emailSent: true } satisfies Output['Enter']
 	}
 
@@ -28,7 +39,8 @@ export class Service implements ApiService<AuthClientActionType> {
 
 		const output: Output['Verify'] = { token: undefined }
 
-		const storedOneTimePassword = await this.dataProvider.ReadOneTimePassword(email)
+		const storedOneTimePassword =
+			await this.dataProvider.ReadOneTimePassword(email)
 		const verified = code === storedOneTimePassword?.code
 		if (!verified) return output
 
@@ -39,7 +51,10 @@ export class Service implements ApiService<AuthClientActionType> {
 
 		if (emailAccount) {
 			// Given email is associated with an account: create a session.
-			const session: ClientSession = { creationDay, accountId: emailAccount.accountId }
+			const session: ClientSession = {
+				creationDay,
+				accountId: emailAccount.accountId,
+			}
 			const token = await signSession(session)
 			output.token = token
 		} else {

@@ -1,4 +1,11 @@
-import { BAD_GATEWAY__502, BAD_REQUEST__400, GATEWAY_TIMEOUT__504, HTTPStatusCode, INTERNAL_SERVER_ERROR__500, UNAUTHORIZED__401 } from './codes.js'
+import {
+	BAD_GATEWAY__502,
+	BAD_REQUEST__400,
+	GATEWAY_TIMEOUT__504,
+	HTTPStatusCode,
+	INTERNAL_SERVER_ERROR__500,
+	UNAUTHORIZED__401,
+} from './codes.js'
 
 type HTTPError = {
 	statusCode: HTTPStatusCode

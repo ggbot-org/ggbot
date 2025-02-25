@@ -17,13 +17,19 @@ import { inferStripeModeFromSecretKey } from './stripeMode.js'
  * checkStripeSecretKey(DEPLOY_STAGE, STRIPE_SECRET_KEY)
  * ```
  */
-export function checkStripeSecretKey(deployStage: DeployStage, secretKey: string) {
+export function checkStripeSecretKey(
+	deployStage: DeployStage,
+	secretKey: string
+) {
 	const stripeMode = inferStripeModeFromSecretKey(secretKey)
 
 	if (
 		// Check if stripeMode is consistent with deployStage.
-		(stripeMode === 'live' && deployStage !== 'main') || (stripeMode === 'test' && deployStage === 'main')
+		(stripeMode === 'live' && deployStage !== 'main') ||
+		(stripeMode === 'test' && deployStage === 'main')
 	) {
-		throw new Error(`Stripe mode is inconsistent with deploy stage, deployStage=${deployStage} stripeMode=${stripeMode}`)
+		throw new Error(
+			`Stripe mode is inconsistent with deploy stage, deployStage=${deployStage} stripeMode=${stripeMode}`
+		)
 	}
 }

@@ -37,7 +37,10 @@ class NodeHasNoOutputError extends Error {
  * @remarks
  * Unknown nodes and broken connections are ignored.
  */
-export function load ({ dflow, graph }: {
+export function load({
+	dflow,
+	graph,
+}: {
 	dflow: DflowLoader
 	graph: StrategyFlowGraph
 }) {
@@ -74,8 +77,12 @@ export function load ({ dflow, graph }: {
 			// for example if a new input or output was added to
 			// the node and the graph was created before the node
 			// got that input or output.
-			const inputs = NodeClass.inputs?.map((_, index) => ({ id: ins?.[index]?.id }))
-			const outputs = NodeClass.outputs?.map((_, index) => ({ id: outs?.[index]?.id }))
+			const inputs = NodeClass.inputs?.map((_, index) => ({
+				id: ins?.[index]?.id,
+			}))
+			const outputs = NodeClass.outputs?.map((_, index) => ({
+				id: outs?.[index]?.id,
+			}))
 			dflow.newNode({ id, kind: text, inputs, outputs })
 		}
 	}

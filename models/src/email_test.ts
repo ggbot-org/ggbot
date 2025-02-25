@@ -29,7 +29,9 @@ describe('normalizeEmailAddress', () => {
 	})
 
 	test('removes labels', () => {
-		for (const { input, output } of [{ input: 'user+label@example.com', output: 'user@example.com' }]) {
+		for (const { input, output } of [
+			{ input: 'user+label@example.com', output: 'user@example.com' },
+		]) {
 			assert.equal(normalizeEmailAddress(input), output)
 		}
 	})
@@ -44,7 +46,7 @@ describe('normalizeEmailAddress', () => {
 				{
 					name: 'Error',
 					message: ErrorInvalidArg.message('EmailAddress'),
-				},
+				}
 			)
 		})
 	})

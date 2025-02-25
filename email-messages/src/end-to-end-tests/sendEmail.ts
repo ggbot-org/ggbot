@@ -6,5 +6,5 @@ if (!EMAIL) throw new Error('Set EMAIL environment variable')
 new SendEmailProvider().SendOneTimePassword({
 	email: EMAIL,
 	oneTimePassword: { whenCreated: 0, code: '000000' },
-	language: 'en'
+	language: 'en',
 })

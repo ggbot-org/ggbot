@@ -1,5 +1,11 @@
 import { Classname } from '_/classnames'
-import { Button, Buttons, InputFieldName, Message, OneColumn } from '_/components/library'
+import {
+	Button,
+	Buttons,
+	InputFieldName,
+	Message,
+	OneColumn,
+} from '_/components/library'
 import { StrategiesErrorExceededQuota } from '_/components/user/StrategiesErrorExceededQuota'
 import { useCreateStrategy } from '_/hooks/user/api'
 import { FormattedMessage } from '_/i18n/components'
@@ -53,7 +59,7 @@ export function CreateStrategy() {
 					required
 					label={<FormattedMessage id="StrategyName.label" />}
 					name={'name' satisfies FormFieldName}
-					onChange={(event) => setCanCreate(isName((event.target.value)))}
+					onChange={(event) => setCanCreate(isName(event.target.value))}
 					readOnly={readOnly}
 				/>
 				<Buttons>

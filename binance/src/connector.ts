@@ -32,7 +32,7 @@ export class BinanceConnector {
 	) {
 		const fetchOptions: RequestInit = {
 			headers: this.requestHeaders,
-			method
+			method,
 		}
 
 		const url = new URL(endpoint, this.baseUrl)
@@ -47,7 +47,8 @@ export class BinanceConnector {
 				? `["${value.join('","')}"]`
 				: value
 			url.searchParams.append(key, String(valueString))
-			if (key !== 'signature') debugUrl.searchParams.append(key, String(valueString))
+			if (key !== 'signature')
+				debugUrl.searchParams.append(key, String(valueString))
 		}
 
 		const response = await fetch(url, fetchOptions)
@@ -58,7 +59,7 @@ export class BinanceConnector {
 				statusText: response.statusText,
 				pathname: url.pathname,
 				payload,
-				searchParams: debugUrl.searchParams.toString()
+				searchParams: debugUrl.searchParams.toString(),
 			})
 		}
 

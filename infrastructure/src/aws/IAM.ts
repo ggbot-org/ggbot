@@ -24,13 +24,22 @@ export type IamPolicyDocumentStatement<Action extends string> = {
 	Resource: string | Array<string>
 }
 
-export type IamPolicyDocument<StatementName extends string, StatementAction extends string> = {
+export type IamPolicyDocument<
+	StatementName extends string,
+	StatementAction extends string,
+> = {
 	policyDocument: {
 		Version: '2012-10-17'
 		Statement: Array<IamPolicyDocumentStatement<StatementAction>>
 	}
-	statementAction: Record<StatementName, IamPolicyDocumentStatement<StatementAction>['Action']>
-	statementResource: Record<StatementName, IamPolicyDocumentStatement<StatementAction>['Resource']>
+	statementAction: Record<
+		StatementName,
+		IamPolicyDocumentStatement<StatementAction>['Action']
+	>
+	statementResource: Record<
+		StatementName,
+		IamPolicyDocumentStatement<StatementAction>['Resource']
+	>
 }
 
 export class IamPolicy {
@@ -53,7 +62,9 @@ export class IamPolicy {
 		Resource: IamPolicyDocumentStatement<StatementAction>['Resource']
 	): IamPolicyDocumentStatement<StatementAction> {
 		return {
-			Effect: 'Allow', Action, Resource
+			Effect: 'Allow',
+			Action,
+			Resource,
 		}
 	}
 }

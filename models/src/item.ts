@@ -1,4 +1,8 @@
-import { accountKeyFieldNames, strategyKeyFieldNames, subscriptionPurchaseKeyFieldNames } from './fields.js'
+import {
+	accountKeyFieldNames,
+	strategyKeyFieldNames,
+	subscriptionPurchaseKeyFieldNames,
+} from './fields.js'
 import { SerializablePrimitive } from './serializable.js'
 import { CreationTime } from './time.js'
 
@@ -17,9 +21,9 @@ const _itemKeyFieldNames = [
 	'apiKey',
 	'apiSecret',
 	'email',
-	'schedulingId'
+	'schedulingId',
 ]
-type ItemKeyFieldName = typeof _itemKeyFieldNames[number]
+type ItemKeyFieldName = (typeof _itemKeyFieldNames)[number]
 
 /** An `Item` can have a "key" that associate it to other items. */
 export type ItemKey<Fields extends ItemKeyFieldName, Key> = Readonly<
@@ -30,7 +34,8 @@ export type ItemKey<Fields extends ItemKeyFieldName, Key> = Readonly<
 export type Item = ItemKey<'id', { id: ItemId }>
 
 export function newId(): ItemId {
-	return nullId.replace(/0/g, () => (Math.floor(Date.now() + Math.random() * 16) % 16).toString(16)
+	return nullId.replace(/0/g, () =>
+		(Math.floor(Date.now() + Math.random() * 16) % 16).toString(16)
 	)
 }
 

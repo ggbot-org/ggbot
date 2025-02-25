@@ -5,7 +5,7 @@ export type DayFormat = Required<
 export const dayFormat: DayFormat = {
 	year: 'numeric',
 	month: 'short',
-	day: '2-digit'
+	day: '2-digit',
 }
 
 export type TimeFormat = DayFormat &
@@ -15,5 +15,5 @@ export const timeFormat: TimeFormat = {
 	...dayFormat,
 	minute: '2-digit',
 	hour: '2-digit',
-	second: '2-digit'
+	second: '2-digit',
 }

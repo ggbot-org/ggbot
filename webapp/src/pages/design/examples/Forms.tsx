@@ -1,5 +1,14 @@
 import { Classname } from '_/classnames'
-import { Button, Buttons, Checkbox, Control, Field, InputField, SelectField, Title } from '_/components/library'
+import {
+	Button,
+	Buttons,
+	Checkbox,
+	Control,
+	Field,
+	InputField,
+	SelectField,
+	Title,
+} from '_/components/library'
 import { useState } from 'react'
 
 export function SimpleForm() {
@@ -40,7 +49,7 @@ export function SimpleForm() {
 				options={[
 					{ value: 'M', label: 'Male' },
 					{ value: 'F', label: 'Female' },
-					{ value: 'X', label: 'Other' }
+					{ value: 'X', label: 'Other' },
 				]}
 				value={gender}
 			/>
@@ -50,7 +59,9 @@ export function SimpleForm() {
 						checked={hasConsent}
 						onChange={(event) => setHasConsent(Boolean(event.target.checked))}
 					>
-						<span className={'ml-2' satisfies Classname}>I agree with Terms of service.</span>
+						<span className={'ml-2' satisfies Classname}>
+							I agree with Terms of service.
+						</span>
 					</Checkbox>
 				</Control>
 			</Field>

@@ -8,7 +8,8 @@ export type DayKey = { day: Day }
 
 export type CreationTime = { readonly whenCreated: Time }
 
-export const isCreationTime = objectTypeGuard<CreationTime>(({ whenCreated }) => isTime(whenCreated)
+export const isCreationTime = objectTypeGuard<CreationTime>(({ whenCreated }) =>
+	isTime(whenCreated)
 )
 
 export function createdNow(): CreationTime {
@@ -17,7 +18,8 @@ export function createdNow(): CreationTime {
 
 export type CreationDay = { creationDay: Day }
 
-export const isCreationDay = objectTypeGuard<CreationDay>(({ creationDay }) => isDay(creationDay)
+export const isCreationDay = objectTypeGuard<CreationDay>(({ creationDay }) =>
+	isDay(creationDay)
 )
 
 // Delete.

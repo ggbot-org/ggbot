@@ -1,4 +1,3 @@
-
 # npm dependencies
 
 This is the internal dependencies graph: it shows how workspaces depend on each other.

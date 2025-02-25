@@ -14,8 +14,8 @@ To accept real money transactions you need to switch to _live_ mode.
 Notice that all `STRIPE_` prefixed environment variables mentioned below has two values, one for _test_ mode and one for _live_ mode.
 It is important to set the environment variables consistenly with the `DEPLOY_STAGE` variable, where
 
--   `DEPLOY_STAGE=next` is associated with Stripe _test_ mode
--   `DEPLOY_STAGE=main` is associated with Stripe _live_ mode
+- `DEPLOY_STAGE=next` is associated with Stripe _test_ mode
+- `DEPLOY_STAGE=main` is associated with Stripe _live_ mode
 
 The further `DEPLOY_STAGE=local`, which is used for local development is not associated with any Stripe mode.
 
@@ -28,12 +28,12 @@ Go the Stripe and set the `STRIPE_SECRET_KEY` environment variable, see [API key
 Create a product for the "Basic" plan and a pricing for it and set the `STRIPE_PLAN_BASIC_PRICE_ID` environment variable.
 See the following documentation for more details on how to create products and pricing:
 
--   [Products](https://docs.stripe.com/api/products)
--   [Price](https://docs.stripe.com/api/prices)
+- [Products](https://docs.stripe.com/api/products)
+- [Price](https://docs.stripe.com/api/prices)
 
 Notice that you need to manually sync the pricing on Stripe dashboard with the following environment variables:
 
--   `STRIPE_PLAN_BASIC_MONTHLY_PRICE`
+- `STRIPE_PLAN_BASIC_MONTHLY_PRICE`
 
 You may need to upload the logo, see [here where to find it](../../webapp/docs/logo-assets.md).
 

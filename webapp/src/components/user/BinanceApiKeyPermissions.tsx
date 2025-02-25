@@ -4,7 +4,10 @@ import { FormattedMessage } from '_/i18n/components'
 import { BinanceApiKeyPermissionCriteria } from '@workspace/models'
 import { PropsWithChildren } from 'react'
 
-function BinanceApiKeyPermission({ children, ok }: PropsWithChildren<Pick<CheckmarkProps, 'ok'>>) {
+function BinanceApiKeyPermission({
+	children,
+	ok,
+}: PropsWithChildren<Pick<CheckmarkProps, 'ok'>>) {
 	if (ok === undefined) return null
 	return (
 		<div className={'is-flex' satisfies Classname}>
@@ -15,7 +18,7 @@ function BinanceApiKeyPermission({ children, ok }: PropsWithChildren<Pick<Checkm
 }
 
 function BinanceApiKeyPermissionEnableReading({
-	enableReading
+	enableReading,
 }: Partial<Pick<BinanceApiKeyPermissionCriteria, 'enableReading'>>) {
 	return (
 		<BinanceApiKeyPermission ok={enableReading}>
@@ -25,8 +28,10 @@ function BinanceApiKeyPermissionEnableReading({
 }
 
 function BinanceApiKeyPermissionEnableSpotAndMarginTrading({
-	enableSpotAndMarginTrading
-}: Partial<Pick<BinanceApiKeyPermissionCriteria, 'enableSpotAndMarginTrading'>>) {
+	enableSpotAndMarginTrading,
+}: Partial<
+	Pick<BinanceApiKeyPermissionCriteria, 'enableSpotAndMarginTrading'>
+>) {
 	return (
 		<BinanceApiKeyPermission ok={enableSpotAndMarginTrading}>
 			<FormattedMessage id="BinanceApiKeyPermissionEnableSpotAndMarginTrading.description" />
@@ -35,7 +40,7 @@ function BinanceApiKeyPermissionEnableSpotAndMarginTrading({
 }
 
 function BinanceApiKeyPermissionEnableWithdrawals({
-	enableWithdrawals
+	enableWithdrawals,
 }: Partial<Pick<BinanceApiKeyPermissionCriteria, 'enableWithdrawals'>>) {
 	return (
 		<BinanceApiKeyPermission
@@ -51,7 +56,7 @@ function BinanceApiKeyPermissionEnableWithdrawals({
 }
 
 function BinanceApiKeyPermissionIpRestrict({
-	ipRestrict
+	ipRestrict,
 }: Partial<Pick<BinanceApiKeyPermissionCriteria, 'ipRestrict'>>) {
 	return (
 		<BinanceApiKeyPermission ok={ipRestrict}>
@@ -64,21 +69,21 @@ export type BinanceApiKeyPermissionsProps = {
 	permissions: BinanceApiKeyPermissionCriteria | undefined
 }
 
-export function BinanceApiKeyPermissions({ permissions }: BinanceApiKeyPermissionsProps) {
+export function BinanceApiKeyPermissions({
+	permissions,
+}: BinanceApiKeyPermissionsProps) {
 	if (!permissions) return null
 
 	const {
 		enableReading,
 		enableWithdrawals,
 		enableSpotAndMarginTrading,
-		ipRestrict
+		ipRestrict,
 	} = permissions
 
 	return (
 		<div>
-			<BinanceApiKeyPermissionEnableReading
-				enableReading={enableReading}
-			/>
+			<BinanceApiKeyPermissionEnableReading enableReading={enableReading} />
 			<BinanceApiKeyPermissionEnableWithdrawals
 				enableWithdrawals={enableWithdrawals}
 			/>

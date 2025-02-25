@@ -40,10 +40,18 @@ export class IDBProvider {
 		request.onsuccess = cleanup
 	}
 
-	open(instance: Pick<IDBInstance, 'databaseName' | 'databaseVersion' | 'databaseUpgrade'>) {
+	open(
+		instance: Pick<
+			IDBInstance,
+			'databaseName' | 'databaseVersion' | 'databaseUpgrade'
+		>
+	) {
 		if (this.isOpen) return
 		if (this.openRequestState === 'pending') return
-		const request = indexedDB.open(instance.databaseName, instance.databaseVersion)
+		const request = indexedDB.open(
+			instance.databaseName,
+			instance.databaseVersion
+		)
 		this.openRequestState = request.readyState
 		request.onsuccess = () => {
 			this.db = request.result
@@ -58,11 +66,17 @@ export class IDBProvider {
 		}
 	}
 
-	addEventListener(type: IDBEventType, callback: IDBEventListenerOrEventListenerObject): void {
+	addEventListener(
+		type: IDBEventType,
+		callback: IDBEventListenerOrEventListenerObject
+	): void {
 		this.eventTarget.addEventListener(type, callback)
 	}
 
-	removeEventListener(type: IDBEventType, callback: IDBEventListenerOrEventListenerObject): void {
+	removeEventListener(
+		type: IDBEventType,
+		callback: IDBEventListenerOrEventListenerObject
+	): void {
 		this.eventTarget.removeEventListener(type, callback)
 	}
 }

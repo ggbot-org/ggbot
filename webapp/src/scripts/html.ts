@@ -52,7 +52,7 @@ function baseStyle() {
 const logoTags = [
 	`<link rel="icon" href="${faviconIcoUrl}" sizes="any">`,
 	`<link rel="apple-touch-icon" sizes="180x180" href="${appleTouchIconUrl}">`,
-	`<link rel="icon" href="${faviconSvgUrl}" type="image/svg+xml">`
+	`<link rel="icon" href="${faviconSvgUrl}" type="image/svg+xml">`,
 ]
 
 function metaTags({ title, description }: HeadTagArgs['meta']) {
@@ -61,7 +61,7 @@ function metaTags({ title, description }: HeadTagArgs['meta']) {
 		`<title>${title}</title>`,
 		`<meta name="description" content="${description}">`,
 		'<meta name="viewport" content="width=device-width" />',
-		...logoTags
+		...logoTags,
 	]
 }
 
@@ -71,16 +71,12 @@ function headTag({ meta, stylesheets }: HeadTagArgs) {
 		...metaTags(meta),
 		styleTag(baseStyle()),
 		...stylesheets.map(linkTag),
-		'</head>'
+		'</head>',
 	]
 }
 
 function importmap(imports: BodyTagArgs['imports']) {
-	return [
-		'<script type="importmap">',
-		JSON.stringify({ imports }),
-		'</script>'
-	]
+	return ['<script type="importmap">', JSON.stringify({ imports }), '</script>']
 }
 
 function bodyTag({ hasRootDiv, imports, scripts }: BodyTagArgs) {
@@ -89,20 +85,29 @@ function bodyTag({ hasRootDiv, imports, scripts }: BodyTagArgs) {
 		...importmap(imports),
 		hasRootDiv ? `<div id="${reactRootId}"></div>` : '',
 		...scripts.map(scriptTag),
-		'</body>'
+		'</body>',
 	]
 }
 
-function htmlTag({ hasRootDiv, imports, meta, stylesheets, scripts }: HtmlTagArgs) {
+function htmlTag({
+	hasRootDiv,
+	imports,
+	meta,
+	stylesheets,
+	scripts,
+}: HtmlTagArgs) {
 	return [
 		'<html lang="en">',
 		...headTag({ meta, stylesheets }),
 		...bodyTag({ hasRootDiv, imports, scripts }),
-		'</html>'
+		'</html>',
 	]
 }
 
-export function html({ imports, scripts }: Pick<BodyTagArgs, 'imports' | 'scripts'>) {
+export function html({
+	imports,
+	scripts,
+}: Pick<BodyTagArgs, 'imports' | 'scripts'>) {
 	return [
 		'<!DOCTYPE html>',
 		...htmlTag({
@@ -114,8 +119,8 @@ export function html({ imports, scripts }: Pick<BodyTagArgs, 'imports' | 'script
 			},
 			imports,
 			scripts,
-			stylesheets: [{ href: '/main.css' }]
-		})
+			stylesheets: [{ href: '/main.css' }],
+		}),
 	]
 		.filter((tag) => Boolean(tag))
 		.join('\n')

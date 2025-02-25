@@ -1,4 +1,10 @@
-import { AccountKey, isNaturalNumber, isSubscriptionPlan, NaturalNumber, Subscription } from '@workspace/models'
+import {
+	AccountKey,
+	isNaturalNumber,
+	isSubscriptionPlan,
+	NaturalNumber,
+	Subscription,
+} from '@workspace/models'
 import { objectTypeGuard } from 'minimal-type-guard-helpers'
 
 import { ActionTypes } from './action.js'
@@ -22,19 +28,26 @@ type StripeClientAction = {
 export type StripeClientActionType = keyof StripeClientAction
 
 export type StripeClientActionInput = {
-	CreateCheckoutSession: Parameters<StripeClientAction['CreateCheckoutSession']>[0]
+	CreateCheckoutSession: Parameters<
+		StripeClientAction['CreateCheckoutSession']
+	>[0]
 }
 
 export type StripeClientActionOutput = {
-	CreateCheckoutSession: Awaited<ReturnType<StripeClientAction['CreateCheckoutSession']>>
+	CreateCheckoutSession: Awaited<
+		ReturnType<StripeClientAction['CreateCheckoutSession']>
+	>
 }
 
 export const stripeClientActions: ActionTypes<StripeClientActionType> = [
-	'CreateCheckoutSession'
+	'CreateCheckoutSession',
 ]
 
 export const isStripeClientActionInput = {
-	CreateCheckoutSession: objectTypeGuard<StripeClientActionInput['CreateCheckoutSession']>(
-		({ numMonths, plan }) => isNaturalNumber(numMonths) && isSubscriptionPlan(plan)
-	)
+	CreateCheckoutSession: objectTypeGuard<
+		StripeClientActionInput['CreateCheckoutSession']
+	>(
+		({ numMonths, plan }) =>
+			isNaturalNumber(numMonths) && isSubscriptionPlan(plan)
+	),
 }

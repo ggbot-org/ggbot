@@ -22,8 +22,8 @@ Description can be: ggbot2 binance-proxy Load Balancer.
 
 Inbound rules:
 
--   Type HTTPS, source _Anywhere-IPv4_, description "all HTTPS IPv4"
--   Type HTTPS, source _Anywhere-IPv6_, description "all HTTPS IPv6"
+- Type HTTPS, source _Anywhere-IPv4_, description "all HTTPS IPv4"
+- Type HTTPS, source _Anywhere-IPv6_, description "all HTTPS IPv6"
 
 Outbound rule: type _Custom TCP_, port range 3000, destination _Custom_ and select `ggbot2-binance-proxy-ec2-sg` in the dropdown, description "ggbot2 binance-proxy EC2 service".
 

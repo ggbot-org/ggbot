@@ -5,7 +5,9 @@ import { useCallback, useEffect, useState } from 'react'
 export function useAccountStrategies() {
 	const { canRun, data, isPending, request, reset } = useReadStrategies()
 
-	const [accountStrategies, setAccountStrategies] = useState<AccountStrategy[] | undefined>()
+	const [accountStrategies, setAccountStrategies] = useState<
+		AccountStrategy[] | undefined
+	>()
 
 	const resetAccountStrategies = useCallback(() => {
 		reset()

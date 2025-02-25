@@ -3,7 +3,11 @@ import { join } from 'node:path'
 import { webappPagePathname, WebappURLs } from '@workspace/locators'
 import writeFile from 'write-file-utf8'
 
-import { importmapConfig, publicDir, webappEcmaScriptsConfig } from '../package.js'
+import {
+	importmapConfig,
+	publicDir,
+	webappEcmaScriptsConfig,
+} from '../package.js'
 import { html, HtmlTagArgs } from './html.js'
 
 // Here webapp is used only for pathnames. Any URL is fine as baseURL.
@@ -19,9 +23,14 @@ const landingJs = webPath(webappEcmaScriptsConfig.landing.jsPath)
 const strategyJs = webPath(webappEcmaScriptsConfig.strategy.jsPath)
 const userJs = webPath(webappEcmaScriptsConfig.user.jsPath)
 
-const imports = Object.fromEntries(Object.entries(importmapConfig).map(
-	([importName, { targetDir, targetFile }]) => ([importName, webPath([...targetDir, targetFile])])
-))
+const imports = Object.fromEntries(
+	Object.entries(importmapConfig).map(
+		([importName, { targetDir, targetFile }]) => [
+			importName,
+			webPath([...targetDir, targetFile]),
+		]
+	)
+)
 
 // Landing pages.
 
@@ -29,10 +38,11 @@ for (const pathname of [
 	webapp.homepage.pathname,
 	webapp.privacy.pathname,
 	webapp.terms.pathname,
-]) await writeFile(
-	join(publicDir, pathname),
-	html({ imports, scripts: [{ src: landingJs }] })
-)
+])
+	await writeFile(
+		join(publicDir, pathname),
+		html({ imports, scripts: [{ src: landingJs }] })
+	)
 
 // Shared strategy.
 
@@ -46,10 +56,11 @@ await writeFile(
 for (const pathname of [
 	webappPagePathname.admin.dashboard,
 	webappPagePathname.admin.accountDetails,
-]) await writeFile(
-	join(publicDir, pathname),
-	html({ imports, scripts: [{ src: adminJs }] })
-)
+])
+	await writeFile(
+		join(publicDir, pathname),
+		html({ imports, scripts: [{ src: adminJs }] })
+	)
 
 // User app.
 
@@ -61,11 +72,11 @@ for (const pathname of [
 	webappPagePathname.user.editStrategy,
 	webappPagePathname.user.settings,
 	webappPagePathname.user.strategy,
-]) await writeFile(
-	join(
-		publicDir, pathname),
-	html({ imports, scripts: userAppScripts })
-)
+])
+	await writeFile(
+		join(publicDir, pathname),
+		html({ imports, scripts: userAppScripts })
+	)
 
 // Subscription pages.
 

@@ -48,6 +48,7 @@ export type Balance = BalanceItem[]
 /**
  * A BalanceEvent happens when a strategy perform an operation that modifies an account balance.
  */
-export type BalanceEvent = StrategyKey & CreationTime & {
-	balance: Balance
-}
+export type BalanceEvent = StrategyKey &
+	CreationTime & {
+		balance: Balance
+	}

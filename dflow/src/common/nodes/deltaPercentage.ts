@@ -7,10 +7,7 @@ const { input } = Dflow
 
 export class DeltaPercentage extends DflowNode {
 	static kind = 'deltaPercentage'
-	static inputs = [
-		input('array', { name: 'a' }),
-		input('array', { name: 'b' })
-	]
+	static inputs = [input('array', { name: 'a' }), input('array', { name: 'b' })]
 	static outputs = [outputValues, outputLastValue]
 	run() {
 		const arrayA = (this.input(0).data as unknown[]).slice(0)

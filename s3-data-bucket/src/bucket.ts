@@ -1,10 +1,17 @@
-import { DocumentProviderLevel3, DocumentProviderListItemsInput } from '@workspace/api'
+import {
+	DocumentProviderLevel3,
+	DocumentProviderListItemsInput,
+} from '@workspace/api'
 import { DeployStage } from '@workspace/env'
 import { deletedNow, SerializableData, updatedNow } from '@workspace/models'
 
 import { S3IOClient } from './S3IOClient.js'
 
-export function getS3DataBucketName(deployStage: DeployStage, dnsDomain: string, awsRegion: string): string {
+export function getS3DataBucketName(
+	deployStage: DeployStage,
+	dnsDomain: string,
+	awsRegion: string
+): string {
 	return deployStage == 'local'
 		? `${'next' satisfies DeployStage}-data.${awsRegion}.${dnsDomain}`
 		: `${deployStage}-data.${awsRegion}.${dnsDomain}`
@@ -41,7 +48,11 @@ export class S3DataBucketProvider implements DocumentProviderLevel3 {
 			MaxKeys: numItems,
 		})
 		return {
-			keys: Contents?.reduce<string[]>((list, { Key }) => (Key ? list.concat(Key) : list), []) ?? [],
+			keys:
+				Contents?.reduce<string[]>(
+					(list, { Key }) => (Key ? list.concat(Key) : list),
+					[]
+				) ?? [],
 			nextToken: NextContinuationToken,
 		}
 	}

@@ -1,6 +1,6 @@
 import { ENV } from '@workspace/env'
 
-function emailFooter(){
+function emailFooter() {
 	return `
 <tr>
   <td>

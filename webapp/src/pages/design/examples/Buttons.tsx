@@ -11,9 +11,15 @@ export function ButtonColors() {
 			</Buttons>
 			<Buttons>
 				<Button disabled>disabled</Button>
-				<Button disabled color="primary">disabled</Button>
-				<Button disabled color="warning">disabled</Button>
-				<Button disabled color="danger">disabled</Button>
+				<Button disabled color="primary">
+					disabled
+				</Button>
+				<Button disabled color="warning">
+					disabled
+				</Button>
+				<Button disabled color="danger">
+					disabled
+				</Button>
 			</Buttons>
 		</>
 	)
@@ -23,9 +29,15 @@ export function LoadingButtons() {
 	return (
 		<Buttons>
 			<Button isLoading>button</Button>
-			<Button isLoading color="primary">primary</Button>
-			<Button isLoading color="warning">warning</Button>
-			<Button isLoading color="danger">danger</Button>
+			<Button isLoading color="primary">
+				primary
+			</Button>
+			<Button isLoading color="warning">
+				warning
+			</Button>
+			<Button isLoading color="danger">
+				danger
+			</Button>
 		</Buttons>
 	)
 }

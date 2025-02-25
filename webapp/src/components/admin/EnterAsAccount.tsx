@@ -6,7 +6,11 @@ import { localWebStorage } from '_/storages/local'
 import { AccountKey } from '@workspace/models'
 import { useEffect } from 'react'
 
-export function EnterAsAccount ({ accountId }: { accountId?: AccountKey['accountId'] }) {
+export function EnterAsAccount({
+	accountId,
+}: {
+	accountId?: AccountKey['accountId']
+}) {
 	const { data, request, isPending } = useEnterAsAccount()
 
 	useEffect(() => {
@@ -18,10 +22,7 @@ export function EnterAsAccount ({ accountId }: { accountId?: AccountKey['account
 	if (!accountId) return null
 
 	return (
-		<Button
-			isLoading={isPending}
-			onClick={() => request({ accountId })}
-		>
+		<Button isLoading={isPending} onClick={() => request({ accountId })}>
 			Enter as Account
 		</Button>
 	)

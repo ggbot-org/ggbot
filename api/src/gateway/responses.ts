@@ -1,4 +1,3 @@
-
 import { ApiActionOutputData, ApiActionOutputError } from '../action.js'
 import { BAD_REQUEST__400, OK__200 } from '../http/codes.js'
 import { commonHeaders } from './commonHeaders.js'
@@ -13,10 +12,10 @@ export function ALLOWED_METHODS(methods: HTTP_METHOD[]) {
 		headers: {
 			'Access-Control-Allow-Headers': 'Authorization,Content-type',
 			'Access-Control-Allow-Methods': ['OPTIONS'].concat(methods).join(),
-			...commonHeaders
+			...commonHeaders,
 		},
 		isBase64Encoded: false,
-		statusCode: OK__200
+		statusCode: OK__200,
 	}
 }
 
@@ -25,10 +24,10 @@ export function OK(data: ApiActionOutputData['data']): APIGatewayProxyResult {
 		...responseBody({ data }),
 		headers: {
 			'Content-Type': 'application/json',
-			...commonHeaders
+			...commonHeaders,
 		},
 		isBase64Encoded: false,
-		statusCode: OK__200
+		statusCode: OK__200,
 	}
 }
 
@@ -39,10 +38,10 @@ export function ERROR(
 		...responseBody({ error }),
 		headers: {
 			'Content-Type': 'application/json',
-			...commonHeaders
+			...commonHeaders,
 		},
 		isBase64Encoded: false,
-		statusCode: OK__200
+		statusCode: OK__200,
 	}
 }
 
@@ -53,6 +52,6 @@ export function BAD_REQUEST(
 		...(error ? responseBody({ error }) : { body: '' }),
 		headers: commonHeaders,
 		isBase64Encoded: false,
-		statusCode: BAD_REQUEST__400
+		statusCode: BAD_REQUEST__400,
 	}
 }

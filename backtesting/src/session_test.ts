@@ -12,7 +12,7 @@ const strategyName = 'my strategy'
 const newSession = ({
 	dayInterval,
 	frequency,
-	strategy
+	strategy,
 }: {
 	dayInterval: NonNullable<BacktestingSession['dayInterval']>
 	frequency: NonNullable<BacktestingSession['frequency']>
@@ -32,7 +32,7 @@ describe('BacktestingSession', () => {
 		assert.ok(!session.canRun)
 		session.dayInterval = {
 			start: '2000-01-01',
-			end: '2001-01-01'
+			end: '2001-01-01',
 		}
 		session.frequency = { every: 1, interval: '1h' }
 		assert.ok(!session.canRun)
@@ -45,16 +45,16 @@ describe('BacktestingSession', () => {
 	test('cannot set `dayInterval` while `status` is "running"', () => {
 		const dayInterval1: DayInterval = {
 			start: '2000-01-01',
-			end: '2001-01-01'
+			end: '2001-01-01',
 		}
 		const dayInterval2: DayInterval = {
 			start: '2021-01-01',
-			end: '2022-01-01'
+			end: '2022-01-01',
 		}
 		const session = newSession({
 			dayInterval: dayInterval1,
 			frequency: { every: 1, interval: '1h' },
-			strategy: emptyStrategy()
+			strategy: emptyStrategy(),
 		})
 		assert.deepEqual(session.dayInterval, dayInterval1)
 		// Session is "running", `dayInterval` modifier does not apply.
@@ -78,16 +78,16 @@ describe('BacktestingSession', () => {
 	test('cannot set `frequency` while `status` is "running"', () => {
 		const frequency1: Frequency = {
 			every: 1,
-			interval: '1h'
+			interval: '1h',
 		}
 		const frequency2: Frequency = {
 			every: 20,
-			interval: '1m'
+			interval: '1m',
 		}
 		const session = newSession({
 			dayInterval: { start: '2000-01-01', end: '2001-01-01' },
 			frequency: frequency1,
-			strategy: emptyStrategy()
+			strategy: emptyStrategy(),
 		})
 		assert.deepEqual(session.frequency, frequency1)
 		// Session is "running", `frequency` modifier does not apply.
@@ -113,15 +113,15 @@ describe('BacktestingSession', () => {
 		const strategy2 = new BacktestingStrategy({
 			strategyKey: { strategyKind: 'none', strategyId: '01010101' },
 			strategyName,
-			flow: { nodes: [{ id: 'a', text: 'true' }], edges: [] }
+			flow: { nodes: [{ id: 'a', text: 'true' }], edges: [] },
 		})
 		const session = newSession({
 			dayInterval: {
 				start: '2000-01-01',
-				end: '2001-01-01'
+				end: '2001-01-01',
 			},
 			frequency: { every: 1, interval: '1h' },
-			strategy: strategy1
+			strategy: strategy1,
 		})
 		assert.deepEqual(session.strategy?.strategyKey, strategy1.strategyKey)
 		assert.deepEqual(session.strategy?.flow, strategy1.flow)
@@ -152,15 +152,15 @@ describe('BacktestingSession', () => {
 		const strategyFlow1 = strategy.flow
 		const strategyFlow2: BacktestingStrategy['flow'] = {
 			nodes: [{ id: 'a', text: 'true' }],
-			edges: []
+			edges: [],
 		}
 		const session = newSession({
 			dayInterval: {
 				start: '2000-01-01',
-				end: '2001-01-01'
+				end: '2001-01-01',
 			},
 			frequency: { every: 1, interval: '1h' },
-			strategy
+			strategy,
 		})
 		assert.deepEqual(session.strategy?.flow, strategyFlow1)
 		// Session is "running", `strategy` modifier does not apply.
@@ -185,10 +185,10 @@ describe('BacktestingSession', () => {
 		const session = newSession({
 			dayInterval: {
 				start: '2000-01-01',
-				end: '2000-01-01'
+				end: '2000-01-01',
 			},
 			frequency: { every: 1, interval: '1h' },
-			strategy: emptyStrategy()
+			strategy: emptyStrategy(),
 		})
 		assert.equal(session.nextTime, undefined)
 		session.start()
@@ -223,7 +223,7 @@ describe('BacktestingSession', () => {
 			'2000-01-01T20:00:00.000Z',
 			'2000-01-01T21:00:00.000Z',
 			'2000-01-01T22:00:00.000Z',
-			'2000-01-01T23:00:00.000Z'
+			'2000-01-01T23:00:00.000Z',
 		])
 		assert.equal(session.status, 'done')
 	})

@@ -1,8 +1,13 @@
-import { AccountKey, isAccountKey, isStrategyKey, StrategyKey } from '@workspace/models'
+import {
+	AccountKey,
+	isAccountKey,
+	isStrategyKey,
+	StrategyKey,
+} from '@workspace/models'
 
 export function accountKeyParamsFromURL(url: URL): AccountKey | undefined {
 	const accountKey = {
-		accountId: url.searchParams.get('accountId')
+		accountId: url.searchParams.get('accountId'),
 	}
 	if (isAccountKey(accountKey)) return accountKey
 }
@@ -10,7 +15,7 @@ export function accountKeyParamsFromURL(url: URL): AccountKey | undefined {
 export function strategyKeyParamsFromURL(url: URL): StrategyKey | undefined {
 	const strategyKey = {
 		strategyId: url.searchParams.get('strategyId'),
-		strategyKind: url.searchParams.get('strategyKind')
+		strategyKind: url.searchParams.get('strategyKind'),
 	}
 	if (isStrategyKey(strategyKey)) return strategyKey
 }

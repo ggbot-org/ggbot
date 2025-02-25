@@ -1,5 +1,15 @@
-import { AuthDatabaseAction, AuthDatabaseActionInput as Input, AuthDatabaseActionOutput as Output, DocumentProviderLevel2 } from '@workspace/api'
-import { createdNow, EmailAccount, generateOneTimePassword, newAccount } from '@workspace/models'
+import {
+	AuthDatabaseAction,
+	AuthDatabaseActionInput as Input,
+	AuthDatabaseActionOutput as Output,
+	DocumentProviderLevel2,
+} from '@workspace/api'
+import {
+	createdNow,
+	EmailAccount,
+	generateOneTimePassword,
+	newAccount,
+} from '@workspace/models'
 
 import { pathname } from './locators.js'
 
@@ -13,7 +23,10 @@ export class AuthDatabase implements AuthDatabaseAction {
 	async CreateAccount(email: Input['CreateAccount']) {
 		const account = newAccount({ email })
 		const accountId = account.id
-		await this.documentProvider.setItem(pathname.account({ accountId }), account)
+		await this.documentProvider.setItem(
+			pathname.account({ accountId }),
+			account
+		)
 		const data: EmailAccount = { accountId, email, ...createdNow() }
 		await this.documentProvider.setItem(pathname.emailAccount(email), data)
 		return account
@@ -30,10 +43,14 @@ export class AuthDatabase implements AuthDatabaseAction {
 	}
 
 	ReadEmailAccount(email: Input['ReadEmailAccount']) {
-		return this.documentProvider.getItem<Output['ReadEmailAccount']>(pathname.emailAccount(email))
+		return this.documentProvider.getItem<Output['ReadEmailAccount']>(
+			pathname.emailAccount(email)
+		)
 	}
 
 	ReadOneTimePassword(email: Input['ReadOneTimePassword']) {
-		return this.documentProvider.getItem<Output['ReadOneTimePassword']>(pathname.oneTimePassword(email))
+		return this.documentProvider.getItem<Output['ReadOneTimePassword']>(
+			pathname.oneTimePassword(email)
+		)
 	}
 }

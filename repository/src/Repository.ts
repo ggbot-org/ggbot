@@ -21,9 +21,7 @@ export class Repository implements DirectoryProvider {
 		await this.packageJson.read()
 		await this.tsconfigJson.read()
 		for (const workspacePathname of this.packageJson.workspaces) {
-			const workspace = new Workspace(
-				join(this.pathname, workspacePathname)
-			)
+			const workspace = new Workspace(join(this.pathname, workspacePathname))
 			await workspace.read()
 			this.workspaces.set(workspacePathname, workspace)
 		}

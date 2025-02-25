@@ -1,7 +1,22 @@
-import { BacktestingBinanceClient, BacktestingSession } from '@workspace/backtesting'
-import { binanceKlineMaxLimit, getBinanceIntervalTime } from '@workspace/binance'
-import { DflowBinanceExecutor, extractBinanceSymbolsAndIntervalsFromFlow, extractsBinanceSymbolsFromFlow, getDflowBinanceNodesCatalog } from '@workspace/dflow'
-import { BinanceExchangeInfoCacheIDB, BinanceIDB, BinanceKlinesCacheIDB } from '@workspace/indexeddb-binance'
+import {
+	BacktestingBinanceClient,
+	BacktestingSession,
+} from '@workspace/backtesting'
+import {
+	binanceKlineMaxLimit,
+	getBinanceIntervalTime,
+} from '@workspace/binance'
+import {
+	DflowBinanceExecutor,
+	extractBinanceSymbolsAndIntervalsFromFlow,
+	extractsBinanceSymbolsFromFlow,
+	getDflowBinanceNodesCatalog,
+} from '@workspace/dflow'
+import {
+	BinanceExchangeInfoCacheIDB,
+	BinanceIDB,
+	BinanceKlinesCacheIDB,
+} from '@workspace/indexeddb-binance'
 
 const binanceIDB = new BinanceIDB()
 const binanceExchangeInfoCache = new BinanceExchangeInfoCacheIDB(binanceIDB)
@@ -19,7 +34,7 @@ export function getBinance(
 export async function prepareBinance(
 	binance: BacktestingBinanceClient,
 	binanceExecutor: DflowBinanceExecutor,
-	session: BacktestingSession,
+	session: BacktestingSession
 ) {
 	const schedulingInterval = session.frequency?.interval
 	if (!schedulingInterval) {
@@ -39,7 +54,8 @@ export async function prepareBinance(
 
 	// Pre-fetch klines for "candles" nodes.
 
-	const symbolsAndIntervalsFromCandlesNodes = await extractBinanceSymbolsAndIntervalsFromFlow(binanceSymbols, flow)
+	const symbolsAndIntervalsFromCandlesNodes =
+		await extractBinanceSymbolsAndIntervalsFromFlow(binanceSymbols, flow)
 
 	for (const { interval, symbol } of symbolsAndIntervalsFromCandlesNodes) {
 		let startTime = firstTime
@@ -55,14 +71,19 @@ export async function prepareBinance(
 
 	// Pre-fetch klines for "price" nodes.
 
-	const symbolsFromNodes = await extractsBinanceSymbolsFromFlow(binanceSymbols, flow)
+	const symbolsFromNodes = await extractsBinanceSymbolsFromFlow(
+		binanceSymbols,
+		flow
+	)
 
 	for (const symbol of symbolsFromNodes) {
 		let startTime = firstTime
 		while (startTime < lastTime) {
 			const endTime = Math.min(
 				lastTime,
-				getBinanceIntervalTime[schedulingInterval](startTime).plus(binanceKlineMaxLimit)
+				getBinanceIntervalTime[schedulingInterval](startTime).plus(
+					binanceKlineMaxLimit
+				)
 			)
 			await binance.klines(symbol, schedulingInterval, { startTime, endTime })
 			startTime = endTime

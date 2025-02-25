@@ -11,15 +11,22 @@ import { useState } from 'react'
 
 export function EditStrategyPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>('flow')
-	const [flowView, setFlowView] = useState<UseFlowViewOutput>({ flowViewGraph: undefined, whenUpdatedFlowView: undefined })
+	const [flowView, setFlowView] = useState<UseFlowViewOutput>({
+		flowViewGraph: undefined,
+		whenUpdatedFlowView: undefined,
+	})
 
 	const { strategyKey } = useStrategyKey()
-	const { strategyName, strategyFrequency, strategyNotFound } = useStrategy(strategyKey)
+	const { strategyName, strategyFrequency, strategyNotFound } =
+		useStrategy(strategyKey)
 	const { strategyFlow } = useStrategyFlow(strategyKey)
 
 	return (
 		<PageContainer>
-			<StrategyPageContainer strategyKey={strategyKey} strategyNotFound={strategyNotFound}>
+			<StrategyPageContainer
+				strategyKey={strategyKey}
+				strategyNotFound={strategyNotFound}
+			>
 				<Tabs
 					activeTabId={activeTabId}
 					setActiveTabId={setActiveTabId}
@@ -34,7 +41,7 @@ export function EditStrategyPage() {
 									strategyKey={strategyKey}
 									strategyName={strategyName}
 								/>
-							)
+							),
 						},
 						{
 							tabId: 'backtesting',
@@ -46,8 +53,8 @@ export function EditStrategyPage() {
 									strategyKey={strategyKey}
 									strategyName={strategyName}
 								/>
-							)
-						}
+							),
+						},
 					]}
 				/>
 			</StrategyPageContainer>

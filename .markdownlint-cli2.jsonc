@@ -7,10 +7,10 @@
 		"no-hard-tabs": false,
 		"no-inline-html": false,
 		"relative-links": true,
-		"ul-indent": false
+		"ul-indent": false,
 	},
 	"customRules": [
 		"markdownlint-rule-github-internal-links",
-		"markdownlint-rule-relative-links"
-	]
+		"markdownlint-rule-relative-links",
+	],
 }

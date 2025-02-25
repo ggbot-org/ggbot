@@ -1,5 +1,15 @@
-import { LambdaClient, UpdateFunctionConfigurationCommand } from '@aws-sdk/client-lambda'
-import { Architecture, CreateFunctionCommand, FunctionCode, PackageType, Runtime, UpdateFunctionCodeCommand } from '@aws-sdk/client-lambda'
+import {
+	LambdaClient,
+	UpdateFunctionConfigurationCommand,
+} from '@aws-sdk/client-lambda'
+import {
+	Architecture,
+	CreateFunctionCommand,
+	FunctionCode,
+	PackageType,
+	Runtime,
+	UpdateFunctionCodeCommand,
+} from '@aws-sdk/client-lambda'
 import { ENV } from '@workspace/env'
 
 export class LambdaFunction {
@@ -25,33 +35,44 @@ export class LambdaFunction {
 		return LambdaFunction.arn(this.region, this.functionName)
 	}
 
-	async create({ Role, ZipFile }: Required<Pick<FunctionCode, 'ZipFile'> & {
-		/* Execution role ARN */
-		Role: string
-	}>) {
-		await this.client.send(new CreateFunctionCommand({
-			Architectures: [this.architecture],
-			Code: { ZipFile },
-			FunctionName: this.functionName,
-			Handler: this.handler,
-			PackageType: PackageType.Zip,
-			Role,
-			Runtime: this.runtime,
-		}))
+	async create({
+		Role,
+		ZipFile,
+	}: Required<
+		Pick<FunctionCode, 'ZipFile'> & {
+			/* Execution role ARN */
+			Role: string
+		}
+	>) {
+		await this.client.send(
+			new CreateFunctionCommand({
+				Architectures: [this.architecture],
+				Code: { ZipFile },
+				FunctionName: this.functionName,
+				Handler: this.handler,
+				PackageType: PackageType.Zip,
+				Role,
+				Runtime: this.runtime,
+			})
+		)
 	}
 
 	async setEnvironment(Variables: Record<string, string>) {
-		await this.client.send(new UpdateFunctionConfigurationCommand({
-			FunctionName: this.functionName,
-			Environment: { Variables }
-		}))
+		await this.client.send(
+			new UpdateFunctionConfigurationCommand({
+				FunctionName: this.functionName,
+				Environment: { Variables },
+			})
+		)
 	}
 
 	async update({ ZipFile }: Required<Pick<FunctionCode, 'ZipFile'>>) {
-		await this.client.send(new UpdateFunctionCodeCommand({
-			ZipFile,
-			FunctionName: this.functionName,
-			Architectures: [this.architecture],
-		}))
+		await this.client.send(
+			new UpdateFunctionCodeCommand({
+				ZipFile,
+				FunctionName: this.functionName,
+				Architectures: [this.architecture],
+			})
+		)
 	}
 }

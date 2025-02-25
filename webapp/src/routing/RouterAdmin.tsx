@@ -11,7 +11,8 @@ function Router() {
 
 	if (pathname === webapp.admin.dashboard.pathname) return <DashboardPage />
 
-	if (pathname === webapp.admin.accountDetails(nullAccountKey).pathname) return <AccountDetailsPage />
+	if (pathname === webapp.admin.accountDetails(nullAccountKey).pathname)
+		return <AccountDetailsPage />
 
 	return null
 }

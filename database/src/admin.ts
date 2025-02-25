@@ -1,4 +1,8 @@
-import { AdminDatabaseAction, AdminDatabaseActionInput as Input, DocumentProviderLevel3 } from '@workspace/api'
+import {
+	AdminDatabaseAction,
+	AdminDatabaseActionInput as Input,
+	DocumentProviderLevel3,
+} from '@workspace/api'
 import { Account } from '@workspace/models'
 
 import { ExecutorDatabase } from './executor.js'
@@ -15,7 +19,8 @@ export class AdminDatabase implements AdminDatabaseAction {
 	}
 
 	async ListAccounts(arg: Input['ListAccounts']) {
-		const { accountKeys, nextToken } = await this.executorDatabase.ListAccountKeys(arg)
+		const { accountKeys, nextToken } =
+			await this.executorDatabase.ListAccountKeys(arg)
 		const accounts: Account[] = []
 		for (const { accountId } of accountKeys) {
 			const account = await this.documentProvider.getItem<Account>(

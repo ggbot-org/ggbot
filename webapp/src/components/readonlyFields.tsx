@@ -2,7 +2,10 @@ import { ReadonlyField } from '_/components/library'
 import { FormattedMessage } from '_/i18n/components'
 import { dayFormat } from '_/i18n/formats'
 import { useIntl } from '_/i18n/hooks'
-import { EmailAddress, SubscriptionPlan as SubscriptionPlanValue } from '@workspace/models'
+import {
+	EmailAddress,
+	SubscriptionPlan as SubscriptionPlanValue,
+} from '@workspace/models'
 import { Time } from 'minimal-time-helpers'
 
 type ValueProp<T> = {
@@ -82,13 +85,17 @@ export function SubscriptionPlan({ value }: ValueProp<SubscriptionPlanValue>) {
 	return (
 		<ReadonlyField
 			label={<FormattedMessage id="SubscriptionPlan.label" />}
-			value={value ? formatMessage({ id: `SubscriptionPlan.${value}` }) : undefined}
+			value={
+				value ? formatMessage({ id: `SubscriptionPlan.${value}` }) : undefined
+			}
 		/>
 	)
 }
 
 export function SubscriptionTotalPrice({
-	currency, monthlyPrice, numMonths
+	currency,
+	monthlyPrice,
+	numMonths,
 }: {
 	currency: string
 	monthlyPrice: number
@@ -98,7 +105,14 @@ export function SubscriptionTotalPrice({
 	return (
 		<ReadonlyField
 			label={<FormattedMessage id="SubscriptionTotalPrice.label" />}
-			value={numMonths ? formatNumber(monthlyPrice * numMonths, { style: 'currency', currency }) : ''}
+			value={
+				numMonths
+					? formatNumber(monthlyPrice * numMonths, {
+							style: 'currency',
+							currency,
+						})
+					: ''
+			}
 		/>
 	)
 }

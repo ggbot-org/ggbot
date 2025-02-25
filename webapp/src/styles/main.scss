@@ -1,36 +1,36 @@
 // Load whole bulma.
-@use "bulma/sass";
+@use 'bulma/sass';
 
 // Load colors and variables first.
-@use "./colors";
-@use "./variables";
+@use './colors';
+@use './variables';
 
 // Bulma theme customizations.
-@use "./theme/a";
-@use "./theme/box";
-@use "./theme/button";
-@use "./theme/checkbox";
-@use "./theme/input";
-@use "./theme/modal";
-@use "./theme/navbar";
-@use "./theme/select";
-@use "./theme/tabs";
-@use "./theme/tables";
+@use './theme/a';
+@use './theme/box';
+@use './theme/button';
+@use './theme/checkbox';
+@use './theme/input';
+@use './theme/modal';
+@use './theme/navbar';
+@use './theme/select';
+@use './theme/tabs';
+@use './theme/tables';
 
 // Components.
-@use "./components/AuthVerify";
-@use "./components/BacktestingProgress";
-@use "./components/BrandTagline";
-@use "./components/Calendar";
-@use "./components/FlowEditor";
-@use "./components/Footer";
-@use "./components/FrequencyInput";
-@use "./components/DayInterval";
-@use "./components/Homepage";
-@use "./components/OneColumn";
-@use "./components/Paragraph";
-@use "./components/Page";
-@use "./components/ReadonlyInput";
-@use "./components/TabSelector";
-@use "./components/TermsAndPolicyLinks";
-@use "./components/ToastContainer";
+@use './components/AuthVerify';
+@use './components/BacktestingProgress';
+@use './components/BrandTagline';
+@use './components/Calendar';
+@use './components/FlowEditor';
+@use './components/Footer';
+@use './components/FrequencyInput';
+@use './components/DayInterval';
+@use './components/Homepage';
+@use './components/OneColumn';
+@use './components/Paragraph';
+@use './components/Page';
+@use './components/ReadonlyInput';
+@use './components/TabSelector';
+@use './components/TermsAndPolicyLinks';
+@use './components/ToastContainer';

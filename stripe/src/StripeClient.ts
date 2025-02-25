@@ -7,14 +7,16 @@ import { newStripe } from './newStripe.js'
 
 export class StripeClient {
 	stripe = newStripe()
-	webapp = new WebappURLs(new WebappBaseURL(new FQDN(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())))
+	webapp = new WebappURLs(
+		new WebappBaseURL(new FQDN(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN()))
+	)
 
 	/** Call `stripe.checkout.sessions.create()` adding context. */
 	createCheckoutSession({
 		email,
 		metadata,
 		price,
-		quantity
+		quantity,
 	}: {
 		email: string
 		metadata: StripeMetadata
@@ -27,14 +29,14 @@ export class StripeClient {
 			metadata,
 			mode: 'payment',
 			success_url: this.webapp.subscriptionPurchased.href,
-			cancel_url: this.webapp.purchaseCanceled.href
+			cancel_url: this.webapp.purchaseCanceled.href,
 		})
 	}
 
 	/** Call `stripe.checkout.sessions.retrieve()` and return relevant data. */
 	async retreiveCheckoutSession(id: string) {
 		const session = await this.stripe.checkout.sessions.retrieve(id, {
-			expand: ['line_items']
+			expand: ['line_items'],
 		})
 		const quantity = session.line_items?.data[0].quantity
 		if (typeof quantity !== 'number') {
@@ -43,7 +45,7 @@ export class StripeClient {
 		}
 		return {
 			quantity,
-			isYearly: isYearlyPurchase({ numMonths: quantity })
+			isYearly: isYearlyPurchase({ numMonths: quantity }),
 		}
 	}
 }

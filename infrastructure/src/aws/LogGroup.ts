@@ -1,4 +1,7 @@
-import { CloudWatchLogsClient, CreateLogGroupCommand } from '@aws-sdk/client-cloudwatch-logs'
+import {
+	CloudWatchLogsClient,
+	CreateLogGroupCommand,
+} from '@aws-sdk/client-cloudwatch-logs'
 import { ENV } from '@workspace/env'
 
 export class LogGroup {
@@ -26,8 +29,10 @@ export class LogGroup {
 	}
 
 	async create() {
-		await this.client.send(new CreateLogGroupCommand({
-			logGroupName: this.logGroupName
-		}))
+		await this.client.send(
+			new CreateLogGroupCommand({
+				logGroupName: this.logGroupName,
+			})
+		)
 	}
 }

@@ -23,10 +23,13 @@ export type TabContentProps = {
 	renderIfInactive?: boolean
 }
 
-export function TabContent({ children, isActive, renderIfInactive }: PropsWithChildren<TabContentProps>) {
-	if (renderIfInactive) return (
-		<Div bulma={{ 'is-hidden': !isActive }}>{children}</Div>
-	)
+export function TabContent({
+	children,
+	isActive,
+	renderIfInactive,
+}: PropsWithChildren<TabContentProps>) {
+	if (renderIfInactive)
+		return <Div bulma={{ 'is-hidden': !isActive }}>{children}</Div>
 	if (!isActive) return null
 	return <div>{children}</div>
 }

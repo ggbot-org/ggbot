@@ -1,7 +1,7 @@
 import { FormatjsIntlMessageId } from '../types/FormatjsIntlMessageIds'
 
 export const i18nRichTextTags = ['b', 'em', 'i', 'strong'] as const
-type I18nRichTextTag = typeof i18nRichTextTags[number]
+type I18nRichTextTag = (typeof i18nRichTextTags)[number]
 type I18nMessageMarkupTag = I18nRichTextTag | 'a'
 
 export type I18nMessageString = {
@@ -28,7 +28,7 @@ type I18nMessagePlural = {
 	options: Partial<{
 		'=0': I18nPluralOption
 		'=1': I18nPluralOption
-		'other': I18nPluralOption
+		other: I18nPluralOption
 	}>
 	type: 6
 	pluralType: 'cardinal'
@@ -42,13 +42,21 @@ type I18nMessageMarkup = {
 	value: I18nMessageMarkupTag
 }
 
-type I18nMessage = I18nMessageMarkup | I18nMessageParam | I18nMessagePlural | I18nMessageString
+type I18nMessage =
+	| I18nMessageMarkup
+	| I18nMessageParam
+	| I18nMessagePlural
+	| I18nMessageString
 
 export type I18nMessagesRecord = Record<FormatjsIntlMessageId, I18nMessage[]>
 
 export type FormatMessageValues = Record<string, string | number>
 
-export function formatMessage(message: I18nMessageParam | I18nMessageString | I18nMessagePluralValue, values?: FormatMessageValues, pluralValue?: number) {
+export function formatMessage(
+	message: I18nMessageParam | I18nMessageString | I18nMessagePluralValue,
+	values?: FormatMessageValues,
+	pluralValue?: number
+) {
 	if (message.type == 0) return message.value
 	if (message.type == 1) {
 		// Here `value` is a parameter name.

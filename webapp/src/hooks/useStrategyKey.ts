@@ -5,6 +5,6 @@ export function useStrategyKey() {
 	return {
 		strategyKey,
 		strategyId: strategyKey?.strategyId,
-		strategyKind: strategyKey?.strategyKind
+		strategyKind: strategyKey?.strategyKind,
 	}
 }

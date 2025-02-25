@@ -11,24 +11,31 @@ type MemoryItemProps = {
 
 function MemoryItem({ name, value }: MemoryItemProps) {
 	return (
-		<div className={classnames('is-flex', 'is-flex-direction-column', 'my-1', 'is-flex-grow-1')}>
+		<div
+			className={classnames(
+				'is-flex',
+				'is-flex-direction-column',
+				'my-1',
+				'is-flex-grow-1'
+			)}
+		>
 			<span>{name}</span>
 			<pre className={'p-2' satisfies Classname}>
-				<code>{
-					value === undefined ? '' : JSON.stringify(value, null, 2)
-				}
-				</code>
+				<code>{value === undefined ? '' : JSON.stringify(value, null, 2)}</code>
 			</pre>
 		</div>
 	)
 }
 
-export function Memory({ memory }: {
+export function Memory({
+	memory,
+}: {
 	memory: DflowCommonContext['memory'] | undefined
 }) {
 	const items: MemoryItemProps[] = []
 	if (memory) {
-		for (const [key, value] of Object.entries(memory)) items.push({ name: key, value })
+		for (const [key, value] of Object.entries(memory))
+			items.push({ name: key, value })
 	}
 	return (
 		<Div bulma="box">

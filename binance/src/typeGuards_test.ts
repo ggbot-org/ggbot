@@ -1,7 +1,12 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { isBinanceKline, isBinanceKlineInterval, isBinanceSymbolFilterLotSize, isBinanceSymbolFilterMinNotional } from './typeGuards.js'
+import {
+	isBinanceKline,
+	isBinanceKlineInterval,
+	isBinanceSymbolFilterLotSize,
+	isBinanceSymbolFilterMinNotional,
+} from './typeGuards.js'
 
 test('isBinanceKline', () => {
 	for (const { input, output } of [
@@ -18,10 +23,10 @@ test('isBinanceKline', () => {
 				120641,
 				'29534.47870000',
 				'2131.84019322',
-				'0'
+				'0',
 			],
-			output: true
-		}
+			output: true,
+		},
 	]) {
 		assert.equal(isBinanceKline(input), output)
 	}
@@ -44,7 +49,7 @@ test('isBinanceKlineInterval', () => {
 		{ input: '1d', output: true },
 		{ input: '3d', output: true },
 		{ input: '1w', output: true },
-		{ input: '1M', output: true }
+		{ input: '1M', output: true },
 	]) {
 		assert.equal(isBinanceKlineInterval(input), output)
 	}
@@ -57,46 +62,46 @@ test('isBinanceSymbolFilterLotSize', () => {
 				filterType: 'LOT_SIZE',
 				minQty: '0.00010000',
 				maxQty: '100000.00000000',
-				stepSize: '0.00010000'
+				stepSize: '0.00010000',
 			},
-			output: true
+			output: true,
 		},
 		{
 			input: {
 				filterType: 'XXX',
 				minQty: '0.00010000',
 				maxQty: '100000.00000000',
-				stepSize: '0.00010000'
+				stepSize: '0.00010000',
 			},
-			output: false
+			output: false,
 		},
 		{
 			input: {
 				filterType: 'LOT_SIZE',
 				minQty: 'not a number',
 				maxQty: '100000.00000000',
-				stepSize: '0.00010000'
+				stepSize: '0.00010000',
 			},
-			output: false
+			output: false,
 		},
 		{
 			input: {
 				filterType: 'LOT_SIZE',
 				minQty: '0.00010000',
 				maxQty: 'not a number',
-				stepSize: '0.00010000'
+				stepSize: '0.00010000',
 			},
-			output: false
+			output: false,
 		},
 		{
 			input: {
 				filterType: 'LOT_SIZE',
 				minQty: '0.00010000',
 				maxQty: '100000.00000000',
-				stepSize: 'not a number'
+				stepSize: 'not a number',
 			},
-			output: false
-		}
+			output: false,
+		},
 	]) {
 		assert.equal(isBinanceSymbolFilterLotSize(input), output)
 	}
@@ -109,46 +114,46 @@ test('isBinanceSymbolFilterMinNotional', () => {
 				filterType: 'MIN_NOTIONAL',
 				minNotional: '0.00010000',
 				applyToMarket: true,
-				avgPriceMins: 5
+				avgPriceMins: 5,
 			},
-			output: true
+			output: true,
 		},
 		{
 			input: {
 				filterType: 'XXX',
 				minNotional: '0.00010000',
 				applyToMarket: true,
-				avgPriceMins: 5
+				avgPriceMins: 5,
 			},
-			output: false
+			output: false,
 		},
 		{
 			input: {
 				filterType: 'MIN_NOTIONAL',
 				minNotional: 'not a number',
 				applyToMarket: true,
-				avgPriceMins: 5
+				avgPriceMins: 5,
 			},
-			output: false
+			output: false,
 		},
 		{
 			input: {
 				filterType: 'MIN_NOTIONAL',
 				minNotional: '0.00010000',
 				applyToMarket: 'not a boolean',
-				avgPriceMins: 5
+				avgPriceMins: 5,
 			},
-			output: false
+			output: false,
 		},
 		{
 			input: {
 				filterType: 'MIN_NOTIONAL',
 				minNotional: '0.00010000',
 				applyToMarket: true,
-				avgPriceMins: 'not a number'
+				avgPriceMins: 'not a number',
 			},
-			output: false
-		}
+			output: false,
+		},
 	]) {
 		assert.equal(isBinanceSymbolFilterMinNotional(input), output)
 	}
