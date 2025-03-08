@@ -1,17 +1,13 @@
 import { useReadStrategies } from '_/hooks/user/api'
 import { AccountStrategy } from '@workspace/models'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export function useAccountStrategies() {
-	const { canRun, data, isPending, request, reset } = useReadStrategies()
+	const { canRun, data, isPending, request } = useReadStrategies()
 
 	const [accountStrategies, setAccountStrategies] = useState<
 		AccountStrategy[] | undefined
 	>()
-
-	const resetAccountStrategies = useCallback(() => {
-		reset()
-	}, [reset])
 
 	// Fetch account strategies.
 	useEffect(() => {
@@ -28,6 +24,5 @@ export function useAccountStrategies() {
 	return {
 		accountStrategies,
 		readStrategiesIsPending: isPending,
-		resetAccountStrategies,
 	}
 }

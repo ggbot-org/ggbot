@@ -22,6 +22,7 @@ import { webapp } from '_/routing/webapp'
 import { localWebStorage } from '_/storages/local'
 import { sessionWebStorage } from '_/storages/session'
 import { AccountStrategy, schedulingsAreInactive } from '@workspace/models'
+import no from 'not-defined'
 import { useEffect, useMemo, useState } from 'react'
 
 function StrategyItem({
@@ -139,7 +140,7 @@ export function Strategies({
 			</>
 		)
 
-	if (accountStrategies?.length === 0)
+	if (no(accountStrategies))
 		return (
 			<OneColumn>
 				<form
