@@ -56,12 +56,5 @@ export class SesNoreplyPolicy
 				)
 			),
 		}
-		// TODO try
-		// "Condition": {
-		//    "StringLike": {
-		//        "ses:FromAddress": "noreply@ggbot2.com"
-		//        where addres comes from @wrokspace locators noReplyEmailAddress
-		//    }
-		// }
 	}
 }

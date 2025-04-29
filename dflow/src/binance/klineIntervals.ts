@@ -1,7 +1,7 @@
 import { isLiteralType } from 'minimal-type-guard-helpers'
 
 /**
- * Binance kline intervals supported by ggbot2 dflow implementation.
+ * Binance kline intervals supported by dflow implementation.
  *
  * Note that the items are in ascending cronological order, so they can be used
  * to sort by intervals.

@@ -71,7 +71,7 @@ For example
     Environment="AWS_DATA_REGION=eu-central-1"
     Environment="AUTHENTICATION_SECRET=s3cret"
     Environment="DEPLOY_STAGE=main"
-    Environment="DNS_DOMAIN=ggbot2.com"
+    Environment="DNS_DOMAIN=ggbot.com"
     Environment="BINANCE_PROXY_IP=1.2.3.4"
     Environment="AWS_BINANCE_PROXY_REGION=eu-central-1"
 

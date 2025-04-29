@@ -1,4 +1,4 @@
-# ggbot2 Tech stack
+# Tech stack
 
 - [Git](#git)
 - [Markdown](#markdown)
