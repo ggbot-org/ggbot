@@ -16,17 +16,13 @@
 - [Volta](#volta)
 - [React](#react) (aliased by [Preact](#preact))
 - [Stripe](#stripe)
-- npm packages
-  - [@types/node](#typesnode)
-  - [@typescript-eslint/eslint-plugin](#typescript-eslinteslint-plugin)
-  - [@typescript-eslint/parser](#typescript-eslintparser)
+- (relevant) npm packages
   - [aws-sdk](#aws-sdk)
   - [eslint](#eslint)
-  - [eslint-plugin-import](#eslint-plugin-import)
-  - [eslint-plugin-react](#eslint-plugin-react)
-  - [eslint-plugin-react-hooks](#eslint-plugin-react-hooks)
   - [dflow](#dflow)
   - [flow-view](#flow-view)
+  - [preact](#preact)
+  - [trunx](#trunx)
   - [typescript](#typescript)
 
 ## Git
@@ -132,18 +128,6 @@ https://stripe.com/
 
 ## npm packages
 
-### @types/node
-
-https://www.npmjs.com/package/@types/node
-
-### @typescript-eslint/eslint-plugin
-
-https://www.npmjs.com/package/@typescript-eslint/eslint-plugin
-
-### @typescript-eslint/parser
-
-https://www.npmjs.com/package/@typescript-eslint/parser
-
 ### aws-sdk
 
 https://www.npmjs.com/package/aws-sdk
@@ -156,18 +140,6 @@ https://www.npmjs.com/package/dflow
 
 https://www.npmjs.com/package/eslint
 
-### eslint-plugin-import
-
-https://www.npmjs.com/package eslint-plugin-import
-
-### eslint-plugin-react
-
-https://www.npmjs.com/package/eslint-plugin-react
-
-### eslint-plugin-react-hooks
-
-https://www.npmjs.com/package/eslint-plugin-react-hooks
-
 ### flow-view
 
 https://www.npmjs.com/package/flow-view
@@ -175,10 +147,6 @@ https://www.npmjs.com/package/flow-view
 ### preact
 
 https://preactjs.com/
-
-### pre-commit
-
-https://www.npmjs.com/package/pre-commit
 
 ### trunx
 
